@@ -1,0 +1,34 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="m-t" enctype="multipart/form-data" action="${ctxPath}/notice/readExcel" method="post">
+        <div class="form-horizontal" id="noticeInfoForm">
+
+            <input type="hidden" id="id" value="">
+            <h4 style="color: red;margin-top: 20px;">${tips!}</h4>
+            <div class="row">
+                <div class="col-sm-12">
+
+                    <div class="form-group">
+                        <label class="col-sm-1 control-label">数据导入</label>
+                        <div class="col-sm-11">
+                            <input type="file" name="uploadFile" id="uploadFile">
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary" icon="fa-check">导入</button>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="${ctxPath}/static/js/common/wangEditor.min.js"></script>
+<script src="${ctxPath}/static/modular/system/notice/notice_import.js"></script>
+@}
