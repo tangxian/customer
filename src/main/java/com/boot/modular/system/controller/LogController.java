@@ -65,7 +65,7 @@ public class LogController extends BaseController {
      * 查询操作日志列表
      */
     @RequestMapping("/list")
-    @Permission({Const.ADMIN_NAME,Const.GENERALADMIN_NAME})
+    @Permission({Const.ADMIN_NAME,Const.LEADER})
     @ResponseBody
     public Object list(@RequestParam(required = false) String beginTime, @RequestParam(required = false) String endTime, @RequestParam(required = false) String logName, @RequestParam(required = false) Integer logType) {
         Page<OperationLog> page = new PageFactory<OperationLog>().defaultPage();
@@ -78,7 +78,7 @@ public class LogController extends BaseController {
      * 查询操作日志详情
      */
     @RequestMapping("/detail/{id}")
-    @Permission({Const.ADMIN_NAME,Const.GENERALADMIN_NAME})
+    @Permission({Const.ADMIN_NAME,Const.LEADER})
     @ResponseBody
     public Object detail(@PathVariable Integer id) {
         OperationLog operationLog = operationLogService.selectById(id);
@@ -91,7 +91,7 @@ public class LogController extends BaseController {
      */
     @BussinessLog(value = "清空业务日志")
     @RequestMapping("/delLog")
-    @Permission({Const.ADMIN_NAME,Const.GENERALADMIN_NAME})
+    @Permission({Const.ADMIN_NAME,Const.LEADER})
     @ResponseBody
     public Object delLog() {
         SqlRunner.db().delete("delete from sys_operation_log");

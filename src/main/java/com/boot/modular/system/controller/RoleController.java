@@ -101,7 +101,7 @@ public class RoleController extends BaseController {
     /**
      * 跳转到角色分配
      */
-    @Permission({Const.ADMIN_NAME ,Const.GENERALADMIN_NAME})
+    @Permission({Const.ADMIN_NAME ,Const.LEADER})
     @RequestMapping(value = "/role_assign/{roleId}")
     public String roleAssign(@PathVariable("roleId") Integer roleId, Model model) {
         if (ToolUtil.isEmpty(roleId)) {
@@ -128,7 +128,7 @@ public class RoleController extends BaseController {
      */
     @RequestMapping(value = "/add")
     @BussinessLog(value = "添加角色", key = "name", dict = RoleDict.class)
-    @Permission({Const.ADMIN_NAME,Const.GENERALADMIN_NAME})
+    @Permission({Const.ADMIN_NAME,Const.LEADER})
     @ResponseBody
     public NetworkResult add(@Valid Role role, BindingResult result) {
         if (result.hasErrors()) {
@@ -144,7 +144,7 @@ public class RoleController extends BaseController {
      */
     @RequestMapping(value = "/edit")
     @BussinessLog(value = "修改角色", key = "name", dict = RoleDict.class)
-    @Permission({Const.ADMIN_NAME,Const.GENERALADMIN_NAME})
+    @Permission({Const.ADMIN_NAME,Const.LEADER})
     @ResponseBody
     public NetworkResult edit(@Valid Role role, BindingResult result) {
         if (result.hasErrors()) {
@@ -162,7 +162,7 @@ public class RoleController extends BaseController {
      */
     @RequestMapping(value = "/remove")
     @BussinessLog(value = "删除角色", key = "roleId", dict = RoleDict.class)
-    @Permission({Const.ADMIN_NAME,Const.GENERALADMIN_NAME})
+    @Permission({Const.ADMIN_NAME,Const.LEADER})
     @ResponseBody
     public NetworkResult remove(@RequestParam Integer roleId) {
         if (ToolUtil.isEmpty(roleId)) {
@@ -174,9 +174,19 @@ public class RoleController extends BaseController {
             throw new ServiceException(BizExceptionEnum.CANT_DELETE_ADMIN);
         }
 
-        //不能删除普通管理员角色
-        if (roleId.equals(Const.GENERALADMIN_ROLE_ID)) {
-            throw new ServiceException(BizExceptionEnum.CANT_DELETE_GENERALADMIN);
+        //不能删除公司管理层角色
+        if (roleId.equals(Const.LEADER_ROLE_ID)) {
+            throw new ServiceException(BizExceptionEnum.CANT_DELETE_LEADER);
+        }
+
+        //不能删除数据管理员角色
+        if (roleId.equals(Const.DATABASE_ROLE_ID)) {
+            throw new ServiceException(BizExceptionEnum.CANT_DELETE_DATABASE);
+        }
+
+        //不能删除客户经理
+        if (roleId.equals(Const.CUSTOMERMANAGER_ROLE_ID)) {
+            throw new ServiceException(BizExceptionEnum.CANT_DELETE_CUSTOMERMANAGER);
         }
 
         //缓存被删除的角色名称
@@ -206,7 +216,7 @@ public class RoleController extends BaseController {
      */
     @RequestMapping("/setAuthority")
     @BussinessLog(value = "配置权限", key = "roleId,ids", dict = RoleDict.class)
-    @Permission({Const.ADMIN_NAME,Const.GENERALADMIN_NAME})
+    @Permission({Const.ADMIN_NAME,Const.LEADER})
     @ResponseBody
     public NetworkResult setAuthority(@RequestParam("roleId") Integer roleId, @RequestParam("ids") String ids) {
         if (ToolUtil.isOneEmpty(roleId)) {

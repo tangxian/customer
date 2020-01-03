@@ -201,7 +201,7 @@ public class UserMgrController extends BaseController {
      */
     @RequestMapping("/add")
     @BussinessLog(value = "添加用户", key = "account", dict = UserDict.class)
-    @Permission({Const.ADMIN_NAME, Const.GENERALADMIN_NAME})
+    @Permission({Const.ADMIN_NAME, Const.LEADER})
     @ResponseBody
     @Transactional
     public NetworkResult add(@Valid UserDto user, BindingResult result) {
@@ -269,7 +269,7 @@ public class UserMgrController extends BaseController {
         }
         //清除缓存
         ConstantFactory.me().removeAllUserCache();
-        if (ShiroKit.hasRole(Const.ADMIN_NAME) || ShiroKit.hasRole(Const.GENERALADMIN_NAME)) {
+        if (ShiroKit.hasRole(Const.ADMIN_NAME) || ShiroKit.hasRole(Const.LEADER)) {
             try {
                 if (oldUser.getEmail().equals(user.getEmail())) { //如果没有修改邮箱
                     this.userService.updateById(UserFactory.editUser(user, oldUser));
@@ -308,7 +308,7 @@ public class UserMgrController extends BaseController {
      */
     @RequestMapping("/delete")
     @BussinessLog(value = "删除管理员", key = "userId", dict = UserDict.class)
-    @Permission({Const.GENERALADMIN_NAME, Const.ADMIN_NAME})
+    @Permission({Const.LEADER, Const.ADMIN_NAME})
     @ResponseBody
     public NetworkResult delete(@RequestParam Integer userId) {
         if (ToolUtil.isEmpty(userId)) {
@@ -328,7 +328,7 @@ public class UserMgrController extends BaseController {
      */
     @RequestMapping("/reset")
     @BussinessLog(value = "重置管理员密码", key = "userId", dict = UserDict.class)
-    @Permission({Const.ADMIN_NAME, Const.GENERALADMIN_NAME})
+    @Permission({Const.ADMIN_NAME, Const.LEADER})
     @ResponseBody
     @Transactional
     public NetworkResult reset(@RequestParam Integer userId) {
@@ -350,7 +350,7 @@ public class UserMgrController extends BaseController {
      */
     @RequestMapping("/freeze")
     @BussinessLog(value = "冻结用户", key = "userId", dict = UserDict.class)
-    @Permission({Const.ADMIN_NAME, Const.GENERALADMIN_NAME})
+    @Permission({Const.ADMIN_NAME, Const.LEADER})
     @ResponseBody
     public NetworkResult freeze(@RequestParam Integer userId) {
         if (ToolUtil.isEmpty(userId)) {
@@ -370,7 +370,7 @@ public class UserMgrController extends BaseController {
      */
     @RequestMapping("/unfreeze")
     @BussinessLog(value = "解除冻结用户", key = "userId", dict = UserDict.class)
-    @Permission({Const.ADMIN_NAME, Const.GENERALADMIN_NAME})
+    @Permission({Const.ADMIN_NAME, Const.LEADER})
     @ResponseBody
     public NetworkResult unfreeze(@RequestParam Integer userId) {
         if (ToolUtil.isEmpty(userId)) {
@@ -386,7 +386,7 @@ public class UserMgrController extends BaseController {
      */
     @RequestMapping("/setRole")
     @BussinessLog(value = "分配角色", key = "userId,roleIds", dict = UserDict.class)
-    @Permission(Const.ADMIN_NAME)
+    @Permission({Const.ADMIN_NAME,Const.LEADER})
     @ResponseBody
     public NetworkResult setRole(@RequestParam("userId") Integer userId, @RequestParam("roleIds") String roleIds) {
         if (ToolUtil.isOneEmpty(userId, roleIds)) {

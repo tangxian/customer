@@ -76,7 +76,7 @@ public class DictController extends BaseController {
     /**
      * 跳转到修改字典
      */
-    @Permission({Const.ADMIN_NAME,Const.GENERALADMIN_NAME})
+    @Permission({Const.ADMIN_NAME,Const.LEADER})
     @RequestMapping("/dict_edit/{dictId}")
     public String deptUpdate(@PathVariable Integer dictId, Model model) {
         Dict dict = dictService.selectById(dictId);
@@ -94,7 +94,7 @@ public class DictController extends BaseController {
      */
     @BussinessLog(value = "添加字典记录", key = "dictName,dictValues", dict = DictMap.class)
     @RequestMapping(value = "/add")
-    @Permission({Const.ADMIN_NAME,Const.GENERALADMIN_NAME})
+    @Permission({Const.ADMIN_NAME,Const.LEADER})
     @ResponseBody
     public Object add(String dictCode, String dictTips, String dictName, String dictValues) {
         if (ToolUtil.isOneEmpty(dictCode, dictName, dictValues)) {
@@ -108,7 +108,7 @@ public class DictController extends BaseController {
      * 获取所有字典列表
      */
     @RequestMapping(value = "/list")
-    @Permission({Const.ADMIN_NAME,Const.GENERALADMIN_NAME})
+    @Permission({Const.ADMIN_NAME,Const.LEADER})
     @ResponseBody
     public Object list(String condition) {
         List<Map<String, Object>> list = this.dictService.list(condition);
@@ -139,7 +139,7 @@ public class DictController extends BaseController {
      * 字典详情
      */
     @RequestMapping(value = "/detail/{dictId}")
-    @Permission({Const.ADMIN_NAME,Const.GENERALADMIN_NAME})
+    @Permission({Const.ADMIN_NAME,Const.LEADER})
     @ResponseBody
     public Object detail(@PathVariable("dictId") Integer dictId) {
         return dictService.selectById(dictId);
@@ -150,7 +150,7 @@ public class DictController extends BaseController {
      */
     @BussinessLog(value = "修改字典", key = "dictName,dictValues", dict = DictMap.class)
     @RequestMapping(value = "/update")
-    @Permission({Const.ADMIN_NAME,Const.GENERALADMIN_NAME})
+    @Permission({Const.ADMIN_NAME,Const.LEADER})
     @ResponseBody
     public Object update(Integer dictId, String dictCode, String dictName, String dictTips, String dictValues) {
         if (ToolUtil.isOneEmpty(dictId, dictCode, dictName, dictValues)) {
@@ -165,7 +165,7 @@ public class DictController extends BaseController {
      */
     @BussinessLog(value = "删除字典记录", key = "dictId", dict = DictMap.class)
     @RequestMapping(value = "/delete")
-    @Permission({Const.ADMIN_NAME,Const.GENERALADMIN_NAME})
+    @Permission({Const.ADMIN_NAME,Const.LEADER})
     @ResponseBody
     public Object delete(@RequestParam Integer dictId) {
 

@@ -35,9 +35,19 @@ public interface Const {
 
 
     /**
-     * 普通管理员的名字
+     * 公司领导层角色名称
      */
-    String GENERALADMIN_NAME = "admin";
+    String LEADER = "leader";
+
+    /**
+     * 数据管理员角色名称
+     */
+    String DATABASE = "database";
+
+    /**
+     * 客户经理角色角色名称
+     */
+    String CUSTOMERMANAGER  = "customermanager ";
 
     /**
      * 管理员id
@@ -50,9 +60,19 @@ public interface Const {
     Integer ADMIN_ROLE_ID = 1;
 
     /**
-     * 普通管理员角色id
+     * 公司管理层角色id
      */
-    Integer GENERALADMIN_ROLE_ID = 2;
+    Integer LEADER_ROLE_ID = 2;
+
+    /**
+     * 公司管理层角色id
+     */
+    Integer DATABASE_ROLE_ID = 3;
+
+    /**
+     * 客户经理角色id
+     */
+    Integer CUSTOMERMANAGER_ROLE_ID = 4;
 
 
     /**
