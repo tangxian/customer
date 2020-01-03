@@ -14,7 +14,7 @@
     <artifactId>customer</artifactId>
     <version>1.0.0</version>
 
-    <name>springbootproject</name>
+    <name>customer</name>
 
 
     <properties>
