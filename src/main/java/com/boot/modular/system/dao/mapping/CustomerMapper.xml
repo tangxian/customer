@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boot.modular.system.dao.CustomerMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.boot.modular.system.model.Customer">
+        <id column="id" property="id" />
+        <result column="customername" property="customername" />
+        <result column="mobile" property="mobile" />
+        <result column="idcard" property="idcard" />
+        <result column="houseinfo" property="houseinfo" />
+        <result column="carinfo" property="carinfo" />
+        <result column="sbgjj" property="sbgjj" />
+        <result column="insurance" property="insurance" />
+        <result column="businesslicense" property="businesslicense" />
+        <result column="carid" property="carid" />
+        <result column="cartype" property="cartype" />
+        <result column="otherinfo" property="otherinfo" />
+        <result column="customertype" property="customertype" />
+        <result column="customerstatus" property="customerstatus" />
+        <result column="createdate" property="createdate" />
+        <result column="createuserid" property="createuserid" />
+        <result column="datasources" property="datasources" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, customername, mobile, idcard, houseinfo, carinfo, sbgjj, insurance, businesslicense, carid, cartype, otherinfo, customertype, customerstatus, createdate, createuserid, datasources
+    </sql>
+
+    <select id="selectCustomer" resultType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from cus_customer
+        where 1=1
+        <if test="customername != null and customername !=''">
+            and customername like CONCAT('%',#{customername},'%')
+        </if>
+        <if test="mobile != null and mobile !=''">
+            and mobile like CONCAT('%',#{mobile},'%')
+        </if>
+        <if test="idcard != null and idcard !=''">
+            and idcard like CONCAT('%',#{idcard},'%')
+        </if>
+        <if test="customertype != null and customertype != 0">
+            and customertype = #{customertype}
+        </if>
+        <if test="customerstatus != null and customerstatus != 0">
+            and customerstatus = #{customerstatus}
+        </if>
+        <if test="datasources != null and datasources != 0">
+            and datasources = #{datasources}
+        </if>
+        <if test="beginTime != null and beginTime != ''">
+            and createdate &gt;=CONCAT(#{beginTime},' 00:00:00')
+        </if>
+        <if test="endTime != null and endTime != ''">
+            and createdate &lt;=CONCAT(#{endTime},' 23:59:59')
+        </if>
+        order by createdate desc
+    </select>
+
+</mapper>

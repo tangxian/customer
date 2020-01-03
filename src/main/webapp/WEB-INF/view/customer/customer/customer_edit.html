@@ -1,0 +1,49 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal" id="customerInfoForm">
+
+            <div class="row">
+                <div class="col-sm-6 b-r">
+                    <input type="hidden" id="id" value="${item.id!}">
+                    <input type="hidden" id="customertype1" value="${item.customertype!}">
+                    <input type="hidden" id="customerstatus1" value="${item.customerstatus!}">
+                    <#select id="customertype" name="客户类型" underline="true">
+                        <option value="1">车辆抵押客户</option>
+                        <option value="2">房产抵押客户</option>
+                        <option value="3">其他</option>
+                    </#select>
+                    <#input id="customername" name="客户姓名" value="${item.customername!}" underline="true"/>
+                    <#input id="mobile" name="电话" value="${item.mobile!}" underline="true"/>
+                    <#input id="idcard" name="身份证号码" value="${item.idcard!}" underline="true"/>
+                    <#input id="carid" name="车牌" value="${item.carid!}" underline="true"/>
+                    <#input id="cartype" name="车型" value="${item.cartype!}" underline="true"/>
+                    <#input id="otherinfo" name="其他信息" value="${item.otherinfo!}" underline="true"/>
+                </div>
+
+                <div class="col-sm-6">
+                    <#input id="carinfo" name="车辆信息" value="${item.carinfo!}" underline="true"/>
+                    <#input id="houseinfo" name="房产信息" value="${item.houseinfo!}" underline="true"/>
+                    <#input id="sbgjj" name="社保公积金" value="${item.sbgjj!}" underline="true"/>
+                    <#input id="insurance" name="保单信息" value="${item.insurance!}" underline="true"/>
+                    <#input id="businesslicense" name="营业执照" value="${item.businesslicense!}" underline="true"/>
+                    <#select id="customerstatus" name="客户状态" underline="true">
+                        <option value="1">非意向</option>
+                        <option value="2">意向</option>
+                        <option value="3">成交</option>
+                    </#select>
+                </div>
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="customerInfoDlg.editSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="customerInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/customer/customer/customer_info.js"></script>
+@}
