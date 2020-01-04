@@ -5,7 +5,7 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.boot.modular.system.model.CusFollow">
         <id column="id" property="id" />
-        <result column="customernameid" property="customernameid" />
+        <result column="customerid" property="customerid" />
         <result column="followdate" property="followdate" />
         <result column="userid" property="userid" />
         <result column="remark" property="remark" />
@@ -13,7 +13,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, customernameid, followdate, userid, remark
+        id, customerid, followdate, userid, remark
     </sql>
 
 </mapper>

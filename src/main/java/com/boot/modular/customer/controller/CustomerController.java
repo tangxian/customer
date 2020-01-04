@@ -15,8 +15,10 @@ import com.boot.core.shiro.ShiroUser;
 import com.boot.core.util.ExcelUtils;
 import com.boot.modular.customer.model.CustomerCarInfo;
 import com.boot.modular.customer.model.CustomerHouseInfo;
+import com.boot.modular.customer.service.ICusFollowService;
 import com.boot.modular.customer.service.ICustomerService;
 import com.boot.modular.customer.warpper.CustomerWarpper;
+import com.boot.modular.system.model.CusFollow;
 import com.boot.modular.system.model.NoticeInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +46,8 @@ public class CustomerController extends BaseController {
 
     @Autowired
     private ICustomerService customerService;
+    @Autowired
+    private ICusFollowService cusFollowService;
 
     /**
      * 跳转到客户管理首页
@@ -110,7 +114,9 @@ public class CustomerController extends BaseController {
     @ResponseBody
     public Object list( @RequestParam(required = false) String customername, @RequestParam(required = false) String mobile, @RequestParam(required = false) String idcard, @RequestParam(required = false) String beginTime, @RequestParam(required = false) String endTime, @RequestParam(required = false) Integer customertype, @RequestParam(required = false) Integer customerstatus, @RequestParam(required = false) Integer datasources, @RequestParam(required = false) Integer iscustomermanager) {
         Page<Customer> page = new PageFactory<Customer>().defaultPage();
-        List<Map<String, Object>> customer = customerService.selectCustomer(page, customername, mobile, idcard, customertype, customerstatus, beginTime, endTime, datasources, iscustomermanager);
+        ShiroUser shiroUser = ShiroKit.getUser();
+        Integer userid = shiroUser.getId();
+        List<Map<String, Object>> customer = customerService.selectCustomer(page, customername, mobile, idcard, customertype, customerstatus, beginTime, endTime, datasources, iscustomermanager, userid);
         page.setRecords(new CustomerWarpper(customer).wrap());
         return new PageInfoBT<>(page);
     }
@@ -158,7 +164,6 @@ public class CustomerController extends BaseController {
     public String customerDetail(@PathVariable("customerId") Integer customerId, Model model) {
         Customer customer =  customerService.selectById(customerId);
         model.addAttribute("item",customer);
-        LogObjectHolder.me().set(customer);
         return PREFIX + "customer_detail.html";
     }
 
@@ -281,5 +286,40 @@ public class CustomerController extends BaseController {
             model.addAttribute("tips", "文件格式不正确");
         }
         return PREFIX + "customer_import.html";
+    }
+
+    /**
+     * 跳转到导入客户
+     */
+    @RequestMapping("/customer_follow")
+    public String customerFollow(Model model) {
+        model.addAttribute("tips", "init");
+        return PREFIX + "customer_follow.html";
+    }
+
+    /**
+     * 客户跟进
+     */
+    @RequestMapping(value = "/customer_follow/{customerId}")
+    public String customerFollow(@PathVariable("customerId") Integer customerId, Model model) {
+        model.addAttribute("customerId",customerId);
+        return PREFIX + "customer_follow.html";
+    }
+
+    /**
+     * 客户跟进保存
+     */
+    @RequestMapping(value = "/customer_follow_save")
+    @ResponseBody
+    @Transactional
+    public Object customerFollowSave(Integer customerId, String remark) {
+        ShiroUser shiroUser = ShiroKit.getUser();
+        CusFollow cusFollow = new CusFollow();
+        cusFollow.setUserid(shiroUser.getId());
+        cusFollow.setCustomerid(customerId);
+        cusFollow.setFollowdate(new Date());
+        cusFollow.setRemark(remark);
+        cusFollowService.insert(cusFollow);
+        return SUCCESS_TIP;
     }
 }

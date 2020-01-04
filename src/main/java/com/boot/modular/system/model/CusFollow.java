@@ -28,7 +28,7 @@ public class CusFollow extends Model<CusFollow> {
     /**
      * 客户id
      */
-    private Integer customernameid;
+    private Integer customerid;
     /**
      * 跟进时间
      */
@@ -51,12 +51,12 @@ public class CusFollow extends Model<CusFollow> {
         this.id = id;
     }
 
-    public Integer getCustomernameid() {
-        return customernameid;
+    public Integer getCustomerid() {
+        return customerid;
     }
 
-    public void setCustomernameid(Integer customernameid) {
-        this.customernameid = customernameid;
+    public void setCustomerid(Integer customerid) {
+        this.customerid = customerid;
     }
 
     public Date getFollowdate() {
@@ -92,7 +92,7 @@ public class CusFollow extends Model<CusFollow> {
     public String toString() {
         return "CusFollow{" +
         ", id=" + id +
-        ", customernameid=" + customernameid +
+        ", customerid=" + customerid +
         ", followdate=" + followdate +
         ", userid=" + userid +
         ", remark=" + remark +

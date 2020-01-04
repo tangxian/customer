@@ -37,20 +37,36 @@ Customer.initColumn = function () {
             {title: '客户状态', field: 'customerstatusName', visible: true, align: 'center', valign: 'middle'},
             {title: '创建时间', field: 'createdate', visible: true, align: 'center', valign: 'middle'},
             {title: '数据来源', field: 'datasourcesName', visible: true, align: 'center', valign: 'middle'},
+            {title: '跟进状态', field: 'flowcount', visible: true, align: 'center', valign: 'middle',
+                formatter: function(value, item, index) {
+                    if (value==0) {
+                        return '未跟进';
+                    }
+                    else if (value>0) {
+                        return '已跟进';
+                    }
+                }
+            },
             {
                 title: '操作', field: '', visible: true, align: 'center', valign: 'middle',
                 formatter: function (value, row, index, field) {
-                    return [
-                        '<button type="button" onclick="Customer.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>',
-                        '<button type="button" onclick="Customer.follow(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">跟进</button>'
-                    ].join('');
+                    if (row["flowcount"]==0) {
+                        return [
+                            '<button type="button" onclick="Customer.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
+                            ,'<button type="button" onclick="Customer.follow(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">跟进</button>'
+                        ].join('');
+                    }else if (row["flowcount"]>0) {
+                        return [
+                            '<button type="button" onclick="Customer.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
+                        ].join('');
+                    }
                 }
             }
     ];
 };
 
 /**
- * 编辑资源管理详情
+ * 客户详情
  */
 Customer.detail = function (id) {
     var index = layer.open({
@@ -63,6 +79,22 @@ Customer.detail = function (id) {
     });
     this.layerIndex = index;
 };
+
+/**
+ * 客户详情
+ */
+Customer.follow = function (id) {
+    var index = layer.open({
+        type: 2,
+        title: '客户跟进',
+        area: ['90%', '90%'], //宽高
+        fix: false, //不固定
+        maxmin: true,
+        content: Feng.ctxPath + '/customer/customer_follow/' + id
+    });
+    this.layerIndex = index;
+};
+
 
 /**
  * 检查是否选中

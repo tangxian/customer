@@ -30,37 +30,43 @@
 
     <select id="selectCustomer" resultType="map">
         select
-        <include refid="Base_Column_List"/>
-        from cus_customer
+        c.*
+        <if test="iscustomermanager != null and iscustomermanager == 1">
+            ,(select count(1) from cus_follow where userid=#{userid} and customerid=c.id) flowcount
+        </if>
+        <if test="iscustomermanager != null and iscustomermanager == 0">
+            ,(select count(1) from cus_follow where customerid=c.id) flowcount
+        </if>
+        from cus_customer c
         where 1=1
         <if test="customername != null and customername !=''">
-            and customername like CONCAT('%',#{customername},'%')
+            and c.customername like CONCAT('%',#{customername},'%')
         </if>
         <if test="mobile != null and mobile !=''">
-            and mobile like CONCAT('%',#{mobile},'%')
+            and c.mobile like CONCAT('%',#{mobile},'%')
         </if>
         <if test="idcard != null and idcard !=''">
-            and idcard like CONCAT('%',#{idcard},'%')
+            and c.idcard like CONCAT('%',#{idcard},'%')
         </if>
         <if test="customertype != null and customertype != 0">
-            and customertype = #{customertype}
+            and c.customertype = #{customertype}
         </if>
         <if test="iscustomermanager != null and iscustomermanager == 1">
-            and customerstatus in (1,2)
+            and c.customerstatus in (1,2)
         </if>
         <if test="customerstatus != null and customerstatus != 0">
-            and customerstatus = #{customerstatus}
+            and c.customerstatus = #{customerstatus}
         </if>
         <if test="datasources != null and datasources != 0">
-            and datasources = #{datasources}
+            and c.datasources = #{datasources}
         </if>
         <if test="beginTime != null and beginTime != ''">
-            and createdate &gt;=CONCAT(#{beginTime},' 00:00:00')
+            and c.createdate &gt;=CONCAT(#{beginTime},' 00:00:00')
         </if>
         <if test="endTime != null and endTime != ''">
-            and createdate &lt;=CONCAT(#{endTime},' 23:59:59')
+            and c.createdate &lt;=CONCAT(#{endTime},' 23:59:59')
         </if>
-        order by createdate desc
+        order by c.createdate desc
     </select>
 
 </mapper>

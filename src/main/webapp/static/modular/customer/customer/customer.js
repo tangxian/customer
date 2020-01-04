@@ -36,7 +36,17 @@ Customer.initColumn = function () {
             {title: '客户类型', field: 'customertypeName', visible: true, align: 'center', valign: 'middle'},
             {title: '客户状态', field: 'customerstatusName', visible: true, align: 'center', valign: 'middle'},
             {title: '创建时间', field: 'createdate', visible: true, align: 'center', valign: 'middle'},
-            {title: '数据来源', field: 'datasourcesName', visible: true, align: 'center', valign: 'middle'}
+            {title: '数据来源', field: 'datasourcesName', visible: true, align: 'center', valign: 'middle'},
+            {title: '跟进状态', field: 'flowcount', visible: true, align: 'center', valign: 'middle',
+                formatter: function(value, item, index) {
+                    if (value==0) {
+                        return '未跟进';
+                    }
+                    else if (value>0) {
+                        return '已跟进';
+                    }
+                }
+            }
     ];
 };
 

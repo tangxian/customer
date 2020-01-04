@@ -137,6 +137,28 @@ customerInfoDlg.editSubmit = function() {
     ajax.start();
 }
 
+/**
+ * 客户跟进保存
+ */
+customerInfoDlg.saveFollow = function () {
+    var customerId = $("#customerId").val();
+    var remark = $("#remark").val();
+    if (remark.length == 0) {
+        Feng.error("请填写跟进内容");
+        return;
+    }
+    var ajax = new $ax(Feng.ctxPath + "/customer/customer_follow_save", function (data) {
+        Feng.success("跟进成功!");
+        window.parent.Customer.table.refresh();
+        customerInfoDlg.close();
+    }, function (data) {
+        Feng.error("操作失败!" + data.responseJSON.errorMsg + "!");
+    });
+    ajax.set("customerId", customerId);
+    ajax.set("remark", remark);
+    ajax.start();
+}
+
 $(function() {
     Feng.initValidator("customerInfoForm", customerInfoDlg.validateFields);
     //初始化客户类型

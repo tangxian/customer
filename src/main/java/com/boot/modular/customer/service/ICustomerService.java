@@ -19,5 +19,5 @@ public interface ICustomerService extends IService<Customer> {
     /**
      *根据条件查询客户
      */
-    List<Map<String, Object>> selectCustomer(Page<Customer> page, String customername ,String mobile, String idcard, Integer customertype, Integer customerstatus, String beginTime, String endTime, Integer datasources, Integer iscustomermanager);
+    List<Map<String, Object>> selectCustomer(Page<Customer> page, String customername ,String mobile, String idcard, Integer customertype, Integer customerstatus, String beginTime, String endTime, Integer datasources, Integer iscustomermanager, Integer userid);
 }
