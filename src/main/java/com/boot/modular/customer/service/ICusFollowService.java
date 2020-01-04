@@ -1,7 +1,12 @@
 package com.boot.modular.customer.service;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.boot.modular.system.model.CusFollow;
 import com.baomidou.mybatisplus.service.IService;
+import com.boot.modular.system.model.Customer;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -12,5 +17,13 @@ import com.baomidou.mybatisplus.service.IService;
  * @since 2020-01-03
  */
 public interface ICusFollowService extends IService<CusFollow> {
+    /**
+     *根据条件查询客户跟进
+     */
+    List<Map<String, Object>> selectCusFollow(Page<Customer> page, String customername , String mobile, String idcard, Integer customertype, Integer customerstatus, String beginTime, String endTime, Integer datasources,Integer userid);
 
+    /**
+     * 根据客户id查询跟进记录
+     */
+    List<CusFollow> selectListByCustomerId(Integer customerid);
 }

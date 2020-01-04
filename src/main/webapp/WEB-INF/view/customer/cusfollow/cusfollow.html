@@ -1,0 +1,86 @@
+@layout("/common/_container.html"){
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>客户跟进</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <#NameCon id="customername" name="客户姓名" />
+                            </div>
+                            <div class="col-sm-2">
+                                <#NameCon id="mobile" name="电话" />
+                            </div>
+                            <div class="col-sm-2">
+                                <#NameCon id="idcard" name="身份证" />
+                            </div>
+                            <div class="col-sm-2">
+                                <#SelectCon id="customertype" name="客户类型">
+                                    <option value="0">全部</option>
+                                    <option value="1">车辆抵押客户</option>
+                                    <option value="2">房产抵押客户</option>
+                                </#SelectCon>
+                            </div>
+                            <div class="col-sm-2">
+                                <#SelectCon id="customerstatus" name="客户状态">
+                                    <option value="0">全部</option>
+                                    <option value="1">非意向</option>
+                                    <option value="2">意向</option>
+                                    <option value="3">成交</option>
+                                    <option value="4">已删除</option>
+                                </#SelectCon>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <#TimeCon id="beginTime" name="开始时间" isTime="false" pattern="YYYY-MM-DD" />
+                            </div>
+                            <div class="col-sm-2">
+                                <#TimeCon id="endTime" name="结束时间" isTime="false" pattern="YYYY-MM-DD" />
+                            </div>
+                            <div class="col-sm-2">
+                                <#SelectCon id="datasources" name="数据来源">
+                                <option value="0">全部</option>
+                                <option value="1">系统录入</option>
+                                <option value="2">Excel导入</option>
+                            </#SelectCon>
+                        </div>
+                        <div class="col-sm-3">
+                            <#button name="搜索" icon="fa-search" clickFun="Cusfollow.search()"/>
+                        </div>
+                    </div>
+                        <#table id="cusfollowTable"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/customer/cusfollow/cusfollow.js"></script>
+<script>
+    var beginTime = laydate.render({
+        elem: '#beginTime'
+        ,done: function(value, date, endDate) { //给结束时间设置最小值
+            endTime.config.min = {
+                year: date.year,
+                month: date.month - 1,//重点！！！
+                date: date.date
+            }
+            var stime = new Date(Date.parse(value));
+            var etime = new Date(Date.parse($("#endTime").val()));
+            if (etime !=null && stime > etime) { //开始时间若大于结束时间，则把结束时间数据清空
+                $("#endTime").val("");
+            }
+        }
+    });
+    var endTime = laydate.render({
+        elem: '#endTime'
+        ,done: function(value, date, endDate) { //给结束时间设置最小值
+        }
+    });
+</script>
+@}

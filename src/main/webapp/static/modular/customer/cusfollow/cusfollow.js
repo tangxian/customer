@@ -1,8 +1,8 @@
 /**
  * 客户管理管理初始化
  */
-var Customer = {
-    id: "customerTable",	//表格id
+var Cusfollow = {
+    id: "cusfollowTable",	//表格id
     seItem: null,		//选中的条目
     table: null,
     layerIndex: -1
@@ -11,7 +11,7 @@ var Customer = {
 /**
  * 初始化表格的列
  */
-Customer.initColumn = function () {
+Cusfollow.initColumn = function () {
     return [
         {field: 'selectItem', radio: true, visible: false},
             {
@@ -22,22 +22,22 @@ Customer.initColumn = function () {
                 width: 45,
                 formatter: function (value, row, index) {
                     //获取每页显示的数量
-                    var pageSize = $('#customerTable').bootstrapTable('getOptions').pageSize;
+                    var pageSize = $('#cusfollowTable').bootstrapTable('getOptions').pageSize;
                     //获取当前是第几页
-                    var pageNumber = $('#customerTable').bootstrapTable('getOptions').pageNumber;
+                    var pageNumber = $('#cusfollowTable').bootstrapTable('getOptions').pageNumber;
                     //返回序号，注意index是从0开始的，所以要加上1
                     return pageSize * (pageNumber - 1) + index + 1;
                 }
             },
             {title: 'id', field: 'id', visible: false, align: 'center', valign: 'middle'},
-            {title: '客户姓名', field: 'customername', visible: true, align: 'center', valign: 'middle'},
+            {title: '客户姓名', width:100, field: 'customername', visible: true, align: 'center', valign: 'middle'},
             {title: '电话', field: 'mobile', visible: true, align: 'center', valign: 'middle'},
             {title: '身份证号码', field: 'idcard', visible: true, align: 'center', valign: 'middle'},
             {title: '客户类型', field: 'customertypeName', visible: true, align: 'center', valign: 'middle'},
-            {title: '客户状态', field: 'customerstatusName', visible: true, align: 'center', valign: 'middle'},
+            {title: '客户状态', width:100, field: 'customerstatusName', visible: true, align: 'center', valign: 'middle'},
             {title: '创建时间', field: 'createdate', visible: true, align: 'center', valign: 'middle'},
-            {title: '数据来源', field: 'datasourcesName', visible: true, align: 'center', valign: 'middle'},
-            {title: '跟进状态', field: 'flowcount', visible: true, align: 'center', valign: 'middle',
+            {title: '数据来源', width:100, field: 'datasourcesName', visible: true, align: 'center', valign: 'middle'},
+            {title: '跟进状态', width:100, field: 'flowcount', visible: true, align: 'center', valign: 'middle',
                 formatter: function(value, item, index) {
                     if (value==0) {
                         return '未跟进';
@@ -50,25 +50,25 @@ Customer.initColumn = function () {
             {
                 title: '操作', field: '', visible: true, align: 'center', valign: 'middle',
                 formatter: function (value, row, index, field) {
-                    if (row["flowcount"]==0) {
+                    if (row["flowcount"]>0) {
                         return [
-                            '<button type="button" onclick="Customer.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
-                            ,'<button type="button" onclick="Customer.follow(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">跟进</button>'
+                            '<button type="button" onclick="Cusfollow.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
+                            ,'<button type="button" onclick="Cusfollow.follow(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">跟进记录</button>'
                         ].join('');
-                    }else if (row["flowcount"]>0) {
+                    }else if (row["flowcount"]==0) {
                         return [
-                            '<button type="button" onclick="Customer.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
+                            '<button type="button" onclick="Cusfollow.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
                         ].join('');
                     }
                 }
             }
-    ];
+        ];
 };
 
 /**
  * 客户详情
  */
-Customer.detail = function (id) {
+Cusfollow.detail = function (id) {
     var index = layer.open({
         type: 2,
         title: '客户详情',
@@ -83,57 +83,22 @@ Customer.detail = function (id) {
 /**
  * 客户跟进
  */
-Customer.follow = function (id) {
+Cusfollow.follow = function (id) {
     var index = layer.open({
         type: 2,
-        title: '客户跟进',
+        title: '跟进记录',
         area: ['90%', '90%'], //宽高
         fix: false, //不固定
         maxmin: true,
-        content: Feng.ctxPath + '/customer/customer_follow/' + id
+        content: Feng.ctxPath + '/cusFollow/cusfollow_record/' + id
     });
     this.layerIndex = index;
 };
 
-
 /**
- * 检查是否选中
+ * 查询客户跟进列表
  */
-Customer.check = function () {
-    var selected = $('#' + this.id).bootstrapTable('getSelections');
-    if(selected.length == 0){
-        Feng.info("请先选中表格中的某一记录！");
-        return false;
-    }else{
-        Customer.seItem = selected[0];
-        return true;
-    }
-};
-
-
-/**
- * 打开查看客户管理详情
- */
-Customer.opencustomerDetail = function () {
-    if (this.check()) {
-        var index = layer.open({
-            type: 2,
-            title: '客户管理详情',
-            area: ['90%', '90%'], //宽高
-            fix: false, //不固定
-            maxmin: true,
-            content: Feng.ctxPath + '/customer/customer_update/' + Customer.seItem.id
-        });
-        this.layerIndex = index;
-    }
-};
-
-
-
-/**
- * 查询客户管理列表
- */
-Customer.search = function () {
+Cusfollow.search = function () {
     var queryData = {};
     queryData['customername'] = $("#customername").val();
     queryData['mobile'] = $("#mobile").val();
@@ -143,17 +108,17 @@ Customer.search = function () {
     queryData['customertype'] = $("#customertype").val();
     queryData['customerstatus'] = $("#customerstatus").val();
     queryData['datasources'] = $("#datasources").val();
-    queryData['iscustomermanager'] = 1;
-    Customer.table.refresh({query: queryData});
+    queryData['iscustomermanager'] = 0;
+    Cusfollow.table.refresh({query: queryData});
 };
 
 $(function () {
-    var defaultColunms = Customer.initColumn();
-    var table = new BSTable(Customer.id, "/customer/list", defaultColunms);
+    var defaultColunms = Cusfollow.initColumn();
+    var table = new BSTable(Cusfollow.id, "/customer/list", defaultColunms);
     var queryData = {};
-    queryData['iscustomermanager'] = 1;
+    queryData['iscustomermanager'] = 0;
     table.setQueryParams(queryData);
     table.setPaginationType("server");
     table.setHeight(624);
-    Customer.table = table.init();
+    Cusfollow.table = table.init();
 });

@@ -42,6 +42,10 @@ public class CusFollow extends Model<CusFollow> {
      */
     private String remark;
 
+    /**
+     * 跟进人姓名
+     */
+    private String username;
 
     public Integer getId() {
         return id;
@@ -83,6 +87,14 @@ public class CusFollow extends Model<CusFollow> {
         this.remark = remark;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     @Override
     protected Serializable pkVal() {
         return this.id;
@@ -96,6 +108,7 @@ public class CusFollow extends Model<CusFollow> {
         ", followdate=" + followdate +
         ", userid=" + userid +
         ", remark=" + remark +
+        ", username=" + username +
         "}";
     }
 }

@@ -16,4 +16,47 @@
         id, customerid, followdate, userid, remark
     </sql>
 
+    <select id="selectCusFollow" resultType="map">
+        select
+        c.*,f.followdate,f.remark
+        from cus_customer c, cus_follow f
+        where c.id=f.customerid
+        and c.customerstatus in (1,2)
+        <if test="customername != null and customername !=''">
+            and c.customername like CONCAT('%',#{customername},'%')
+        </if>
+        <if test="mobile != null and mobile !=''">
+            and c.mobile like CONCAT('%',#{mobile},'%')
+        </if>
+        <if test="idcard != null and idcard !=''">
+            and c.idcard like CONCAT('%',#{idcard},'%')
+        </if>
+        <if test="customertype != null and customertype != 0">
+            and c.customertype = #{customertype}
+        </if>
+        <if test="customerstatus != null and customerstatus != 0">
+            and c.customerstatus = #{customerstatus}
+        </if>
+        <if test="datasources != null and datasources != 0">
+            and c.datasources = #{datasources}
+        </if>
+        <if test="beginTime != null and beginTime != ''">
+            and f.followdate &gt;=CONCAT(#{beginTime},' 00:00:00')
+        </if>
+        <if test="endTime != null and endTime != ''">
+            and f.followdate &lt;=CONCAT(#{endTime},' 23:59:59')
+        </if>
+        <if test="userid != null and userid != ''">
+            and f.userid = #{userid}
+        </if>
+        order by f.followdate desc
+    </select>
+
+    <select id="selectListByCustomerId" resultType="com.boot.modular.system.model.CusFollow">
+        select f.*,u.true_name username
+        from cus_follow f, sys_user u
+        where u.id=f.userid
+        and f.customerid = #{customerid}
+    </select>
+
 </mapper>

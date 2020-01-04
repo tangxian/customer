@@ -1,0 +1,27 @@
+@layout("/common/_container.html"){
+<link href="${ctxPath}/static/css/animate.css" rel="stylesheet">
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal" id="customerInfoForm">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="wrapper wrapper-content animated fadeInUp">
+                        <ul class="notes">
+                            @for(follow in followsList){
+                                <li>
+                                    <div>
+                                        <small>${follow.followdate,dateFormat="yyyy-MM-dd HH:mm:ss"}</small>
+                                        <h4>跟进内容</h4>
+                                        <p>${follow.remark!}</p>
+                                        <a href="">跟进人：${follow.username!}</i></a>
+                                    </div>
+                                </li>
+                            @}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@}

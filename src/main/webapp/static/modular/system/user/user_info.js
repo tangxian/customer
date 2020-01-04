@@ -53,6 +53,20 @@ var UserInfoDlg = {
                         message: '联系人不能为空'
                     }
                 }
+            },
+            email: {
+                validators: {
+                    notEmpty: {
+                        message: '邮箱不能为空'
+                    }
+                }
+            },
+            mobile: {
+                validators: {
+                    notEmpty: {
+                        message: '手机号不能为空'
+                    }
+                }
             }
         }
     }
