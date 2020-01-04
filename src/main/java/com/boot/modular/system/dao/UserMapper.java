@@ -69,8 +69,8 @@ public interface UserMapper extends BaseMapper<User> {
     User getByMobile(@Param("mobile") String mobile);
 
     /**
-     * 查询所有的出版社账号
+     * 查询所有的销售经理
      */
-    List<Map<String, Object>> selectPublish(@Param("dataScope") DataScope dataScope, @Param("name") String name, @Param("beginTime") String beginTime, @Param("endTime") String endTime, @Param("deptid") Integer deptid);
+    List<Map<String, Object>> selectCustomerManager();
 
 }

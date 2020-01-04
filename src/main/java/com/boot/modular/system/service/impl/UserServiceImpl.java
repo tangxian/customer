@@ -72,8 +72,8 @@ public  class UserServiceImpl extends ServiceImpl<UserMapper, User> implements I
     }
 
     @Override
-    public List<Map<String, Object>> selectPublish(DataScope dataScope, String name, String beginTime, String endTime, Integer deptid) {
-        return this.baseMapper.selectPublish(dataScope, name, beginTime, endTime, deptid);
+    public List<Map<String, Object>> selectCustomerManager() {
+        return this.baseMapper.selectCustomerManager();
     }
 
 

@@ -31,14 +31,28 @@
     <select id="selectCustomer" resultType="map">
         select
         c.*
+        <!-- 销售经理客户资源库 -->
         <if test="iscustomermanager != null and iscustomermanager == 1">
             ,(select count(1) from cus_follow where userid=#{userid} and customerid=c.id) flowcount
         </if>
-        <if test="iscustomermanager != null and iscustomermanager == 0">
+        <!-- 管理层客户资源库 -->
+        <if test="iscustomermanager != null and iscustomermanager != 1">
             ,(select count(1) from cus_follow where customerid=c.id) flowcount
         </if>
         from cus_customer c
+        <!-- 查询跟进人 -->
+        <if test="iscustomermanager != null and iscustomermanager == 3">
+            <if test="userid != null and userid != 0">
+                , cus_follow f
+            </if>
+        </if>
         where 1=1
+        <!-- 查询跟进人 -->
+        <if test="iscustomermanager != null and iscustomermanager == 3">
+            <if test="userid != null and userid != 0">
+                and c.id=f.customerid and f.userid =#{userid}
+            </if>
+        </if>
         <if test="customername != null and customername !=''">
             and c.customername like CONCAT('%',#{customername},'%')
         </if>
@@ -51,6 +65,7 @@
         <if test="customertype != null and customertype != 0">
             and c.customertype = #{customertype}
         </if>
+        <!-- 销售经理客户资源库 -->
         <if test="iscustomermanager != null and iscustomermanager == 1">
             and c.customerstatus in (1,2)
         </if>
@@ -65,6 +80,12 @@
         </if>
         <if test="endTime != null and endTime != ''">
             and c.createdate &lt;=CONCAT(#{endTime},' 23:59:59')
+        </if>
+        <!-- 查询跟进人 -->
+        <if test="iscustomermanager != null and iscustomermanager == 0">
+            <if test="userid != null and userid != 0">
+
+            </if>
         </if>
         order by c.createdate desc
     </select>

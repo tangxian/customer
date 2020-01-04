@@ -108,17 +108,31 @@ Cusfollow.search = function () {
     queryData['customertype'] = $("#customertype").val();
     queryData['customerstatus'] = $("#customerstatus").val();
     queryData['datasources'] = $("#datasources").val();
-    queryData['iscustomermanager'] = 0;
+    queryData['iscustomermanager'] = 3;
+    queryData['followuserid'] = $("#followuserid").val();
     Cusfollow.table.refresh({query: queryData});
 };
 
 $(function () {
     var defaultColunms = Cusfollow.initColumn();
-    var table = new BSTable(Cusfollow.id, "/customer/list", defaultColunms);
+    var table = new BSTable(Cusfollow.id, "/cusFollow/followlist", defaultColunms);
     var queryData = {};
-    queryData['iscustomermanager'] = 0;
+    queryData['iscustomermanager'] = 3;
+    queryData['followuserid'] = 0;
     table.setQueryParams(queryData);
     table.setPaginationType("server");
     table.setHeight(624);
     Cusfollow.table = table.init();
+
+    //查询客户经理下拉框
+    var ajax = new $ax(Feng.ctxPath + "/cusFollow/selectCustomerManagerList", function (data) {
+        var strHtml = '<option value="0">' + '请选择跟进人' + '</option>';
+        $.each(data, function (key, val) {
+            strHtml += '<option value="' + val.id + '">' + val.name + '</option>';
+        });
+        $("#followuserid").html(strHtml);
+    }, function (data) {
+        Feng.error("页面初始化失败!");
+    });
+    ajax.start();
 });

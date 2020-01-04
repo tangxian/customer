@@ -67,7 +67,7 @@ public interface IUserService extends IService<User> {
     User getByMobile(String  mobile);
 
     /**
-     *查询所有出版社账号
+     *查询所有销售经理
      */
-    List<Map<String, Object>> selectPublish(DataScope dataScope, String name, String beginTime, String endTime, Integer deptid);
+    List<Map<String, Object>> selectCustomerManager();
 }

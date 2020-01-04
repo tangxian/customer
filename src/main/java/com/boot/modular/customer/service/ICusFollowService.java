@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public interface ICusFollowService extends IService<CusFollow> {
     /**
-     *根据条件查询客户跟进
+     *根据条件查询我的客户跟进
      */
     List<Map<String, Object>> selectCusFollow(Page<Customer> page, String customername , String mobile, String idcard, Integer customertype, Integer customerstatus, String beginTime, String endTime, Integer datasources,Integer userid);
 

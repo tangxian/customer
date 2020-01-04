@@ -8,16 +8,16 @@ import com.boot.core.common.page.PageInfoBT;
 import com.boot.core.kernel_core.base.controller.BaseController;
 import com.boot.core.shiro.ShiroKit;
 import com.boot.core.shiro.ShiroUser;
+import com.boot.modular.customer.service.ICustomerService;
 import com.boot.modular.customer.warpper.CustomerWarpper;
 import com.boot.modular.system.model.Customer;
-import com.boot.modular.system.model.Dict;
+import com.boot.modular.system.service.IUserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.boot.core.log.LogObjectHolder;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.boot.modular.system.model.CusFollow;
 import com.boot.modular.customer.service.ICusFollowService;
@@ -39,6 +39,10 @@ public class CusFollowController extends BaseController {
 
     @Autowired
     private ICusFollowService cusFollowService;
+    @Autowired
+    private ICustomerService customerService;
+    @Autowired
+    private IUserService userService;
 
     /**
      * 跳转到客户跟进
@@ -56,8 +60,27 @@ public class CusFollowController extends BaseController {
         return PREFIX + "myfollow.html";
     }
 
+    //查询客户经理下拉框
+    @RequestMapping("/selectCustomerManagerList")
+    @ResponseBody
+    public Object selectPublishList() {
+        return userService.selectCustomerManager();
+    }
+
     /**
      * 获取客户管理列表
+     */
+    @RequestMapping(value = "/followlist")
+    @ResponseBody
+    public Object followlist( @RequestParam(required = false) String customername, @RequestParam(required = false) String mobile, @RequestParam(required = false) String idcard, @RequestParam(required = false) String beginTime, @RequestParam(required = false) String endTime, @RequestParam(required = false) Integer customertype, @RequestParam(required = false) Integer customerstatus, @RequestParam(required = false) Integer datasources, @RequestParam(required = false) Integer iscustomermanager, @RequestParam(required = false) Integer followuserid) {
+        Page<Customer> page = new PageFactory<Customer>().defaultPage();
+        List<Map<String, Object>> customer = customerService.selectCustomer(page, customername, mobile, idcard, customertype, customerstatus, beginTime, endTime, datasources, iscustomermanager, followuserid);
+        page.setRecords(new CustomerWarpper(customer).wrap());
+        return new PageInfoBT<>(page);
+    }
+
+    /**
+     * 获取我的跟进列表
      */
     @RequestMapping(value = "/myfollowlist")
     @ResponseBody

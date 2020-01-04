@@ -94,26 +94,8 @@
         from sys_user where mobile = #{mobile} and status != 3 limit 1
     </select>
 
-    <select id="selectPublish" resultType="map">
-        select
-        <include refid="Base_Column_List"/>
-        from sys_user
-        where status != 3 and roleid = 3
-        <if test="name != null and name != ''">
-            and (mobile like CONCAT('%',#{name},'%')
-            or login_id like CONCAT('%',#{name},'%')
-            or true_name like CONCAT('%',#{name},'%'))
-        </if>
-        <if test="deptid != null and deptid != 0">
-            and (deptid = #{deptid} or deptid in ( select id from sys_dept where pids like CONCAT('%[', #{deptid}, ']%')
-            ))
-        </if>
-        <if test="beginTime != null and beginTime != ''">
-            and createdate &gt;=CONCAT(#{beginTime},' 00:00:00')
-        </if>
-        <if test="endTime != null and endTime != ''">
-            and createdate &lt;=CONCAT(#{endTime},' 23:59:59')
-        </if>
+    <select id="selectCustomerManager" resultType="map">
+        select id , true_name as name  from sys_user where roleid =4
     </select>
 
 </mapper>
