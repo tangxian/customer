@@ -48,7 +48,7 @@ MgrUser.check = function () {
 MgrUser.openAddMgr = function () {
     var index = layer.open({
         type: 2,
-        title: '添加管理员',
+        title: '添加用户',
         area: ['800px', '560px'], //宽高
         fix: false, //不固定
         maxmin: true,

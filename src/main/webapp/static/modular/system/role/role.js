@@ -57,6 +57,11 @@ Role.openAddRole = function () {
  */
 Role.openChangeRole = function () {
     if (this.check()) {
+        var arr = [1,2,3,4];
+        if(arr.includes(this.seItem.id)){
+            Feng.error("该数据不允许修改");
+            return;
+        }
         var index = layer.open({
             type: 2,
             title: '修改角色',

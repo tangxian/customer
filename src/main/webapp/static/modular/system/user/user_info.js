@@ -332,8 +332,9 @@ $(function () {
     Feng.initValidator("userInfoForm", UserInfoDlg.validateFields);
 
     //初始化性别选项
-    $("#sex").val($("#sexValue").val());
-
+    if ($("#sexValue").val() != "" && typeof($("#sexValue").val()) != "undefined") {
+        $("#sex").val($("#sexValue").val());
+    }
     var ztree = new $ZTree("treeDemo", "/dept/tree");
     ztree.bindOnClick(UserInfoDlg.onClickDept);
     ztree.init();
@@ -357,5 +358,8 @@ $(function () {
     });
     ajax.set("code", "apptype");
     ajax.start();
-    $("#roleid").val($("#defaultId").val());
+    //初始化角色
+    if ($("#defaultId").val() != "" && typeof($("#defaultId").val()) != "undefined"&&$("#defaultId").val() != "0") {
+        $("#roleid").val($("#defaultId").val());
+    }
 });
