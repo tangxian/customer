@@ -288,14 +288,6 @@ public class CustomerController extends BaseController {
         return PREFIX + "customer_import.html";
     }
 
-    /**
-     * 跳转到导入客户
-     */
-    @RequestMapping("/customer_follow")
-    public String customerFollow(Model model) {
-        model.addAttribute("tips", "init");
-        return PREFIX + "cusfollow_record.html";
-    }
 
     /**
      * 客户跟进
@@ -303,7 +295,7 @@ public class CustomerController extends BaseController {
     @RequestMapping(value = "/customer_follow/{customerId}")
     public String customerFollow(@PathVariable("customerId") Integer customerId, Model model) {
         model.addAttribute("customerId",customerId);
-        return PREFIX + "cusfollow_record.html";
+        return PREFIX + "customer_follow.html";
     }
 
     /**

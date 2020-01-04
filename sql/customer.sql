@@ -11,7 +11,7 @@
  Target Server Version : 80011
  File Encoding         : 65001
 
- Date: 04/01/2020 18:16:22
+ Date: 04/01/2020 22:32:23
 */
 
 SET NAMES utf8mb4;
@@ -77,7 +77,7 @@ INSERT INTO `cus_customer` VALUES (19, '王五', '13556466566', '420100000000000
 INSERT INTO `cus_customer` VALUES (20, '等等...', '13556466565', '420100000000000000000', NULL, NULL, NULL, NULL, NULL, '鄂AA00003', '大众', NULL, 1, 2, '2020-01-03 16:53:28', 1, 2);
 INSERT INTO `cus_customer` VALUES (21, '张三', '13556466565', '420100000000000000000', NULL, NULL, NULL, NULL, NULL, '鄂AA00000', '奔驰', NULL, 1, 2, '2020-01-03 16:56:26', 1, 2);
 INSERT INTO `cus_customer` VALUES (22, '李四', '13556466565', '420100000000000000000', NULL, NULL, NULL, NULL, NULL, '鄂AA00001', '宝马', NULL, 1, 2, '2020-01-03 16:56:26', 1, 2);
-INSERT INTO `cus_customer` VALUES (23, '王五', '13556466566', '420100000000000000000', NULL, NULL, NULL, NULL, NULL, NULL, '奥迪', NULL, 1, 1, '2020-01-03 16:56:26', 1, 2);
+INSERT INTO `cus_customer` VALUES (23, '王五', '13556466566', '420100000000000000000', '', '', '', '', '', '', '奥迪', '', 1, 2, '2020-01-03 16:56:26', 1, 2);
 INSERT INTO `cus_customer` VALUES (24, '等等...', '13556466565', '420100000000000000000', NULL, NULL, NULL, NULL, NULL, '鄂AA00003', '大众', NULL, 1, 2, '2020-01-03 16:56:26', 1, 2);
 INSERT INTO `cus_customer` VALUES (25, '张三', '13556466565', '420100000000000000000', NULL, NULL, NULL, NULL, NULL, '鄂AA00000', '奔驰', NULL, 1, 2, '2020-01-03 17:07:01', 1, 2);
 INSERT INTO `cus_customer` VALUES (26, '李四2', '13556466565', '420100000000000000000', '', '', '', '', '', '鄂AA00001', '宝马', '', 1, 2, '2020-01-03 17:07:01', 1, 2);
@@ -91,6 +91,10 @@ INSERT INTO `cus_customer` VALUES (33, '李四', '13556466565', '420100000000000
 INSERT INTO `cus_customer` VALUES (34, '王五', '13556466566', '420100000000000000000', NULL, NULL, NULL, NULL, NULL, '鄂AA00002', '奥迪', NULL, 1, 1, '2020-01-04 10:10:16', 2, 2);
 INSERT INTO `cus_customer` VALUES (35, '等等...3', '13556466565', '420100000000000000000', '', '', '', '', '', '鄂AA00003', '大众', '', 1, 2, '2020-01-04 10:10:16', 2, 2);
 INSERT INTO `cus_customer` VALUES (36, '张三(成交)', '13556466565', '12121212121212', '江岸区武汉天地', '', '', '', '', '', '', '', 2, 3, '2020-01-04 10:11:07', 2, 2);
+INSERT INTO `cus_customer` VALUES (37, '赵晓峰', '13556466565', '12121212121212', '江岸区武汉天地', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 2, '2020-01-04 22:29:13', 2, 2);
+INSERT INTO `cus_customer` VALUES (38, '李二哥', '13556466565', '343434343', '江夏区藏龙岛', '鄂A22222', NULL, '无', NULL, NULL, NULL, NULL, 2, 2, '2020-01-04 22:29:13', 2, 2);
+INSERT INTO `cus_customer` VALUES (39, '王潇', '13556466566', '65656565', '青山化工', NULL, '有', NULL, NULL, NULL, NULL, NULL, 2, 1, '2020-01-04 22:29:13', 2, 2);
+INSERT INTO `cus_customer` VALUES (40, '石峰', '13556466565', '4545454545', '江夏区纸坊xxxx', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 2, '2020-01-04 22:29:13', 2, 2);
 
 -- ----------------------------
 -- Table structure for cus_follow
@@ -103,28 +107,17 @@ CREATE TABLE `cus_follow`  (
   `userid` int(40) NULL DEFAULT NULL COMMENT '用户id(跟进客户的销售经理)',
   `remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '客户跟进表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '客户跟进表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cus_follow
 -- ----------------------------
-INSERT INTO `cus_follow` VALUES (1, 36, '2020-01-04 18:00:09', 3, '初次跟进');
-INSERT INTO `cus_follow` VALUES (2, 32, '2020-01-04 12:01:36', 3, '初次跟进');
+INSERT INTO `cus_follow` VALUES (1, 32, '2020-01-04 18:00:09', 3, '初次跟进');
+INSERT INTO `cus_follow` VALUES (2, 36, '2020-01-04 12:01:36', 3, '初次跟进');
 INSERT INTO `cus_follow` VALUES (3, 33, '2020-01-04 12:04:01', 3, '初次跟进');
-INSERT INTO `cus_follow` VALUES (5, 36, '2020-01-04 18:34:09', 5, '跟进');
-
--- ----------------------------
--- Table structure for follow
--- ----------------------------
-DROP TABLE IF EXISTS `follow`;
-CREATE TABLE `follow`  (
-  `id` int(40) NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `customernameid` int(40) NULL DEFAULT NULL COMMENT '客户id',
-  `followdate` datetime(0) NULL DEFAULT NULL COMMENT '跟进时间',
-  `userid` int(40) NULL DEFAULT NULL COMMENT '用户id(跟进客户的销售经理)',
-  `remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+INSERT INTO `cus_follow` VALUES (5, 32, '2020-01-04 18:34:09', 5, '跟进');
+INSERT INTO `cus_follow` VALUES (6, 34, '2020-01-04 22:24:59', 3, '跟进客户');
+INSERT INTO `cus_follow` VALUES (7, 35, '2020-01-04 22:26:21', 3, '再次跟进');
 
 -- ----------------------------
 -- Table structure for sys_dept
@@ -378,6 +371,55 @@ INSERT INTO `sys_login_log` VALUES (166, '退出日志', 2, '2020-01-04 18:13:22
 INSERT INTO `sys_login_log` VALUES (167, '登录日志', 3, '2020-01-04 18:13:27', '成功', NULL, '0:0:0:0:0:0:0:1');
 INSERT INTO `sys_login_log` VALUES (168, '退出日志', 3, '2020-01-04 18:15:19', '成功', NULL, '0:0:0:0:0:0:0:1');
 INSERT INTO `sys_login_log` VALUES (169, '登录日志', 2, '2020-01-04 18:15:24', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (170, '登录日志', 2, '2020-01-04 20:39:05', '成功', NULL, '127.0.0.1');
+INSERT INTO `sys_login_log` VALUES (171, '退出日志', 2, '2020-01-04 20:43:07', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (172, '登录日志', 3, '2020-01-04 20:43:16', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (173, '退出日志', 3, '2020-01-04 20:44:59', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (174, '登录日志', 5, '2020-01-04 20:45:05', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (175, '退出日志', 5, '2020-01-04 20:46:20', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (176, '登录日志', 2, '2020-01-04 20:46:26', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (177, '登录日志', 2, '2020-01-04 21:05:18', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (178, '登录日志', 2, '2020-01-04 21:19:24', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (179, '退出日志', 2, '2020-01-04 21:19:45', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (180, '登录日志', 3, '2020-01-04 21:19:52', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (181, '退出日志', 3, '2020-01-04 21:19:59', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (182, '登录日志', 2, '2020-01-04 21:20:03', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (183, '登录日志', 2, '2020-01-04 21:24:12', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (184, '登录日志', 2, '2020-01-04 21:28:56', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (185, '退出日志', 2, '2020-01-04 21:31:04', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (186, '登录日志', 3, '2020-01-04 21:31:12', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (187, '退出日志', 3, '2020-01-04 21:31:31', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (188, '登录日志', 2, '2020-01-04 21:31:37', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (189, '退出日志', 2, '2020-01-04 21:38:04', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (190, '登录日志', 4, '2020-01-04 21:38:09', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (191, '退出日志', 4, '2020-01-04 21:38:50', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (192, '登录日志', 4, '2020-01-04 21:38:55', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (193, '退出日志', 4, '2020-01-04 21:40:40', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (194, '登录日志', 2, '2020-01-04 21:40:45', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (195, '退出日志', 2, '2020-01-04 21:49:49', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (196, '登录日志', 2, '2020-01-04 21:55:03', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (197, '退出日志', 2, '2020-01-04 21:55:05', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (198, '登录日志', 2, '2020-01-04 21:59:23', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (199, '退出日志', 2, '2020-01-04 21:59:31', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (200, '登录日志', 2, '2020-01-04 22:00:04', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (201, '退出日志', 2, '2020-01-04 22:01:46', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (202, '登录日志', 2, '2020-01-04 22:03:59', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (203, '退出日志', 2, '2020-01-04 22:05:45', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (204, '登录日志', 2, '2020-01-04 22:05:54', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (205, '退出日志', 2, '2020-01-04 22:07:14', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (206, '登录日志', 2, '2020-01-04 22:07:36', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (207, '退出日志', 2, '2020-01-04 22:08:12', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (208, '登录日志', 2, '2020-01-04 22:08:47', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (209, '登录日志', 3, '2020-01-04 22:15:46', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (210, '退出日志', 3, '2020-01-04 22:17:56', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (211, '登录日志', 2, '2020-01-04 22:18:00', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (212, '退出日志', 2, '2020-01-04 22:18:53', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (213, '登录日志', 3, '2020-01-04 22:18:59', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (214, '登录日志', 3, '2020-01-04 22:22:56', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (215, '退出日志', 3, '2020-01-04 22:26:32', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (216, '登录日志', 2, '2020-01-04 22:26:35', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (217, '退出日志', 2, '2020-01-04 22:30:24', '成功', NULL, '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_login_log` VALUES (218, '登录日志', 3, '2020-01-04 22:30:31', '成功', NULL, '0:0:0:0:0:0:0:1');
 
 -- ----------------------------
 -- Table structure for sys_menu
