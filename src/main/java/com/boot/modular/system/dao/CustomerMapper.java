@@ -21,6 +21,6 @@ public interface CustomerMapper extends BaseMapper<Customer> {
     /**
      *根据条件查询客户
      */
-    List<Map<String, Object>> selectCustomer(@Param("page") Page<Customer> page, @Param("customername") String customername , @Param("mobile") String mobile, @Param("idcard") String idcard, @Param("customertype") Integer customertype, @Param("customerstatus") Integer customerstatus, @Param("beginTime") String beginTime, @Param("endTime") String endTime, @Param("datasources") Integer datasources);
+    List<Map<String, Object>> selectCustomer(@Param("page") Page<Customer> page, @Param("customername") String customername , @Param("mobile") String mobile, @Param("idcard") String idcard, @Param("customertype") Integer customertype, @Param("customerstatus") Integer customerstatus, @Param("beginTime") String beginTime, @Param("endTime") String endTime, @Param("datasources") Integer datasources, @Param("iscustomermanager") Integer iscustomermanager);
 
 }

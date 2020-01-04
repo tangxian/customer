@@ -45,6 +45,9 @@
         <if test="customertype != null and customertype != 0">
             and customertype = #{customertype}
         </if>
+        <if test="iscustomermanager != null and iscustomermanager == 1">
+            and customerstatus in (1,2)
+        </if>
         <if test="customerstatus != null and customerstatus != 0">
             and customerstatus = #{customerstatus}
         </if>

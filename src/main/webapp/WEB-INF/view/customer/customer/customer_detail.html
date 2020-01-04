@@ -1,0 +1,68 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal" id="customerInfoForm">
+
+            <div class="row">
+                <div class="col-sm-6 b-r">
+                    <input type="hidden" id="id" value="${item.id!}">
+                    <input type="hidden" id="customertype1" value="${item.customertype!}">
+                    <input type="hidden" id="customerstatus1" value="${item.customerstatus!}">
+                    <#select id="customertype" name="客户类型" underline="true" disabled="true">
+                        <option value="1">车辆抵押客户</option>
+                        <option value="2">房产抵押客户</option>
+                        <option value="3">其他</option>
+                    </#select>
+                    <#input id="customername" name="客户姓名" value="${item.customername!}" underline="true" disabled="true"/>
+                    <#input id="mobile" name="电话" value="${item.mobile!}" underline="true" disabled="true"/>
+                    <#input id="idcard" name="身份证号码" value="${item.idcard!}" underline="true" disabled="true"/>
+                    <#input id="carid" name="车牌" value="${item.carid!}" underline="true" disabled="true"/>
+                    <#input id="cartype" name="车型" value="${item.cartype!}" underline="true" disabled="true"/>
+                    <#input id="otherinfo" name="其他信息" value="${item.otherinfo!}" underline="true" disabled="true"/>
+                </div>
+
+                <div class="col-sm-6">
+                    <#input id="carinfo" name="车辆信息" value="${item.carinfo!}" underline="true" disabled="true"/>
+                    <#input id="houseinfo" name="房产信息" value="${item.houseinfo!}" underline="true" disabled="true"/>
+                    <#input id="sbgjj" name="社保公积金" value="${item.sbgjj!}" underline="true" disabled="true"/>
+                    <#input id="insurance" name="保单信息" value="${item.insurance!}" underline="true" disabled="true"/>
+                    <#input id="businesslicense" name="营业执照" value="${item.businesslicense!}" underline="true" disabled="true"/>
+                    <#select id="customerstatus" name="客户状态" underline="true" disabled="true">
+                        <option value="1">非意向</option>
+                        <option value="2">意向</option>
+                        <option value="3">成交</option>
+                    </#select>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    $(function() {
+        //初始化客户类型
+        var customertype = $("#customertype1").val();
+        if (customertype != "" && typeof(customertype) != "undefined") {//客户类型有值
+            if (customertype == 1) {//车辆抵押客户
+                $("#customertype").val(1);
+            }else if (customertype == 2){//房产抵押客户
+                $("#customertype").val(2);
+            }else if (customertype == 3){//其他
+                $("#customertype").val(3);
+            }
+        }
+
+        //初始化客户状态
+        var customerstatus = $("#customerstatus1").val();
+        if (customerstatus != "" && typeof(customerstatus) != "undefined") {//客户状态有值
+            if (customerstatus == 1) {//非意向
+                $("#customerstatus").val(1);
+            }else if (customerstatus == 2){//意向
+                $("#customerstatus").val(2);
+            }else if (customerstatus == 3){//其他
+                $("#customerstatus").val(3);
+            }
+        }
+    });
+</script>
+@}

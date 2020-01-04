@@ -23,7 +23,6 @@
                                     <option value="0">全部</option>
                                     <option value="1">车辆抵押客户</option>
                                     <option value="2">房产抵押客户</option>
-                                    <option value="3">其他</option>
                                 </#SelectCon>
                             </div>
                             <div class="col-sm-2">
@@ -31,8 +30,6 @@
                                     <option value="0">全部</option>
                                     <option value="1">非意向</option>
                                     <option value="2">意向</option>
-                                    <option value="3">成交</option>
-                                    <option value="4">已删除</option>
                                 </#SelectCon>
                             </div>
                         </div>
@@ -55,9 +52,6 @@
                         </div>
                     </div>
                         <div class="hidden-xs" id="customerTableToolbar" role="group">
-                            <#button name="添加" icon="fa-plus" clickFun="Customer.openAddcustomer()"/>
-                            <#button name="修改" icon="fa-edit" clickFun="Customer.opencustomerDetail()" space="true"/>
-                            <#button name="删除" icon="fa-remove" clickFun="Customer.delete()" space="true"/>
                         </div>
                         <#table id="customerTable"/>
                     </div>
@@ -66,7 +60,7 @@
         </div>
     </div>
 </div>
-<script src="${ctxPath}/static/modular/customer/customer/customer.js"></script>
+<script src="${ctxPath}/static/modular/customer/customer/customer_customermanager.js"></script>
 <script>
     var beginTime = laydate.render({
         elem: '#beginTime'

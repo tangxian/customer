@@ -13,7 +13,7 @@ var Customer = {
  */
 Customer.initColumn = function () {
     return [
-        {field: 'selectItem', radio: true},
+        {field: 'selectItem', radio: true, visible: false},
             {
                 field: 'SerialNumber',
                 title: '序号',
@@ -36,8 +36,32 @@ Customer.initColumn = function () {
             {title: '客户类型', field: 'customertypeName', visible: true, align: 'center', valign: 'middle'},
             {title: '客户状态', field: 'customerstatusName', visible: true, align: 'center', valign: 'middle'},
             {title: '创建时间', field: 'createdate', visible: true, align: 'center', valign: 'middle'},
-            {title: '数据来源', field: 'datasourcesName', visible: true, align: 'center', valign: 'middle'}
+            {title: '数据来源', field: 'datasourcesName', visible: true, align: 'center', valign: 'middle'},
+            {
+                title: '操作', field: '', visible: true, align: 'center', valign: 'middle',
+                formatter: function (value, row, index, field) {
+                    return [
+                        '<button type="button" onclick="Customer.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>',
+                        '<button type="button" onclick="Customer.follow(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">跟进</button>'
+                    ].join('');
+                }
+            }
     ];
+};
+
+/**
+ * 编辑资源管理详情
+ */
+Customer.detail = function (id) {
+    var index = layer.open({
+        type: 2,
+        title: '客户详情',
+        area: ['90%', '90%'], //宽高
+        fix: false, //不固定
+        maxmin: true,
+        content: Feng.ctxPath + '/customer/customer_detail/' + id
+    });
+    this.layerIndex = index;
 };
 
 /**
@@ -54,20 +78,6 @@ Customer.check = function () {
     }
 };
 
-/**
- * 点击添加客户管理
- */
-Customer.openAddcustomer = function () {
-    var index = layer.open({
-        type: 2,
-        title: '添加客户管理',
-        area: ['90%', '90%'], //宽高
-        fix: false, //不固定
-        maxmin: true,
-        content: Feng.ctxPath + '/customer/customer_add'
-    });
-    this.layerIndex = index;
-};
 
 /**
  * 打开查看客户管理详情
@@ -86,21 +96,7 @@ Customer.opencustomerDetail = function () {
     }
 };
 
-/**
- * 删除客户管理
- */
-Customer.delete = function () {
-    if (this.check()) {
-        var ajax = new $ax(Feng.ctxPath + "/customer/delete", function (data) {
-            Feng.success("删除成功!");
-            Customer.table.refresh();
-        }, function (data) {
-            Feng.error("删除失败!" + data.responseJSON.message + "!");
-        });
-        ajax.set("customerId",this.seItem.id);
-        ajax.start();
-    }
-};
+
 
 /**
  * 查询客户管理列表
@@ -115,7 +111,7 @@ Customer.search = function () {
     queryData['customertype'] = $("#customertype").val();
     queryData['customerstatus'] = $("#customerstatus").val();
     queryData['datasources'] = $("#datasources").val();
-    queryData['iscustomermanager'] = 0;
+    queryData['iscustomermanager'] = 1;
     Customer.table.refresh({query: queryData});
 };
 
@@ -123,7 +119,7 @@ $(function () {
     var defaultColunms = Customer.initColumn();
     var table = new BSTable(Customer.id, "/customer/list", defaultColunms);
     var queryData = {};
-    queryData['iscustomermanager'] = 0;
+    queryData['iscustomermanager'] = 1;
     table.setQueryParams(queryData);
     table.setPaginationType("server");
     table.setHeight(624);

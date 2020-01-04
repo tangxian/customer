@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.toolkit.StringUtils;
 import com.boot.core.common.constant.BizConstantEnum;
+import com.boot.core.common.constant.Const;
 import com.boot.core.common.constant.factory.PageFactory;
 import com.boot.core.common.exception.FileFormatErrorException;
 import com.boot.core.common.page.PageInfoBT;
@@ -49,14 +50,36 @@ public class CustomerController extends BaseController {
      */
     @RequestMapping("")
     public String index() {
-        return PREFIX + "customer.html";
+        List<Integer> roleList = ShiroKit.getUser().roleList;
+        if(roleList.size()>0){
+            int roleId = roleList.get(0);
+            if (roleId == Const.ADMIN_ROLE_ID) {
+                //说明是超级管理员
+                return PREFIX + "customer.html";
+            }else if(roleId == Const.LEADER_ROLE_ID){
+                //说明是公司管理
+                return PREFIX + "customer.html";
+            }else if(roleId == Const.DATABASE_ROLE_ID){
+                //说明是数据管理员
+                return PREFIX + "customer.html";
+            }else if(roleId == Const.CUSTOMERMANAGER_ROLE_ID){
+                //说明是客户经理
+                return PREFIX + "customer_customermanager.html";
+            }else{
+                return PREFIX + "customer_customermanager.html";
+            }
+        }else{
+            return PREFIX + "customer_customermanager.html";
+        }
+
     }
 
     /**
      * 跳转到导入客户
      */
     @RequestMapping("/customer_import")
-    public String customerImport() {
+    public String customerImport(Model model) {
+        model.addAttribute("tips", "init");
         return PREFIX + "customer_import.html";
     }
 
@@ -85,9 +108,9 @@ public class CustomerController extends BaseController {
      */
     @RequestMapping(value = "/list")
     @ResponseBody
-    public Object list( @RequestParam(required = false) String customername, @RequestParam(required = false) String mobile, @RequestParam(required = false) String idcard, @RequestParam(required = false) String beginTime, @RequestParam(required = false) String endTime, @RequestParam(required = false) Integer customertype, @RequestParam(required = false) Integer customerstatus, @RequestParam(required = false) Integer datasources) {
+    public Object list( @RequestParam(required = false) String customername, @RequestParam(required = false) String mobile, @RequestParam(required = false) String idcard, @RequestParam(required = false) String beginTime, @RequestParam(required = false) String endTime, @RequestParam(required = false) Integer customertype, @RequestParam(required = false) Integer customerstatus, @RequestParam(required = false) Integer datasources, @RequestParam(required = false) Integer iscustomermanager) {
         Page<Customer> page = new PageFactory<Customer>().defaultPage();
-        List<Map<String, Object>> customer = customerService.selectCustomer(page, customername, mobile, idcard, customertype, customerstatus, beginTime, endTime, datasources);
+        List<Map<String, Object>> customer = customerService.selectCustomer(page, customername, mobile, idcard, customertype, customerstatus, beginTime, endTime, datasources, iscustomermanager);
         page.setRecords(new CustomerWarpper(customer).wrap());
         return new PageInfoBT<>(page);
     }
@@ -131,10 +154,12 @@ public class CustomerController extends BaseController {
     /**
      * 客户管理详情
      */
-    @RequestMapping(value = "/detail/{customerId}")
-    @ResponseBody
-    public Object detail(@PathVariable("customerId") Integer customerId) {
-        return customerService.selectById(customerId);
+    @RequestMapping(value = "/customer_detail/{customerId}")
+    public String customerDetail(@PathVariable("customerId") Integer customerId, Model model) {
+        Customer customer =  customerService.selectById(customerId);
+        model.addAttribute("item",customer);
+        LogObjectHolder.me().set(customer);
+        return PREFIX + "customer_detail.html";
     }
 
     /**
