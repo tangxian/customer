@@ -3,6 +3,7 @@ package com.boot.modular.customer.controller;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.toolkit.StringUtils;
+import com.boot.core.common.annotion.Permission;
 import com.boot.core.common.constant.BizConstantEnum;
 import com.boot.core.common.constant.Const;
 import com.boot.core.common.constant.factory.PageFactory;
@@ -78,6 +79,7 @@ public class CustomerController extends BaseController {
     /**
      * 跳转到导入客户
      */
+    @Permission({Const.DATABASE ,Const.LEADER})
     @RequestMapping("/customer_import")
     public String customerImport(Model model) {
         model.addAttribute("tips", "init");
@@ -187,6 +189,7 @@ public class CustomerController extends BaseController {
      * @param model
      * @return
      */
+    @Permission({Const.DATABASE ,Const.LEADER})
     @PostMapping(value = "/readExcel")
     @Transactional
     public String readExcel(@RequestParam(value="uploadFile", required = false) MultipartFile file, @RequestParam(required = false) Integer customertype, @RequestParam(required = false) String importremark, Model model){

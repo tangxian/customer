@@ -1,7 +1,9 @@
 package com.boot.modular.customer.controller;
 
 import com.baomidou.mybatisplus.plugins.Page;
+import com.boot.core.common.annotion.Permission;
 import com.boot.core.common.constant.BizConstantEnum;
+import com.boot.core.common.constant.Const;
 import com.boot.core.common.constant.factory.PageFactory;
 import com.boot.core.common.page.PageInfoBT;
 import com.boot.core.kernel_core.base.controller.BaseController;
@@ -51,6 +53,7 @@ public class CusSuccessController extends BaseController {
     /**
      * 跳转到客户跟进
      */
+    @Permission({Const.DATABASE ,Const.LEADER})
     @RequestMapping("")
     public String index() {
         return PREFIX + "cussuccess.html";
@@ -59,6 +62,7 @@ public class CusSuccessController extends BaseController {
     /**
      * 跳转到成交客户审核
      */
+    @Permission({Const.DATABASE ,Const.LEADER})
     @RequestMapping("/check")
     public String check() {
         return PREFIX + "cussuccess_check.html";
@@ -84,6 +88,7 @@ public class CusSuccessController extends BaseController {
     /**
      * 成交审核详情
      */
+    @Permission({Const.DATABASE ,Const.LEADER})
     @RequestMapping(value = "/checkinfo/{successId}")
     public String checkinfo(@PathVariable("successId") Integer successId, Model model) {
         CusSuccess success =  cusSuccessService.selectById(successId);
@@ -110,6 +115,7 @@ public class CusSuccessController extends BaseController {
     /**
      * 客户成交审核保存
      */
+    @Permission({Const.DATABASE ,Const.LEADER})
     @RequestMapping(value = "/success_check_save")
     @ResponseBody
     @Transactional
@@ -132,6 +138,7 @@ public class CusSuccessController extends BaseController {
     /**
      * 获取客户成交列表
      */
+    @Permission({Const.DATABASE ,Const.LEADER})
     @RequestMapping(value = "/successlist")
     @ResponseBody
     public Object successlist( @RequestParam(required = false) String customername, @RequestParam(required = false) String mobile, @RequestParam(required = false) String idcard, @RequestParam(required = false) String beginTime, @RequestParam(required = false) String endTime, @RequestParam(required = false) Integer customertype, @RequestParam(required = false) Integer customerstatus, @RequestParam(required = false) Integer datasources, @RequestParam(required = false) String importremark, @RequestParam(required = false) Integer successuserid) {
@@ -162,6 +169,7 @@ public class CusSuccessController extends BaseController {
     /**
      * 获取客户审核列表
      */
+    @Permission({Const.DATABASE ,Const.LEADER})
     @RequestMapping(value = "/successchecklist")
     @ResponseBody
     public Object successchecklist( @RequestParam(required = false) String customername, @RequestParam(required = false) String mobile, @RequestParam(required = false) String idcard, @RequestParam(required = false) String beginTime, @RequestParam(required = false) String endTime, @RequestParam(required = false) Integer customertype, @RequestParam(required = false) Integer customerstatus, @RequestParam(required = false) Integer datasources, @RequestParam(required = false) String importremark, @RequestParam(required = false) Integer successuserid) {

@@ -3,6 +3,8 @@ package com.boot.modular.customer.controller;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.boot.core.common.annotion.Permission;
+import com.boot.core.common.constant.Const;
 import com.boot.core.common.constant.factory.PageFactory;
 import com.boot.core.common.page.PageInfoBT;
 import com.boot.core.kernel_core.base.controller.BaseController;
@@ -47,6 +49,7 @@ public class CusFollowController extends BaseController {
     /**
      * 跳转到客户跟进
      */
+    @Permission({Const.DATABASE ,Const.LEADER})
     @RequestMapping("")
     public String index() {
         return PREFIX + "cusfollow.html";
@@ -68,8 +71,9 @@ public class CusFollowController extends BaseController {
     }
 
     /**
-     * 获取客户管理列表
+     * 获取客户跟进列表
      */
+    @Permission({Const.DATABASE ,Const.LEADER})
     @RequestMapping(value = "/followlist")
     @ResponseBody
     public Object followlist( @RequestParam(required = false) String customername, @RequestParam(required = false) String mobile, @RequestParam(required = false) String idcard, @RequestParam(required = false) String beginTime, @RequestParam(required = false) String endTime, @RequestParam(required = false) Integer customertype, @RequestParam(required = false) Integer customerstatus, @RequestParam(required = false) Integer datasources, @RequestParam(required = false) String importremark, @RequestParam(required = false) Integer iscustomermanager, @RequestParam(required = false) Integer followuserid) {
@@ -96,6 +100,7 @@ public class CusFollowController extends BaseController {
     /**
      * 客户跟进详情
      */
+    @Permission({Const.DATABASE ,Const.LEADER})
     @RequestMapping(value = "/cusfollow_record/{customerId}")
     public String customerDetail(@PathVariable("customerId") Integer customerId, Model model) {
         List<CusFollow> follows = cusFollowService.selectListByCustomerId(customerId);
