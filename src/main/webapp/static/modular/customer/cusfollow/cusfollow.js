@@ -121,6 +121,7 @@ $(function () {
     var queryData = {};
     queryData['iscustomermanager'] = 3;
     queryData['followuserid'] = 0;
+    queryData['customerstatus'] = 0;
     table.setQueryParams(queryData);
     table.setPaginationType("server");
     table.setHeight(624);

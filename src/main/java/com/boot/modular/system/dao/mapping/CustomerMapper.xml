@@ -86,7 +86,7 @@
         <if test="importremark != null and importremark !=''">
             and c.importremark like CONCAT('%',#{importremark},'%')
         </if>
-        <!-- 查询跟进人 -->
+        <!-- 公司管理层客户资源 -->
         <if test="iscustomermanager != null and iscustomermanager == 0">
             <if test="userid != null and userid != 0">
 
@@ -97,6 +97,9 @@
         </if>
         <!-- 查询客户跟进 -->
         <if test="iscustomermanager != null and iscustomermanager == 3">
+            <if test="customerstatus != null and customerstatus == 0">
+                and c.customerstatus in (1,2,3)
+            </if>
             having flowcount>0
         </if>
         order by c.createdate desc
