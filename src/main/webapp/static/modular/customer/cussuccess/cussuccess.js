@@ -1,8 +1,8 @@
 /**
- * 我的成交初始化
+ * 客户成交初始化
  */
-var SuccessCheck = {
-    id: "successCheckTable",	//表格id
+var CusSuccess = {
+    id: "cusSuccessTable",	//表格id
     seItem: null,		//选中的条目
     table: null,
     layerIndex: -1
@@ -11,7 +11,7 @@ var SuccessCheck = {
 /**
  * 初始化表格的列
  */
-SuccessCheck.initColumn = function () {
+CusSuccess.initColumn = function () {
     return [
         {field: 'selectItem', radio: true, visible: false},
         {
@@ -22,9 +22,9 @@ SuccessCheck.initColumn = function () {
             width: 45,
             formatter: function (value, row, index) {
                 //获取每页显示的数量
-                var pageSize = $('#successCheckTable').bootstrapTable('getOptions').pageSize;
+                var pageSize = $('#cusSuccessTable').bootstrapTable('getOptions').pageSize;
                 //获取当前是第几页
-                var pageNumber = $('#successCheckTable').bootstrapTable('getOptions').pageNumber;
+                var pageNumber = $('#cusSuccessTable').bootstrapTable('getOptions').pageNumber;
                 //返回序号，注意index是从0开始的，所以要加上1
                 return pageSize * (pageNumber - 1) + index + 1;
             }
@@ -44,8 +44,7 @@ SuccessCheck.initColumn = function () {
             title: '操作', field: '', visible: true, align: 'center', valign: 'middle',
             formatter: function (value, row, index, field) {
                 return [
-                    '<button type="button" onclick="SuccessCheck.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
-                    ,'<button type="button" onclick="SuccessCheck.check(' + row["successid"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">审核</button>'
+                    '<button type="button" onclick="CusSuccess.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
                 ].join('');
             }
         }
@@ -55,7 +54,7 @@ SuccessCheck.initColumn = function () {
 /**
  * 客户详情
  */
-SuccessCheck.detail = function (id) {
+CusSuccess.detail = function (id) {
     var index = layer.open({
         type: 2,
         title: '客户详情',
@@ -68,24 +67,9 @@ SuccessCheck.detail = function (id) {
 };
 
 /**
- * 客户成交审核
- */
-SuccessCheck.check = function (id) {
-    var index = layer.open({
-        type: 2,
-        title: '成交客户审核',
-        area: ['90%', '90%'], //宽高
-        fix: false, //不固定
-        maxmin: true,
-        content: Feng.ctxPath + '/cusSuccess/checkinfo/' + id
-    });
-    this.layerIndex = index;
-};
-
-/**
  * 查询客户管理列表
  */
-SuccessCheck.search = function () {
+CusSuccess.search = function () {
     var queryData = {};
     queryData['customername'] = $("#customername").val();
     queryData['mobile'] = $("#mobile").val();
@@ -95,18 +79,17 @@ SuccessCheck.search = function () {
     queryData['customertype'] = $("#customertype").val();
     queryData['customerstatus'] = $("#customerstatus").val();
     queryData['successuserid'] = $("#successuserid").val();
-    queryData['importremark'] = $("#importremark").val();
-    SuccessCheck.table.refresh({query: queryData});
+    CusSuccess.table.refresh({query: queryData});
 };
 
 $(function () {
-    var defaultColunms = SuccessCheck.initColumn();
-    var table = new BSTable(SuccessCheck.id, "/cusSuccess/successchecklist", defaultColunms);
+    var defaultColunms = CusSuccess.initColumn();
+    var table = new BSTable(CusSuccess.id, "/cusSuccess/successlist", defaultColunms);
     var queryData = {};
     table.setQueryParams(queryData);
     table.setPaginationType("server");
     table.setHeight(624);
-    SuccessCheck.table = table.init();
+    CusSuccess.table = table.init();
 
     //查询客户经理下拉框
     var ajax = new $ax(Feng.ctxPath + "/cusFollow/selectCustomerManagerList", function (data) {

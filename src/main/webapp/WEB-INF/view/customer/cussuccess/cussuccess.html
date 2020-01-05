@@ -3,7 +3,7 @@
     <div class="col-sm-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>成交客户审核</h5>
+                <h5>我的成交</h5>
             </div>
             <div class="ibox-content">
                 <div class="row row-lg">
@@ -48,17 +48,17 @@
                                 </div>
                             </div>
                             <div class="col-sm-3">
-                                <#button name="搜索" icon="fa-search" clickFun="SuccessCheck.search()"/>
+                                <#button name="搜索" icon="fa-search" clickFun="CusSuccess.search()"/>
                             </div>
                         </div>
-                        <#table id="successCheckTable"/>
+                        <#table id="cusSuccessTable"/>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<script src="${ctxPath}/static/modular/customer/cussuccess/cussuccess_check.js"></script>
+<script src="${ctxPath}/static/modular/customer/cussuccess/cussuccess.js"></script>
 <script>
     var beginTime = laydate.render({
         elem: '#beginTime'

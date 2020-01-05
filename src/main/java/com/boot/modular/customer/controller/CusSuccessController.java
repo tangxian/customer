@@ -53,7 +53,7 @@ public class CusSuccessController extends BaseController {
      */
     @RequestMapping("")
     public String index() {
-        return PREFIX + "cusfollow.html";
+        return PREFIX + "cussuccess.html";
     }
 
     /**
@@ -130,14 +130,18 @@ public class CusSuccessController extends BaseController {
     }
 
     /**
-     * 获取客户管理列表
+     * 获取客户成交列表
      */
-    @RequestMapping(value = "/followlist")
+    @RequestMapping(value = "/successlist")
     @ResponseBody
-    public Object followlist( @RequestParam(required = false) String customername, @RequestParam(required = false) String mobile, @RequestParam(required = false) String idcard, @RequestParam(required = false) String beginTime, @RequestParam(required = false) String endTime, @RequestParam(required = false) Integer customertype, @RequestParam(required = false) Integer customerstatus, @RequestParam(required = false) Integer datasources, @RequestParam(required = false) String importremark, @RequestParam(required = false) Integer iscustomermanager, @RequestParam(required = false) Integer followuserid) {
+    public Object successlist( @RequestParam(required = false) String customername, @RequestParam(required = false) String mobile, @RequestParam(required = false) String idcard, @RequestParam(required = false) String beginTime, @RequestParam(required = false) String endTime, @RequestParam(required = false) Integer customertype, @RequestParam(required = false) Integer customerstatus, @RequestParam(required = false) Integer datasources, @RequestParam(required = false) String importremark, @RequestParam(required = false) Integer successuserid) {
         Page<Customer> page = new PageFactory<Customer>().defaultPage();
-        List<Map<String, Object>> customer = customerService.selectCustomer(page, customername, mobile, idcard, customertype, customerstatus, beginTime, endTime, datasources, importremark, iscustomermanager, followuserid);
-        page.setRecords(new CustomerWarpper(customer).wrap());
+        Integer userid = null;
+        if(successuserid!=null&&successuserid!=0){
+            userid=successuserid;
+        }
+        List<Map<String, Object>> success = cusSuccessService.selectCusSuccess(page, customername, mobile, idcard, customertype, customerstatus, beginTime, endTime, datasources, importremark, BizConstantEnum.cussuccessstatus_pass.getCode(), userid);
+        page.setRecords(new CusSuccessWarpper(success).wrap());
         return new PageInfoBT<>(page);
     }
 
@@ -160,11 +164,14 @@ public class CusSuccessController extends BaseController {
      */
     @RequestMapping(value = "/successchecklist")
     @ResponseBody
-    public Object successchecklist( @RequestParam(required = false) String customername, @RequestParam(required = false) String mobile, @RequestParam(required = false) String idcard, @RequestParam(required = false) String beginTime, @RequestParam(required = false) String endTime, @RequestParam(required = false) Integer customertype, @RequestParam(required = false) Integer customerstatus, @RequestParam(required = false) Integer datasources, @RequestParam(required = false) String importremark) {
+    public Object successchecklist( @RequestParam(required = false) String customername, @RequestParam(required = false) String mobile, @RequestParam(required = false) String idcard, @RequestParam(required = false) String beginTime, @RequestParam(required = false) String endTime, @RequestParam(required = false) Integer customertype, @RequestParam(required = false) Integer customerstatus, @RequestParam(required = false) Integer datasources, @RequestParam(required = false) String importremark, @RequestParam(required = false) Integer successuserid) {
         Page<Customer> page = new PageFactory<Customer>().defaultPage();
         ShiroUser shiroUser = ShiroKit.getUser();
-        Integer userid = shiroUser.getId();
-        List<Map<String, Object>> success = cusSuccessService.selectCusSuccess(page, customername, mobile, idcard, customertype, customerstatus, beginTime, endTime, datasources, importremark, BizConstantEnum.cussuccessstatus_not.getCode(), null);
+        Integer userid = null;
+        if(successuserid!=null&&successuserid!=0){
+            userid=successuserid;
+        }
+        List<Map<String, Object>> success = cusSuccessService.selectCusSuccess(page, customername, mobile, idcard, customertype, customerstatus, beginTime, endTime, datasources, importremark, BizConstantEnum.cussuccessstatus_not.getCode(), userid);
         page.setRecords(new CusSuccessWarpper(success).wrap());
         return new PageInfoBT<>(page);
     }
