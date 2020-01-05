@@ -22,8 +22,8 @@ import java.util.Map;
 @Service
 public class CusFollowServiceImpl extends ServiceImpl<CusFollowMapper, CusFollow> implements ICusFollowService {
     @Override
-    public List<Map<String, Object>> selectCusFollow(Page<Customer> page, String customername, String mobile, String idcard, Integer customertype, Integer customerstatus, String beginTime, String endTime, Integer datasources, Integer userid) {
-        return this.baseMapper.selectCusFollow(page, customername, mobile, idcard, customertype, customerstatus, beginTime, endTime, datasources, userid);
+    public List<Map<String, Object>> selectCusFollow(Page<Customer> page, String customername, String mobile, String idcard, Integer customertype, Integer customerstatus, String beginTime, String endTime, Integer datasources, String importremark, Integer userid) {
+        return this.baseMapper.selectCusFollow(page, customername, mobile, idcard, customertype, customerstatus, beginTime, endTime, datasources, importremark,userid);
     }
 
     @Override

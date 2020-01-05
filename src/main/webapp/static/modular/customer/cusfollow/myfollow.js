@@ -35,6 +35,7 @@ Myfollow.initColumn = function () {
         {title: '身份证号码', field: 'idcard', visible: true, align: 'center', valign: 'middle'},
         {title: '客户类型', field: 'customertypeName', visible: true, align: 'center', valign: 'middle'},
         {title: '客户状态', field: 'customerstatusName', visible: true, align: 'center', valign: 'middle'},
+        {title: '导入备注', field: 'importremark', visible: true, align: 'center', valign: 'middle'},
         {title: '跟进时间', field: 'followdate', visible: true, align: 'center', valign: 'middle'},
         {title: '跟进内容', field: 'remark', visible: true, align: 'center', valign: 'middle'},
         {
@@ -75,6 +76,7 @@ Myfollow.search = function () {
     queryData['endTime'] = $("#endTime").val();
     queryData['customertype'] = $("#customertype").val();
     queryData['customerstatus'] = $("#customerstatus").val();
+    queryData['importremark'] = $("#importremark").val();
     Myfollow.table.refresh({query: queryData});
 };
 

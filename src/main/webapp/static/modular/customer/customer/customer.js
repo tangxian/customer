@@ -13,7 +13,7 @@ var Customer = {
  */
 Customer.initColumn = function () {
     return [
-        {field: 'selectItem', radio: true},
+        {field: 'selectItem', checkbox: true},
             {
                 field: 'SerialNumber',
                 title: '序号',
@@ -37,6 +37,7 @@ Customer.initColumn = function () {
             {title: '客户状态', field: 'customerstatusName', visible: true, align: 'center', valign: 'middle'},
             {title: '创建时间', field: 'createdate', visible: true, align: 'center', valign: 'middle'},
             {title: '数据来源', field: 'datasourcesName', visible: true, align: 'center', valign: 'middle'},
+            {title: '导入备注', field: 'importremark', visible: true, align: 'center', valign: 'middle'},
             {title: '跟进状态', field: 'flowcount', visible: true, align: 'center', valign: 'middle',
                 formatter: function(value, item, index) {
                     if (value==0) {
@@ -70,12 +71,26 @@ Customer.check = function () {
     if(selected.length == 0){
         Feng.info("请先选中表格中的某一记录！");
         return false;
+    }else if(selected.length > 1){
+        Feng.info("只能选择一条记录进行修改！");
+        return false;
     }else{
         Customer.seItem = selected[0];
         return true;
     }
 };
 
+/**
+ * 获取多选按钮选中值
+ */
+Customer.checkbox = function () {
+    var selected = $('#' + this.id).bootstrapTable('getSelections');
+    var ids = new Array();
+    for (var i = 0; i < selected.length; i++) {
+        ids[i] = selected[i].id;
+    }
+    return ids;
+}
 /**
  * 点击添加客户管理
  */
@@ -112,14 +127,19 @@ Customer.opencustomerDetail = function () {
  * 删除客户管理
  */
 Customer.delete = function () {
-    if (this.check()) {
+    var ids = this.checkbox();
+    console.log(ids.join(","));
+    if(ids.length==0){
+        Feng.info("请先选中表格中的某一记录！");
+        return;
+    }else{
         var ajax = new $ax(Feng.ctxPath + "/customer/delete", function (data) {
             Feng.success("删除成功!");
             Customer.table.refresh();
         }, function (data) {
             Feng.error("删除失败!" + data.responseJSON.message + "!");
         });
-        ajax.set("customerId",this.seItem.id);
+        ajax.set("customerIds",ids.join(","));
         ajax.start();
     }
 };
@@ -151,6 +171,7 @@ Customer.search = function () {
     queryData['customertype'] = $("#customertype").val();
     queryData['customerstatus'] = $("#customerstatus").val();
     queryData['datasources'] = $("#datasources").val();
+    queryData['importremark'] = $("#importremark").val();
     queryData['iscustomermanager'] = 0;
     Customer.table.refresh({query: queryData});
 };
@@ -160,6 +181,7 @@ $(function () {
     var table = new BSTable(Customer.id, "/customer/list", defaultColunms);
     var queryData = {};
     queryData['iscustomermanager'] = 0;
+    queryData['customerstatus'] = 0;
     table.setQueryParams(queryData);
     table.setPaginationType("server");
     table.setHeight(624);

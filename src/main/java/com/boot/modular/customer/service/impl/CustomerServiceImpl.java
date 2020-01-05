@@ -22,7 +22,12 @@ import java.util.Map;
 public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> implements ICustomerService {
 
     @Override
-    public List<Map<String, Object>> selectCustomer(Page<Customer> page, String customername, String mobile, String idcard, Integer customertype, Integer customerstatus, String beginTime, String endTime, Integer datasources, Integer iscustomermanager, Integer userid) {
-        return this.baseMapper.selectCustomer(page, customername, mobile, idcard, customertype, customerstatus, beginTime, endTime, datasources, iscustomermanager,userid);
+    public List<Map<String, Object>> selectCustomer(Page<Customer> page, String customername, String mobile, String idcard, Integer customertype, Integer customerstatus, String beginTime, String endTime, Integer datasources, String importremark, Integer iscustomermanager, Integer userid) {
+        return this.baseMapper.selectCustomer(page, customername, mobile, idcard, customertype, customerstatus, beginTime, endTime, datasources, importremark, iscustomermanager,userid);
+    }
+
+    @Override
+    public int deleteCustomer(List<Integer> customerIdList){
+        return this.baseMapper.deleteCustomer(customerIdList);
     }
 }

@@ -21,11 +21,13 @@
         <result column="createdate" property="createdate" />
         <result column="createuserid" property="createuserid" />
         <result column="datasources" property="datasources" />
+        <result column="importnumber" property="importnumber" />
+        <result column="importremark" property="importremark" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, customername, mobile, idcard, houseinfo, carinfo, sbgjj, insurance, businesslicense, carid, cartype, otherinfo, customertype, customerstatus, createdate, createuserid, datasources
+        id, customername, mobile, idcard, houseinfo, carinfo, sbgjj, insurance, businesslicense, carid, cartype, otherinfo, customertype, customerstatus, createdate, createuserid, datasources, importnumber, importremark
     </sql>
 
     <select id="selectCustomer" resultType="map">
@@ -81,13 +83,33 @@
         <if test="endTime != null and endTime != ''">
             and c.createdate &lt;=CONCAT(#{endTime},' 23:59:59')
         </if>
+        <if test="importremark != null and importremark !=''">
+            and c.importremark like CONCAT('%',#{importremark},'%')
+        </if>
         <!-- 查询跟进人 -->
         <if test="iscustomermanager != null and iscustomermanager == 0">
             <if test="userid != null and userid != 0">
 
             </if>
+            <if test="customerstatus != null and customerstatus == 0">
+                and c.customerstatus in (1,2,3)
+            </if>
+        </if>
+        <!-- 查询客户跟进 -->
+        <if test="iscustomermanager != null and iscustomermanager == 3">
+            having flowcount>0
         </if>
         order by c.createdate desc
     </select>
+
+    <update id="deleteCustomer">
+		update cus_customer set customerstatus = 4 where 1=1
+        <if test="customerIdList != null and customerIdList.size() > 0 ">
+            and id in
+            <foreach collection="customerIdList" item="id" index="index" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </if>
+	</update>
 
 </mapper>

@@ -34,10 +34,11 @@ Customer.initColumn = function () {
             {title: '电话', width:100, field: 'mobile', visible: true, align: 'center', valign: 'middle'},
             {title: '身份证号码', field: 'idcard', visible: true, align: 'center', valign: 'middle'},
             {title: '客户类型', width:110, field: 'customertypeName', visible: true, align: 'center', valign: 'middle'},
-            {title: '客户状态', width:100, field: 'customerstatusName', visible: true, align: 'center', valign: 'middle'},
+            {title: '客户状态', width:90, field: 'customerstatusName', visible: true, align: 'center', valign: 'middle'},
             {title: '创建时间', width:140, field: 'createdate', visible: true, align: 'center', valign: 'middle'},
-            {title: '数据来源', width:100, field: 'datasourcesName', visible: true, align: 'center', valign: 'middle'},
-            {title: '跟进状态', width:100, field: 'flowcount', visible: true, align: 'center', valign: 'middle',
+            {title: '数据来源', width:90, field: 'datasourcesName', visible: true, align: 'center', valign: 'middle'},
+            {title: '导入备注', width:100, field: 'importremark', visible: true, align: 'center', valign: 'middle'},
+            {title: '跟进状态', width:90, field: 'flowcount', visible: true, align: 'center', valign: 'middle',
                 formatter: function(value, item, index) {
                     if (value==0) {
                         return '未跟进';

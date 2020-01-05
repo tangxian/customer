@@ -31,13 +31,14 @@ Cusfollow.initColumn = function () {
             },
             {title: 'id', field: 'id', visible: false, align: 'center', valign: 'middle'},
             {title: '客户姓名', width:100, field: 'customername', visible: true, align: 'center', valign: 'middle'},
-            {title: '电话', field: 'mobile', visible: true, align: 'center', valign: 'middle'},
+            {title: '电话', width:90, field: 'mobile', visible: true, align: 'center', valign: 'middle'},
             {title: '身份证号码', field: 'idcard', visible: true, align: 'center', valign: 'middle'},
-            {title: '客户类型', field: 'customertypeName', visible: true, align: 'center', valign: 'middle'},
-            {title: '客户状态', width:100, field: 'customerstatusName', visible: true, align: 'center', valign: 'middle'},
+            {title: '客户类型', width:90, field: 'customertypeName', visible: true, align: 'center', valign: 'middle'},
+            {title: '客户状态', width:90, field: 'customerstatusName', visible: true, align: 'center', valign: 'middle'},
             {title: '创建时间', field: 'createdate', visible: true, align: 'center', valign: 'middle'},
-            {title: '数据来源', width:100, field: 'datasourcesName', visible: true, align: 'center', valign: 'middle'},
-            {title: '跟进状态', width:100, field: 'flowcount', visible: true, align: 'center', valign: 'middle',
+            {title: '数据来源', width:90, field: 'datasourcesName', visible: true, align: 'center', valign: 'middle'},
+            {title: '导入备注', width:100, field: 'importremark', visible: true, align: 'center', valign: 'middle'},
+            {title: '跟进状态', width:90, field: 'flowcount', visible: true, align: 'center', valign: 'middle',
                 formatter: function(value, item, index) {
                     if (value==0) {
                         return '未跟进';
@@ -110,6 +111,7 @@ Cusfollow.search = function () {
     queryData['datasources'] = $("#datasources").val();
     queryData['iscustomermanager'] = 3;
     queryData['followuserid'] = $("#followuserid").val();
+    queryData['importremark'] = $("#importremark").val();
     Cusfollow.table.refresh({query: queryData});
 };
 

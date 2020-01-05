@@ -40,10 +40,12 @@
                             <div class="col-sm-2">
                                 <#TimeCon id="endTime" name="结束时间" isTime="false" pattern="YYYY-MM-DD" />
                             </div>
-
-                        <div class="col-sm-3">
-                            <#button name="搜索" icon="fa-search" clickFun="Myfollow.search()"/>
-                        </div>
+                            <div class="col-sm-2">
+                                <#NameCon id="importremark" name="导入备注" />
+                            </div>
+                            <div class="col-sm-3">
+                                <#button name="搜索" icon="fa-search" clickFun="Myfollow.search()"/>
+                            </div>
                     </div>
                         <#table id="myfollowTable"/>
                     </div>

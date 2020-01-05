@@ -23,6 +23,7 @@
                                     <option value="0">全部</option>
                                     <option value="1">车辆抵押客户</option>
                                     <option value="2">房产抵押客户</option>
+                                    <option value="3">其他</option>
                                 </#SelectCon>
                             </div>
                             <div class="col-sm-2">
@@ -50,6 +51,9 @@
                                 </#SelectCon>
                             </div>
                             <div class="col-sm-2">
+                                <#NameCon id="importremark" name="导入备注" />
+                            </div>
+                            <div class="col-sm-2">
                                 <div class="input-group">
                                     <div class="input-group-btn">
                                         <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">
@@ -60,7 +64,7 @@
                                     </select>
                                 </div>
                             </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <#button name="搜索" icon="fa-search" clickFun="Cusfollow.search()"/>
                         </div>
                     </div>

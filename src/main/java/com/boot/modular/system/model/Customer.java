@@ -89,6 +89,14 @@ public class Customer extends Model<Customer> {
      * 数据来源(1.系统添加、2.Excel导入)
      */
     private Integer datasources;
+    /**
+     * 导入数据流水号
+     */
+    private String importnumber;
+    /**
+     * 导入数据备注
+     */
+    private String importremark;
 
 
     public Integer getId() {
@@ -227,6 +235,22 @@ public class Customer extends Model<Customer> {
         this.datasources = datasources;
     }
 
+    public String getImportnumber() {
+        return importnumber;
+    }
+
+    public void setImportnumber(String importnumber) {
+        this.importnumber = importnumber;
+    }
+
+    public String getImportremark() {
+        return importremark;
+    }
+
+    public void setImportremark(String importremark) {
+        this.importremark = importremark;
+    }
+
     @Override
     protected Serializable pkVal() {
         return this.id;
@@ -252,6 +276,8 @@ public class Customer extends Model<Customer> {
         ", createdate=" + createdate +
         ", createuserid=" + createuserid +
         ", datasources=" + datasources +
+        ", importnumber=" + importnumber +
+        ", importremark=" + importremark +
         "}";
     }
 }

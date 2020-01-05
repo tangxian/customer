@@ -12,9 +12,9 @@ import com.boot.core.kernel_core.base.controller.BaseController;
 import com.boot.core.log.LogObjectHolder;
 import com.boot.core.shiro.ShiroKit;
 import com.boot.core.shiro.ShiroUser;
+import com.boot.core.util.DateHelper;
 import com.boot.core.util.ExcelUtils;
 import com.boot.modular.customer.model.CustomerInfo;
-import com.boot.modular.customer.model.CustomerHouseInfo;
 import com.boot.modular.customer.service.ICusFollowService;
 import com.boot.modular.customer.service.ICustomerService;
 import com.boot.modular.customer.warpper.CustomerWarpper;
@@ -27,9 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.boot.modular.system.model.Customer;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 客户管理控制器
@@ -111,11 +109,11 @@ public class CustomerController extends BaseController {
      */
     @RequestMapping(value = "/list")
     @ResponseBody
-    public Object list( @RequestParam(required = false) String customername, @RequestParam(required = false) String mobile, @RequestParam(required = false) String idcard, @RequestParam(required = false) String beginTime, @RequestParam(required = false) String endTime, @RequestParam(required = false) Integer customertype, @RequestParam(required = false) Integer customerstatus, @RequestParam(required = false) Integer datasources, @RequestParam(required = false) Integer iscustomermanager) {
+    public Object list( @RequestParam(required = false) String customername, @RequestParam(required = false) String mobile, @RequestParam(required = false) String idcard, @RequestParam(required = false) String beginTime, @RequestParam(required = false) String endTime, @RequestParam(required = false) Integer customertype, @RequestParam(required = false) Integer customerstatus, @RequestParam(required = false) Integer datasources, @RequestParam(required = false) String importremark, @RequestParam(required = false) Integer iscustomermanager) {
         Page<Customer> page = new PageFactory<Customer>().defaultPage();
         ShiroUser shiroUser = ShiroKit.getUser();
         Integer userid = shiroUser.getId();
-        List<Map<String, Object>> customer = customerService.selectCustomer(page, customername, mobile, idcard, customertype, customerstatus, beginTime, endTime, datasources, iscustomermanager, userid);
+        List<Map<String, Object>> customer = customerService.selectCustomer(page, customername, mobile, idcard, customertype, customerstatus, beginTime, endTime, datasources, importremark, iscustomermanager, userid);
         page.setRecords(new CustomerWarpper(customer).wrap());
         return new PageInfoBT<>(page);
     }
@@ -139,10 +137,15 @@ public class CustomerController extends BaseController {
      */
     @RequestMapping(value = "/delete")
     @ResponseBody
-    public Object delete(@RequestParam Integer customerId) {
-        Customer customer = customerService.selectById(customerId);
-        customer.setCustomerstatus(BizConstantEnum.customerstatus_del.getCode());
-        customerService.updateById(customer);
+    public Object delete(@RequestParam String customerIds) {
+        String customerIdsArr[] = customerIds.split(",");
+        List<Integer> customerIdsList = new ArrayList<Integer>();
+        for(String str : customerIdsArr){
+            customerIdsList.add(Integer.valueOf(str));
+        }
+        if(customerIdsList.size()>0){
+            customerService.deleteCustomer(customerIdsList);
+        }
         return SUCCESS_TIP;
     }
 
@@ -186,9 +189,10 @@ public class CustomerController extends BaseController {
      */
     @PostMapping(value = "/readExcel")
     @Transactional
-    public String readExcel(@RequestParam(value="uploadFile", required = false) MultipartFile file,@RequestParam(required = false) Integer customertype, Model model){
+    public String readExcel(@RequestParam(value="uploadFile", required = false) MultipartFile file, @RequestParam(required = false) Integer customertype, @RequestParam(required = false) String importremark, Model model){
         try{
             ShiroUser shiroUser = ShiroKit.getUser();
+            String importnumber = DateHelper.getNumberForPK();
             long t1 = System.currentTimeMillis();
             int successCount = 0;
             int fileCount = 0;
@@ -232,6 +236,8 @@ public class CustomerController extends BaseController {
                     customer.setCreateuserid(shiroUser.getId());
                     customer.setDatasources(BizConstantEnum.datasources_excel.getCode());
                     customer.setCustomertype(customertype);
+                    customer.setImportnumber(importnumber);
+                    customer.setImportremark(importremark);
                     customerService.insert(customer);
                     successCount++;
                 }else{
