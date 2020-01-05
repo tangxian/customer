@@ -84,11 +84,11 @@ public class CusFollowController extends BaseController {
      */
     @RequestMapping(value = "/myfollowlist")
     @ResponseBody
-    public Object myfollowlist( @RequestParam(required = false) String customername, @RequestParam(required = false) String mobile, @RequestParam(required = false) String idcard, @RequestParam(required = false) String beginTime, @RequestParam(required = false) String endTime, @RequestParam(required = false) Integer customertype, @RequestParam(required = false) Integer customerstatus, @RequestParam(required = false) Integer datasources, @RequestParam(required = false) String importremark) {
+    public Object myfollowlist( @RequestParam(required = false) String customername, @RequestParam(required = false) String mobile, @RequestParam(required = false) String idcard, @RequestParam(required = false) String beginTime, @RequestParam(required = false) String endTime, @RequestParam(required = false) Integer customertype, @RequestParam(required = false) Integer customerstatus, @RequestParam(required = false) Integer datasources, @RequestParam(required = false) String importremark,  @RequestParam(required = false) Integer iscustomermanager) {
         Page<Customer> page = new PageFactory<Customer>().defaultPage();
         ShiroUser shiroUser = ShiroKit.getUser();
         Integer userid = shiroUser.getId();
-        List<Map<String, Object>> customer = cusFollowService.selectCusFollow(page, customername, mobile, idcard, customertype, customerstatus, beginTime, endTime, datasources, importremark, userid);
+        List<Map<String, Object>> customer = cusFollowService.selectCusFollow(page, customername, mobile, idcard, customertype, customerstatus, beginTime, endTime, datasources, importremark, iscustomermanager, userid);
         page.setRecords(new CustomerWarpper(customer).wrap());
         return new PageInfoBT<>(page);
     }

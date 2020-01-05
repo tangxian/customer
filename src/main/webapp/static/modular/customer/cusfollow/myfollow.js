@@ -41,10 +41,17 @@ Myfollow.initColumn = function () {
         {
             title: '操作', field: '', visible: true, align: 'center', valign: 'middle',
             formatter: function (value, row, index, field) {
-                return [
-                    '<button type="button" onclick="Myfollow.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
-                    ,'<button type="button" onclick="Myfollow.successapply(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">成交申请</button>'
-                ].join('');
+                if (row["successcount"]>0) {
+                    return [
+                        '<button type="button" onclick="Myfollow.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
+                    ].join('');
+                }else if (row["successcount"]==0) {
+                    return [
+                        '<button type="button" onclick="Myfollow.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
+                        ,'<button type="button" onclick="Myfollow.successapply(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">成交申请</button>'
+                    ].join('');
+                }
+
             }
         }
     ];
@@ -93,6 +100,7 @@ Myfollow.search = function () {
     queryData['customertype'] = $("#customertype").val();
     queryData['customerstatus'] = $("#customerstatus").val();
     queryData['importremark'] = $("#importremark").val();
+    queryData['iscustomermanager'] = 1;
     Myfollow.table.refresh({query: queryData});
 };
 
@@ -100,6 +108,7 @@ $(function () {
     var defaultColunms = Myfollow.initColumn();
     var table = new BSTable(Myfollow.id, "/cusFollow/myfollowlist", defaultColunms);
     var queryData = {};
+    queryData['iscustomermanager'] = 1;
     table.setQueryParams(queryData);
     table.setPaginationType("server");
     table.setHeight(624);

@@ -19,6 +19,10 @@
     <select id="selectCusFollow" resultType="map">
         select
         c.*,f.followdate,f.remark
+        <!-- 销售经理客户资源库 -->
+        <if test="iscustomermanager != null and iscustomermanager == 1">
+            ,(select count(1) from cus_success where successuserid=#{userid} and customerid=c.id and status in(1,3)) successcount
+        </if>
         from cus_customer c, cus_follow f
         where c.id=f.customerid
         and c.customerstatus in (1,2)
