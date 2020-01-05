@@ -57,6 +57,14 @@ public class CusSuccessController extends BaseController {
     }
 
     /**
+     * 跳转到成交客户审核
+     */
+    @RequestMapping("/check")
+    public String check() {
+        return PREFIX + "cussuccess_check.html";
+    }
+
+    /**
      * 客户成交申请
      */
     @RequestMapping(value = "/success_apply/{customerId}")
@@ -73,6 +81,16 @@ public class CusSuccessController extends BaseController {
         return PREFIX + "mysuccess.html";
     }
 
+    /**
+     * 成交审核详情
+     */
+    @RequestMapping(value = "/checkinfo/{successId}")
+    public String checkinfo(@PathVariable("successId") Integer successId, Model model) {
+        CusSuccess success =  cusSuccessService.selectById(successId);
+        model.addAttribute("item",success);
+        return PREFIX + "cussuccess_checkinfo.html";
+    }
+
 
     /**
      * 客户成交申请保存
@@ -86,6 +104,28 @@ public class CusSuccessController extends BaseController {
         cusSuccess.setSuccessdate(new Date());
         cusSuccess.setStatus(BizConstantEnum.cussuccessstatus_not.getCode());
         cusSuccessService.insert(cusSuccess);
+        return SUCCESS_TIP;
+    }
+
+    /**
+     * 客户成交审核保存
+     */
+    @RequestMapping(value = "/success_check_save")
+    @ResponseBody
+    @Transactional
+    public Object successCheckSave(@RequestParam(required = false) Integer successId, @RequestParam(required = false)  Integer status) {
+        ShiroUser shiroUser = ShiroKit.getUser();
+        CusSuccess success =  cusSuccessService.selectById(successId);
+        success.setCheckuserid(shiroUser.getId());
+        success.setCheckdate(new Date());
+        success.setStatus(status);
+        cusSuccessService.updateById(success);
+        if(status.equals(BizConstantEnum.cussuccessstatus_pass.getCode())){
+            //修改客户信息为成交
+            Customer customer = customerService.selectById(success.getCustomerid());
+            customer.setCustomerstatus(BizConstantEnum.customerstatus_success.getCode());
+            customerService.updateById(customer);
+        }
         return SUCCESS_TIP;
     }
 
@@ -106,7 +146,7 @@ public class CusSuccessController extends BaseController {
      */
     @RequestMapping(value = "/mysuccesslist")
     @ResponseBody
-    public Object myfollowlist( @RequestParam(required = false) String customername, @RequestParam(required = false) String mobile, @RequestParam(required = false) String idcard, @RequestParam(required = false) String beginTime, @RequestParam(required = false) String endTime, @RequestParam(required = false) Integer customertype, @RequestParam(required = false) Integer customerstatus, @RequestParam(required = false) Integer datasources, @RequestParam(required = false) String importremark, @RequestParam(required = false) Integer status) {
+    public Object mysuccesslist( @RequestParam(required = false) String customername, @RequestParam(required = false) String mobile, @RequestParam(required = false) String idcard, @RequestParam(required = false) String beginTime, @RequestParam(required = false) String endTime, @RequestParam(required = false) Integer customertype, @RequestParam(required = false) Integer customerstatus, @RequestParam(required = false) Integer datasources, @RequestParam(required = false) String importremark, @RequestParam(required = false) Integer status) {
         Page<Customer> page = new PageFactory<Customer>().defaultPage();
         ShiroUser shiroUser = ShiroKit.getUser();
         Integer userid = shiroUser.getId();
@@ -116,13 +156,17 @@ public class CusSuccessController extends BaseController {
     }
 
     /**
-     * 客户跟进详情
+     * 获取客户审核列表
      */
-    @RequestMapping(value = "/cusfollow_record/{customerId}")
-    public String customerDetail(@PathVariable("customerId") Integer customerId, Model model) {
-        List<CusFollow> follows = cusFollowService.selectListByCustomerId(customerId);
-        model.addAttribute("followsList", follows);
-        return PREFIX + "cusfollow_record.html";
+    @RequestMapping(value = "/successchecklist")
+    @ResponseBody
+    public Object successchecklist( @RequestParam(required = false) String customername, @RequestParam(required = false) String mobile, @RequestParam(required = false) String idcard, @RequestParam(required = false) String beginTime, @RequestParam(required = false) String endTime, @RequestParam(required = false) Integer customertype, @RequestParam(required = false) Integer customerstatus, @RequestParam(required = false) Integer datasources, @RequestParam(required = false) String importremark) {
+        Page<Customer> page = new PageFactory<Customer>().defaultPage();
+        ShiroUser shiroUser = ShiroKit.getUser();
+        Integer userid = shiroUser.getId();
+        List<Map<String, Object>> success = cusSuccessService.selectCusSuccess(page, customername, mobile, idcard, customertype, customerstatus, beginTime, endTime, datasources, importremark, BizConstantEnum.cussuccessstatus_not.getCode(), null);
+        page.setRecords(new CusSuccessWarpper(success).wrap());
+        return new PageInfoBT<>(page);
     }
 
 }

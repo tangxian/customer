@@ -1,0 +1,47 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal" id="successApplyInfoForm">
+
+            <div class="row">
+                <div class="col-sm-6 b-r">
+                    <input type="hidden" id="successId" value="${item.id!}">
+                    <#input id="bank" name="贷款银行" value="${item.bank!}" underline="true" disabled="true"/>
+                    <#input id="amount" name="贷款金额(元)" value="${item.amount!}" underline="true" disabled="true"/>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">备注</label>
+                        <div class="col-sm-10">
+                            <textarea rows="10" cols="50" id="remark" disabled="true">${item.remark!}</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="通过" id="ensure" icon="fa-check" clickFun="addSubmit(2)"/>
+                    <#button btnCss="danger" name="拒绝" id="cancel" icon="fa-eraser" clickFun="addSubmit(3)"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    function addSubmit(status) {
+        //提交信息
+        var ajax = new $ax(Feng.ctxPath + "/cusSuccess/success_check_save", function(data){
+            Feng.success("操作成功!");
+            window.parent.SuccessCheck.table.refresh();
+            parent.layer.close(window.parent.SuccessCheck.layerIndex);
+        },function(data){
+            Feng.error("操作失败!" + data.responseJSON.message + "!");
+        });
+        ajax.set("successId", $("#successId").val());
+        ajax.set("status", status);
+        ajax.start();
+    }
+
+</script>
+@}
