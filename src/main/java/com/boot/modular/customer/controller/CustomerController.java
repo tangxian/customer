@@ -13,13 +13,12 @@ import com.boot.core.log.LogObjectHolder;
 import com.boot.core.shiro.ShiroKit;
 import com.boot.core.shiro.ShiroUser;
 import com.boot.core.util.ExcelUtils;
-import com.boot.modular.customer.model.CustomerCarInfo;
+import com.boot.modular.customer.model.CustomerInfo;
 import com.boot.modular.customer.model.CustomerHouseInfo;
 import com.boot.modular.customer.service.ICusFollowService;
 import com.boot.modular.customer.service.ICustomerService;
 import com.boot.modular.customer.warpper.CustomerWarpper;
 import com.boot.modular.system.model.CusFollow;
-import com.boot.modular.system.model.NoticeInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -148,6 +147,18 @@ public class CustomerController extends BaseController {
     }
 
     /**
+     * 标记意向客户
+     */
+    @RequestMapping(value = "/customerstatushas")
+    @ResponseBody
+    public Object customerstatushas(@RequestParam Integer customerId) {
+        Customer customer = customerService.selectById(customerId);
+        customer.setCustomerstatus(BizConstantEnum.customerstatus_has.getCode());
+        customerService.updateById(customer);
+        return SUCCESS_TIP;
+    }
+
+    /**
      * 修改客户管理
      */
     @RequestMapping(value = "/update")
@@ -181,107 +192,56 @@ public class CustomerController extends BaseController {
             long t1 = System.currentTimeMillis();
             int successCount = 0;
             int fileCount = 0;
-            if(customertype.equals(BizConstantEnum.customertype_car.getCode())){
-                //车辆抵押客户
-                List<CustomerCarInfo> list = ExcelUtils.readExcel("", CustomerCarInfo.class, file);
-                for (CustomerCarInfo customerCarInfo : list){
-                    System.out.println("解析车辆抵押客户信息"+ JSON.toJSONString(customerCarInfo));
-                    //写入数据库
-                    String customername = customerCarInfo.getCustomername();
-                    String mobile = customerCarInfo.getMobile();
-                    String idcard = customerCarInfo.getIdcard();
-                    //姓名、电话、身份证号不为空的前提下保存客户信息
-                    if(StringUtils.isNotEmpty(customername)&&StringUtils.isNotEmpty(mobile)&&StringUtils.isNotEmpty(idcard)){
-                        String carid = customerCarInfo.getCarid();
-                        String cartype = customerCarInfo.getCartype();
-                        if (StringUtils.isNotEmpty(carid)||StringUtils.isNotEmpty(cartype)){
-                            //确定是正确的模板
-                            Customer customer = new Customer();
-                            customer.setCustomername(customername);
-                            customer.setMobile(mobile);
-                            customer.setIdcard(idcard);
-                            customer.setCarid(carid);
-                            customer.setCartype(cartype);
-                            if(StringUtils.isNotEmpty(customerCarInfo.getCustomerstatus())){
-                                if(customerCarInfo.getCustomerstatus().equals("是")){
-                                    customer.setCustomerstatus(BizConstantEnum.customerstatus_has.getCode());
-                                }else{
-                                    customer.setCustomerstatus(BizConstantEnum.customerstatus_not.getCode());
-                                }
-                            }else{
-                                customer.setCustomerstatus(BizConstantEnum.customerstatus_not.getCode());
-                            }
-                            customer.setCreatedate(new Date());
-                            customer.setCreateuserid(shiroUser.getId());
-                            customer.setDatasources(BizConstantEnum.datasources_excel.getCode());
-                            customer.setCustomertype(BizConstantEnum.customertype_car.getCode());
-                            customerService.insert(customer);
-                            successCount++;
-                        }else{
-                            model.addAttribute("tips", "车辆抵押客户模板不正确");
-                            return PREFIX + "customer_import.html";
-                        }
-                    }else{
-                        fileCount++;
-                    }
-                }
-            }else if(customertype.equals(BizConstantEnum.customertype_house.getCode())){
-                //房产抵押客户
-                List<CustomerHouseInfo> list = ExcelUtils.readExcel("", CustomerHouseInfo.class, file);
-                for (CustomerHouseInfo customerHouseInfo : list){
-                    System.out.println("解析房产抵押客户信息"+ JSON.toJSONString(customerHouseInfo));
-                    //写入数据库
-                    String customername = customerHouseInfo.getCustomername();
-                    String mobile = customerHouseInfo.getMobile();
-                    String idcard = customerHouseInfo.getIdcard();
-                    //姓名、电话、身份证号不为空的前提下保存客户信息
-                    if(StringUtils.isNotEmpty(customername)&&StringUtils.isNotEmpty(mobile)&&StringUtils.isNotEmpty(idcard)){
-                        String houseinfo = customerHouseInfo.getHouseinfo();
-                        String carinfo = customerHouseInfo.getCarinfo();
-                        String insurance = customerHouseInfo.getInsurance();
-                        String sbgjj = customerHouseInfo.getSbgjj();
-                        String businesslicense = customerHouseInfo.getBusinesslicense();
-                        String otherinfo = customerHouseInfo.getOtherinfo();
-                        if (StringUtils.isNotEmpty(houseinfo)||StringUtils.isNotEmpty(carinfo)||StringUtils.isNotEmpty(insurance)||StringUtils.isNotEmpty(sbgjj)||StringUtils.isNotEmpty(businesslicense)||StringUtils.isNotEmpty(otherinfo)){
-                            Customer customer = new Customer();
-                            customer.setCustomername(customername);
-                            customer.setMobile(mobile);
-                            customer.setIdcard(idcard);
-                            customer.setHouseinfo(houseinfo);
-                            customer.setCarinfo(carinfo);
-                            customer.setInsurance(insurance);
-                            customer.setSbgjj(sbgjj);
-                            customer.setBusinesslicense(businesslicense);
-                            customer.setOtherinfo(otherinfo);
-                            if(StringUtils.isNotEmpty(customerHouseInfo.getCustomerstatus())){
-                                if(customerHouseInfo.getCustomerstatus().equals("是")){
-                                    customer.setCustomerstatus(BizConstantEnum.customerstatus_has.getCode());
-                                }else{
-                                    customer.setCustomerstatus(BizConstantEnum.customerstatus_not.getCode());
-                                }
-                            }else{
-                                customer.setCustomerstatus(BizConstantEnum.customerstatus_not.getCode());
-                            }
-                            customer.setCreatedate(new Date());
-                            customer.setCreateuserid(shiroUser.getId());
-                            customer.setDatasources(BizConstantEnum.datasources_excel.getCode());
-                            customer.setCustomertype(BizConstantEnum.customertype_house.getCode());
-                            customerService.insert(customer);
-                            successCount++;
-                        }else{
-                            model.addAttribute("tips", "房产抵押客户模板不正确");
-                            return PREFIX + "customer_import.html";
-                        }
+            //客户信息
+            List<CustomerInfo> list = ExcelUtils.readExcel("", CustomerInfo.class, file);
+            for (CustomerInfo customerInfo : list){
+                System.out.println("解析客户信息"+ JSON.toJSONString(customerInfo));
+                //写入数据库
+                String customername = customerInfo.getCustomername();
+                String mobile = customerInfo.getMobile();
+                String idcard = customerInfo.getIdcard();
+                //电话不为空的前提下保存客户信息
+                if(StringUtils.isNotEmpty(mobile)){
+                    //车辆
+                    String carid = customerInfo.getCarid();
+                    String cartype = customerInfo.getCartype();
+                    //房产
+                    String houseinfo = customerInfo.getHouseinfo();
+                    String carinfo = customerInfo.getCarinfo();
+                    String insurance = customerInfo.getInsurance();
+                    String sbgjj = customerInfo.getSbgjj();
+                    String businesslicense = customerInfo.getBusinesslicense();
+                    String otherinfo = customerInfo.getOtherinfo();
+                    Customer customer = new Customer();
+                    customer.setCustomername(customername);
+                    customer.setMobile(mobile);
+                    customer.setIdcard(idcard);
+                    //车辆抵押客户
+                    customer.setCarid(carid);
+                    customer.setCartype(cartype);
+                    //房产抵押客户
+                    customer.setHouseinfo(houseinfo);
+                    customer.setCarinfo(carinfo);
+                    customer.setInsurance(insurance);
+                    customer.setSbgjj(sbgjj);
+                    customer.setBusinesslicense(businesslicense);
+                    customer.setOtherinfo(otherinfo);
 
-                    }else{
-                        fileCount++;
-                    }
+                    customer.setCustomerstatus(BizConstantEnum.customerstatus_not.getCode());
+                    customer.setCreatedate(new Date());
+                    customer.setCreateuserid(shiroUser.getId());
+                    customer.setDatasources(BizConstantEnum.datasources_excel.getCode());
+                    customer.setCustomertype(customertype);
+                    customerService.insert(customer);
+                    successCount++;
+                }else{
+                    fileCount++;
                 }
             }
 
             long t2 = System.currentTimeMillis();
             System.out.println(String.format("read over! cost:%sms", (t2 - t1)));
-            model.addAttribute("tips", "Excel总计"+(successCount+fileCount)+"条数据,成功导入"+successCount+"条数据,因数据不完善导致"+fileCount+"条数据未导入，耗时"+(t2 - t1)+"ms");
+            model.addAttribute("tips", "Excel总计"+(successCount+fileCount)+"条数据,成功导入"+successCount+"条数据,因数据不完善导致"+fileCount+"条数据未导入，耗时"+(t2 - t1)+"毫秒");
         }catch (FileFormatErrorException fileException){
             model.addAttribute("tips", "文件格式不正确");
         }

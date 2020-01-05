@@ -3,9 +3,9 @@ package com.boot.modular.customer.model;
 import com.boot.core.common.annotion.ExcelColumn;
 
 /**
- * 房产抵押客户模板数据
+ * 车辆抵押客户模板数据
  */
-public class CustomerHouseInfo {
+public class CustomerInfo {
     @ExcelColumn(value = "姓名", col = 1)
     private String customername;
 
@@ -14,6 +14,12 @@ public class CustomerHouseInfo {
 
     @ExcelColumn(value = "身份证号码", col = 3)
     private String idcard;
+
+    @ExcelColumn(value = "车牌", col = 4)
+    private String carid;
+
+    @ExcelColumn(value = "车型", col = 5)
+    private String cartype;
 
     @ExcelColumn(value = "房产信息", col = 4)
     private String houseinfo;
@@ -55,6 +61,22 @@ public class CustomerHouseInfo {
 
     public void setIdcard(String idcard) {
         this.idcard = idcard;
+    }
+
+    public String getCarid() {
+        return carid;
+    }
+
+    public void setCarid(String carid) {
+        this.carid = carid;
+    }
+
+    public String getCartype() {
+        return cartype;
+    }
+
+    public void setCartype(String cartype) {
+        this.cartype = cartype;
     }
 
     public String getHouseinfo() {
@@ -107,10 +129,12 @@ public class CustomerHouseInfo {
 
     @Override
     public String toString() {
-        return "CustomerHouseInfo{" +
+        return "CustomerCarInfo{" +
                 "customername='" + customername + '\'' +
                 ", mobile='" + mobile + '\'' +
                 ", idcard='" + idcard + '\'' +
+                ", carid='" + carid + '\'' +
+                ", cartype='" + cartype + '\'' +
                 ", houseinfo='" + houseinfo + '\'' +
                 ", carinfo='" + carinfo + '\'' +
                 ", insurance='" + insurance + '\'' +

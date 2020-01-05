@@ -46,7 +46,19 @@ Customer.initColumn = function () {
                         return '已跟进';
                     }
                 }
+            },
+        {
+            title: '操作', field: '', visible: true, align: 'center', valign: 'middle',
+            formatter: function (value, row, index, field) {
+                if (row["customerstatus"]==1) {
+                    return [
+                        '<button type="button" onclick="Customer.customerstatus(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">意向标记</button>'
+                    ].join('');
+                }else if (row["customerstatus"]>0) {
+                    //return ;
+                }
             }
+        }
     ];
 };
 
@@ -110,6 +122,20 @@ Customer.delete = function () {
         ajax.set("customerId",this.seItem.id);
         ajax.start();
     }
+};
+
+/**
+ * 标记意向客户
+ */
+Customer.customerstatus = function (id) {
+    var ajax = new $ax(Feng.ctxPath + "/customer/customerstatushas", function (data) {
+        Feng.success("意向标记成功!");
+        Customer.table.refresh();
+    }, function (data) {
+        Feng.error("意向标记失败!" + data.responseJSON.message + "!");
+    });
+    ajax.set("customerId",id);
+    ajax.start();
 };
 
 /**

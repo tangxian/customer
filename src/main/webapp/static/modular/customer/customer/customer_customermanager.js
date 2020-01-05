@@ -30,14 +30,14 @@ Customer.initColumn = function () {
                 }
             },
             {title: 'id', field: 'id', visible: false, align: 'center', valign: 'middle'},
-            {title: '客户姓名', field: 'customername', visible: true, align: 'center', valign: 'middle'},
-            {title: '电话', field: 'mobile', visible: true, align: 'center', valign: 'middle'},
+            {title: '客户姓名', width:100, field: 'customername', visible: true, align: 'center', valign: 'middle'},
+            {title: '电话', width:100, field: 'mobile', visible: true, align: 'center', valign: 'middle'},
             {title: '身份证号码', field: 'idcard', visible: true, align: 'center', valign: 'middle'},
-            {title: '客户类型', field: 'customertypeName', visible: true, align: 'center', valign: 'middle'},
-            {title: '客户状态', field: 'customerstatusName', visible: true, align: 'center', valign: 'middle'},
-            {title: '创建时间', field: 'createdate', visible: true, align: 'center', valign: 'middle'},
-            {title: '数据来源', field: 'datasourcesName', visible: true, align: 'center', valign: 'middle'},
-            {title: '跟进状态', field: 'flowcount', visible: true, align: 'center', valign: 'middle',
+            {title: '客户类型', width:110, field: 'customertypeName', visible: true, align: 'center', valign: 'middle'},
+            {title: '客户状态', width:100, field: 'customerstatusName', visible: true, align: 'center', valign: 'middle'},
+            {title: '创建时间', width:140, field: 'createdate', visible: true, align: 'center', valign: 'middle'},
+            {title: '数据来源', width:100, field: 'datasourcesName', visible: true, align: 'center', valign: 'middle'},
+            {title: '跟进状态', width:100, field: 'flowcount', visible: true, align: 'center', valign: 'middle',
                 formatter: function(value, item, index) {
                     if (value==0) {
                         return '未跟进';
@@ -51,14 +51,29 @@ Customer.initColumn = function () {
                 title: '操作', field: '', visible: true, align: 'center', valign: 'middle',
                 formatter: function (value, row, index, field) {
                     if (row["flowcount"]==0) {
-                        return [
-                            '<button type="button" onclick="Customer.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
-                            ,'<button type="button" onclick="Customer.follow(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">跟进</button>'
-                        ].join('');
+                        if (row["customerstatus"]==1) {
+                            return [
+                                '<button type="button" onclick="Customer.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
+                                ,'<button type="button" onclick="Customer.follow(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">跟进</button>'
+                                ,'<button type="button" onclick="Customer.customerstatus(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">意向</button>'
+                            ].join('');
+                        }else if (row["customerstatus"]>0) {
+                            return [
+                                '<button type="button" onclick="Customer.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
+                                ,'<button type="button" onclick="Customer.follow(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">跟进</button>'
+                            ].join('');
+                        }
                     }else if (row["flowcount"]>0) {
-                        return [
-                            '<button type="button" onclick="Customer.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
-                        ].join('');
+                        if (row["customerstatus"]==1) {
+                            return [
+                                '<button type="button" onclick="Customer.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
+                                ,'<button type="button" onclick="Customer.customerstatus(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">意向</button>'
+                            ].join('');
+                        }else if (row["customerstatus"]>0) {
+                            return [
+                                '<button type="button" onclick="Customer.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
+                            ].join('');
+                        }
                     }
                 }
             }
@@ -95,6 +110,19 @@ Customer.follow = function (id) {
     this.layerIndex = index;
 };
 
+/**
+ * 标记意向客户
+ */
+Customer.customerstatus = function (id) {
+    var ajax = new $ax(Feng.ctxPath + "/customer/customerstatushas", function (data) {
+        Feng.success("意向标记成功!");
+        Customer.table.refresh();
+    }, function (data) {
+        Feng.error("意向标记失败!" + data.responseJSON.message + "!");
+    });
+    ajax.set("customerId",id);
+    ajax.start();
+};
 
 /**
  * 检查是否选中
