@@ -7,6 +7,13 @@ package com.boot.core.common.constant;
 public enum BizConstantEnum {
 
     /**
+     * 成交客户单状态
+     */
+    cussuccessstatus_not(1,"未审核"),
+    cussuccessstatus_pass(2,"审核通过"),
+    cussuccessstatus_reject(3,"审核未通过"),
+
+    /**
      * 客户类型
      */
     customertype_car(1,"车辆抵押客户"),

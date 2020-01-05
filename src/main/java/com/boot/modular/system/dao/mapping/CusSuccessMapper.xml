@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boot.modular.system.dao.CusSuccessMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.boot.modular.system.model.CusSuccess">
+        <id column="id" property="id" />
+        <result column="customerid" property="customerid" />
+        <result column="successdate" property="successdate" />
+        <result column="successuserid" property="successuserid" />
+        <result column="bank" property="bank" />
+        <result column="amount" property="amount" />
+        <result column="remark" property="remark" />
+        <result column="status" property="status" />
+        <result column="checkuserid" property="checkuserid" />
+        <result column="checkdate" property="checkdate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, customerid, successdate, successuserid, bank, amount, remark, status, checkuserid, checkdate
+    </sql>
+
+    <select id="selectCusSuccess" resultType="map">
+        select
+        c.*,s.customerid, s.successdate, s.successuserid, s.bank, s.amount, s.remark, s.status, s.checkuserid, s.checkdate
+        from cus_customer c, cus_success s
+        where c.id=s.customerid
+        and c.customerstatus in (1,2,3)
+        <if test="customername != null and customername !=''">
+            and c.customername like CONCAT('%',#{customername},'%')
+        </if>
+        <if test="mobile != null and mobile !=''">
+            and c.mobile like CONCAT('%',#{mobile},'%')
+        </if>
+        <if test="idcard != null and idcard !=''">
+            and c.idcard like CONCAT('%',#{idcard},'%')
+        </if>
+        <if test="customertype != null and customertype != 0">
+            and c.customertype = #{customertype}
+        </if>
+        <if test="customerstatus != null and customerstatus != 0">
+            and c.customerstatus = #{customerstatus}
+        </if>
+        <if test="datasources != null and datasources != 0">
+            and c.datasources = #{datasources}
+        </if>
+        <if test="importremark != null and importremark !=''">
+            and c.importremark like CONCAT('%',#{importremark},'%')
+        </if>
+        <if test="beginTime != null and beginTime != ''">
+            and s.successdate &gt;=CONCAT(#{beginTime},' 00:00:00')
+        </if>
+        <if test="endTime != null and endTime != ''">
+            and s.successdate &lt;=CONCAT(#{endTime},' 23:59:59')
+        </if>
+        <if test="status != null and status != 0">
+            and s.status = #{status}
+        </if>
+        <if test="userid != null and userid != ''">
+            and s.successuserid = #{userid}
+        </if>
+        order by s.successdate desc
+    </select>
+
+    <select id="selectListByCustomerId" resultType="com.boot.modular.system.model.CusSuccess">
+        select f.*,u.true_name username
+        from cus_follow f, sys_user u
+        where u.id=f.userid
+        and f.customerid = #{customerid}
+    </select>
+
+</mapper>

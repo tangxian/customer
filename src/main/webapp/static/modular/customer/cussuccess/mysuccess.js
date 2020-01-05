@@ -1,8 +1,8 @@
 /**
- * 我的成单初始化
+ * 我的成交初始化
  */
-var Myfollow = {
-    id: "myfollowTable",	//表格id
+var Mysuccess = {
+    id: "mysuccessTable",	//表格id
     seItem: null,		//选中的条目
     table: null,
     layerIndex: -1
@@ -11,7 +11,7 @@ var Myfollow = {
 /**
  * 初始化表格的列
  */
-Myfollow.initColumn = function () {
+Mysuccess.initColumn = function () {
     return [
         {field: 'selectItem', radio: true, visible: false},
         {
@@ -22,9 +22,9 @@ Myfollow.initColumn = function () {
             width: 45,
             formatter: function (value, row, index) {
                 //获取每页显示的数量
-                var pageSize = $('#myfollowTable').bootstrapTable('getOptions').pageSize;
+                var pageSize = $('#mysuccessTable').bootstrapTable('getOptions').pageSize;
                 //获取当前是第几页
-                var pageNumber = $('#myfollowTable').bootstrapTable('getOptions').pageNumber;
+                var pageNumber = $('#mysuccessTable').bootstrapTable('getOptions').pageNumber;
                 //返回序号，注意index是从0开始的，所以要加上1
                 return pageSize * (pageNumber - 1) + index + 1;
             }
@@ -34,16 +34,18 @@ Myfollow.initColumn = function () {
         {title: '电话', field: 'mobile', visible: true, align: 'center', valign: 'middle'},
         {title: '身份证号码', field: 'idcard', visible: true, align: 'center', valign: 'middle'},
         {title: '客户类型', width:90, field: 'customertypeName', visible: true, align: 'center', valign: 'middle'},
-        {title: '客户状态', width:90, field: 'customerstatusName', visible: true, align: 'center', valign: 'middle'},
         {title: '导入备注', field: 'importremark', visible: true, align: 'center', valign: 'middle'},
-        {title: '跟进时间', field: 'followdate', visible: true, align: 'center', valign: 'middle'},
-        {title: '跟进内容', field: 'remark', visible: true, align: 'center', valign: 'middle'},
+        {title: '成交时间', field: 'successdate', visible: true, align: 'center', valign: 'middle'},
+        {title: '贷款银行', field: 'bank', visible: true, align: 'center', valign: 'middle'},
+        {title: '贷款金额', field: 'amount', visible: true, align: 'center', valign: 'middle'},
+        {title: '状态', field: 'statusName', visible: true, align: 'center', valign: 'middle'},
+        {title: '审核人', field: 'checkuserName', visible: true, align: 'center', valign: 'middle'},
+        {title: '审核时间', field: 'checkdate', visible: true, align: 'center', valign: 'middle'},
         {
             title: '操作', field: '', visible: true, align: 'center', valign: 'middle',
             formatter: function (value, row, index, field) {
                 return [
-                    '<button type="button" onclick="Myfollow.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
-                    ,'<button type="button" onclick="Myfollow.successapply(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">成交申请</button>'
+                    '<button type="button" onclick="Mysuccess.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
                 ].join('');
             }
         }
@@ -53,7 +55,7 @@ Myfollow.initColumn = function () {
 /**
  * 客户详情
  */
-Myfollow.detail = function (id) {
+Mysuccess.detail = function (id) {
     var index = layer.open({
         type: 2,
         title: '客户详情',
@@ -65,25 +67,11 @@ Myfollow.detail = function (id) {
     this.layerIndex = index;
 };
 
-/**
- * 客户成交申请
- */
-Myfollow.successapply = function (id) {
-    var index = layer.open({
-        type: 2,
-        title: '客户成交申请',
-        area: ['90%', '90%'], //宽高
-        fix: false, //不固定
-        maxmin: true,
-        content: Feng.ctxPath + '/cusSuccess/success_apply/' + id
-    });
-    this.layerIndex = index;
-};
 
 /**
  * 查询客户管理列表
  */
-Myfollow.search = function () {
+Mysuccess.search = function () {
     var queryData = {};
     queryData['customername'] = $("#customername").val();
     queryData['mobile'] = $("#mobile").val();
@@ -93,15 +81,16 @@ Myfollow.search = function () {
     queryData['customertype'] = $("#customertype").val();
     queryData['customerstatus'] = $("#customerstatus").val();
     queryData['importremark'] = $("#importremark").val();
-    Myfollow.table.refresh({query: queryData});
+    queryData['status'] = $("#status").val();
+    Mysuccess.table.refresh({query: queryData});
 };
 
 $(function () {
-    var defaultColunms = Myfollow.initColumn();
-    var table = new BSTable(Myfollow.id, "/cusFollow/myfollowlist", defaultColunms);
+    var defaultColunms = Mysuccess.initColumn();
+    var table = new BSTable(Mysuccess.id, "/cusSuccess/mysuccesslist", defaultColunms);
     var queryData = {};
     table.setQueryParams(queryData);
     table.setPaginationType("server");
     table.setHeight(624);
-    Myfollow.table = table.init();
+    Mysuccess.table = table.init();
 });
