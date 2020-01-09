@@ -1,7 +1,5 @@
 package com.boot.modular.customer.controller;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.boot.core.common.annotion.Permission;
 import com.boot.core.common.constant.Const;

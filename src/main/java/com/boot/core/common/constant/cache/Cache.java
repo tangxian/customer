@@ -26,17 +26,17 @@ public interface Cache {
     /**
      * 字典常量缓存
      */
-    String CONSTANT = "CONSTANT";
+    String CONSTANT = "CUS_CONSTANT";
     /**
      * 权限常量缓存
      **/
-    String ROLE = "ROLE";
+    String ROLE = "CUS_ROLE";
     /**
      * 用户常量缓存
      **/
-    String USER = "USER";
+    String USER = "CUS_USER";
     /**
      * 部门常量缓存
      **/
-    String DEPT = "DEPT";
+    String DEPT = "CUS_DEPT";
 }

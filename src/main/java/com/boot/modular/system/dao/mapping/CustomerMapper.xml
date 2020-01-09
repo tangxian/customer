@@ -100,7 +100,7 @@
             <if test="customerstatus != null and customerstatus == 0">
                 and c.customerstatus in (1,2,3)
             </if>
-            having flowcount>0
+            and (select count(1) from cus_follow where customerid=c.id)>0
         </if>
         order by c.createdate desc
     </select>
