@@ -201,57 +201,61 @@ public class CustomerController extends BaseController {
             int fileCount = 0;
             //客户信息
             List<CustomerInfo> list = ExcelUtils.readExcel("", CustomerInfo.class, file);
-            for (CustomerInfo customerInfo : list){
-                System.out.println("解析客户信息"+ JSON.toJSONString(customerInfo));
-                //写入数据库
-                String customername = customerInfo.getCustomername();
-                String mobile = customerInfo.getMobile();
-                String idcard = customerInfo.getIdcard();
-                //电话不为空的前提下保存客户信息
-                if(StringUtils.isNotEmpty(mobile)){
-                    //车辆
-                    String carid = customerInfo.getCarid();
-                    String cartype = customerInfo.getCartype();
-                    //房产
-                    String houseinfo = customerInfo.getHouseinfo();
-                    String carinfo = customerInfo.getCarinfo();
-                    String insurance = customerInfo.getInsurance();
-                    String sbgjj = customerInfo.getSbgjj();
-                    String businesslicense = customerInfo.getBusinesslicense();
-                    String otherinfo = customerInfo.getOtherinfo();
-                    Customer customer = new Customer();
-                    customer.setCustomername(customername);
-                    customer.setMobile(mobile);
-                    customer.setIdcard(idcard);
-                    //车辆抵押客户
-                    customer.setCarid(carid);
-                    customer.setCartype(cartype);
-                    //房产抵押客户
-                    customer.setHouseinfo(houseinfo);
-                    customer.setCarinfo(carinfo);
-                    customer.setInsurance(insurance);
-                    customer.setSbgjj(sbgjj);
-                    customer.setBusinesslicense(businesslicense);
-                    customer.setOtherinfo(otherinfo);
+            if(list.size()==0){
+                model.addAttribute("tips", "文件模板不正确");
+            }else{
+                for (CustomerInfo customerInfo : list){
+                    //System.out.println("解析客户信息"+ JSON.toJSONString(customerInfo));
+                    //写入数据库
+                    String customername = customerInfo.getCustomername();
+                    String mobile = customerInfo.getMobile();
+                    String idcard = customerInfo.getIdcard();
+                    //电话不为空的前提下保存客户信息
+                    if(StringUtils.isNotEmpty(mobile)){
+                        //车辆
+                        String carid = customerInfo.getCarid();
+                        String cartype = customerInfo.getCartype();
+                        //房产
+                        String houseinfo = customerInfo.getHouseinfo();
+                        String carinfo = customerInfo.getCarinfo();
+                        String insurance = customerInfo.getInsurance();
+                        String sbgjj = customerInfo.getSbgjj();
+                        String businesslicense = customerInfo.getBusinesslicense();
+                        String otherinfo = customerInfo.getOtherinfo();
+                        Customer customer = new Customer();
+                        customer.setCustomername(customername);
+                        customer.setMobile(mobile);
+                        customer.setIdcard(idcard);
+                        //车辆抵押客户
+                        customer.setCarid(carid);
+                        customer.setCartype(cartype);
+                        //房产抵押客户
+                        customer.setHouseinfo(houseinfo);
+                        customer.setCarinfo(carinfo);
+                        customer.setInsurance(insurance);
+                        customer.setSbgjj(sbgjj);
+                        customer.setBusinesslicense(businesslicense);
+                        customer.setOtherinfo(otherinfo);
 
-                    customer.setCustomerstatus(BizConstantEnum.customerstatus_not.getCode());
-                    customer.setCreatedate(new Date());
-                    customer.setCreateuserid(shiroUser.getId());
-                    customer.setDatasources(BizConstantEnum.datasources_excel.getCode());
-                    customer.setCustomertype(customertype);
-                    customer.setImportnumber(importnumber);
-                    customer.setImportremark(importremark);
-                    customerService.insert(customer);
-                    successCount++;
-                }else{
-                    fileCount++;
+                        customer.setCustomerstatus(BizConstantEnum.customerstatus_not.getCode());
+                        customer.setCreatedate(new Date());
+                        customer.setCreateuserid(shiroUser.getId());
+                        customer.setDatasources(BizConstantEnum.datasources_excel.getCode());
+                        customer.setCustomertype(customertype);
+                        customer.setImportnumber(importnumber);
+                        customer.setImportremark(importremark);
+                        customerService.insert(customer);
+                        successCount++;
+                    }else{
+                        fileCount++;
+                    }
                 }
-            }
 
-            long t2 = System.currentTimeMillis();
-            System.out.println(String.format("read over! cost:%sms", (t2 - t1)));
-            model.addAttribute("tips", "Excel总计"+(successCount+fileCount)+"条数据,成功导入"+successCount+"条数据,因数据不完善导致"+fileCount+"条数据未导入，耗时"+(t2 - t1)+"毫秒");
-        }catch (FileFormatErrorException fileException){
+                long t2 = System.currentTimeMillis();
+                System.out.println(String.format("read over! cost:%sms", (t2 - t1)));
+                model.addAttribute("tips", "Excel总计"+(successCount+fileCount)+"条数据,成功导入"+successCount+"条数据,因数据不完善导致"+fileCount+"条数据未导入，耗时"+(t2 - t1)+"毫秒");
+            }
+            }catch (FileFormatErrorException fileException){
             model.addAttribute("tips", "文件格式不正确");
         }
         return PREFIX + "customer_import.html";

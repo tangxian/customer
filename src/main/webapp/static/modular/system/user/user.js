@@ -98,7 +98,11 @@ MgrUser.roleAssign = function () {
  */
 MgrUser.delMgrUser = function () {
     if (this.check()) {
-
+        var arr = [1,2];
+        if(arr.includes(this.seItem.id)){
+            Feng.error("该用户不允许删除");
+            return;
+        }
         var operation = function(){
             var userId = MgrUser.seItem.id;
             var ajax = new $ax(Feng.ctxPath + "/mgr/delete", function () {
@@ -111,7 +115,7 @@ MgrUser.delMgrUser = function () {
             ajax.start();
         };
 
-        Feng.confirm("是否删除用户" + MgrUser.seItem.loginId + "?",operation);
+        Feng.confirm("是否删除用户" + MgrUser.seItem.true_name + "?",operation);
     }
 };
 
@@ -121,6 +125,11 @@ MgrUser.delMgrUser = function () {
  */
 MgrUser.freezeAccount = function () {
     if (this.check()) {
+        var arr = [1,2];
+        if(arr.includes(this.seItem.id)){
+            Feng.error("该用户不允许操作");
+            return;
+        }
         var userId = this.seItem.id;
         var ajax = new $ax(Feng.ctxPath + "/mgr/freeze", function (data) {
             Feng.success("冻结成功!");
@@ -139,6 +148,11 @@ MgrUser.freezeAccount = function () {
  */
 MgrUser.unfreeze = function () {
     if (this.check()) {
+        var arr = [1,2];
+        if(arr.includes(this.seItem.id)){
+            Feng.error("该用户不允许操作");
+            return;
+        }
         var userId = this.seItem.id;
         var ajax = new $ax(Feng.ctxPath + "/mgr/unfreeze", function (data) {
             Feng.success("解除冻结成功!");

@@ -98,7 +98,7 @@
         <!-- 查询客户跟进 -->
         <if test="iscustomermanager != null and iscustomermanager == 3">
             <if test="customerstatus != null and customerstatus == 0">
-                and c.customerstatus in (1,2,3)
+                and c.customerstatus in (1,2)
             </if>
             and (select count(1) from cus_follow where customerid=c.id)>0
         </if>

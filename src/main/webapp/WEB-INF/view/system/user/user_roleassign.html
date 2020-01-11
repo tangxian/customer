@@ -12,6 +12,10 @@
 
         $("#btn_save").bind("click", function () {
             var ids = Feng.zTreeCheckedNodes("zTree");
+            if(ids.length>1){
+                Feng.error("只允许选择一种角色!");
+                return;
+            }
             var ajax = new $ax(Feng.ctxPath + "/mgr/setRole", function (data) {
                 Feng.success("分配角色成功!");
                 window.parent.MgrUser.table.refresh();
