@@ -31,23 +31,25 @@ Myfollow.initColumn = function () {
         },
         {title: 'id', field: 'id', visible: false, align: 'center', valign: 'middle'},
         {title: '客户姓名', width:100, field: 'customername', visible: true, align: 'center', valign: 'middle'},
-        {title: '电话', field: 'mobile', visible: true, align: 'center', valign: 'middle'},
-        {title: '身份证号码', field: 'idcard', visible: true, align: 'center', valign: 'middle'},
-        {title: '客户类型', width:90, field: 'customertypeName', visible: true, align: 'center', valign: 'middle'},
+        {title: '电话', width:100, field: 'mobile', visible: true, align: 'center', valign: 'middle'},
+        {title: '身份证号码', width:170, field: 'idcard', visible: true, align: 'center', valign: 'middle'},
+        {title: '客户类型', width:110, field: 'customertypeName', visible: true, align: 'center', valign: 'middle'},
         {title: '客户状态', width:90, field: 'customerstatusName', visible: true, align: 'center', valign: 'middle'},
         {title: '导入备注', field: 'importremark', visible: true, align: 'center', valign: 'middle'},
-        {title: '跟进时间', field: 'followdate', visible: true, align: 'center', valign: 'middle'},
-        {title: '跟进内容', field: 'remark', visible: true, align: 'center', valign: 'middle'},
+        {title: '跟进时间', width:140, field: 'followdate', visible: true, align: 'center', valign: 'middle'},
         {
             title: '操作', field: '', visible: true, align: 'center', valign: 'middle',
             formatter: function (value, row, index, field) {
                 if (row["successcount"]>0) {
+                    //未成交
                     return [
                         '<button type="button" onclick="Myfollow.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
                     ].join('');
                 }else if (row["successcount"]==0) {
+                    //已成交
                     return [
                         '<button type="button" onclick="Myfollow.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
+                        ,'<button type="button" onclick="Myfollow.follow(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">跟进记录</button>'
                         ,'<button type="button" onclick="Myfollow.successapply(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">成交申请</button>'
                     ].join('');
                 }
@@ -67,7 +69,7 @@ Myfollow.detail = function (id) {
         area: ['90%', '90%'], //宽高
         fix: false, //不固定
         maxmin: true,
-        content: Feng.ctxPath + '/customer/customer_detail/' + id
+        content: Feng.ctxPath + '/customer/customer_update/' + id
     });
     this.layerIndex = index;
 };
@@ -83,6 +85,22 @@ Myfollow.successapply = function (id) {
         fix: false, //不固定
         maxmin: true,
         content: Feng.ctxPath + '/cusSuccess/success_apply/' + id
+    });
+    this.layerIndex = index;
+};
+
+
+/**
+ * 客户跟进
+ */
+Myfollow.follow = function (id) {
+    var index = layer.open({
+        type: 2,
+        title: '跟进记录',
+        area: ['90%', '90%'], //宽高
+        fix: false, //不固定
+        maxmin: true,
+        content: Feng.ctxPath + '/cusFollow/cusfollow_record/' + id
     });
     this.layerIndex = index;
 };

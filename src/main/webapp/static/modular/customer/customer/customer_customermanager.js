@@ -36,46 +36,15 @@ Customer.initColumn = function () {
             {title: '客户类型', width:110, field: 'customertypeName', visible: true, align: 'center', valign: 'middle'},
             {title: '客户状态', width:90, field: 'customerstatusName', visible: true, align: 'center', valign: 'middle'},
             {title: '创建时间', width:140, field: 'createdate', visible: true, align: 'center', valign: 'middle'},
-            {title: '数据来源', width:90, field: 'datasourcesName', visible: true, align: 'center', valign: 'middle'},
-            {title: '导入备注', width:100, field: 'importremark', visible: true, align: 'center', valign: 'middle'},
-            {title: '跟进状态', width:90, field: 'flowcount', visible: true, align: 'center', valign: 'middle',
-                formatter: function(value, item, index) {
-                    if (value==0) {
-                        return '未跟进';
-                    }
-                    else if (value>0) {
-                        return '已跟进';
-                    }
-                }
-            },
+            {title: '数据来源', width:100, field: 'datasourcesName', visible: true, align: 'center', valign: 'middle'},
+            {title: '导入备注', width:140, field: 'importremark', visible: true, align: 'center', valign: 'middle'},
             {
                 title: '操作', field: '', visible: true, align: 'center', valign: 'middle',
                 formatter: function (value, row, index, field) {
-                    if (row["flowcount"]==0) {
-                        if (row["customerstatus"]==1) {
-                            return [
-                                '<button type="button" onclick="Customer.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
-                                ,'<button type="button" onclick="Customer.follow(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">跟进</button>'
-                                ,'<button type="button" onclick="Customer.customerstatus(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">意向</button>'
-                            ].join('');
-                        }else if (row["customerstatus"]>0) {
-                            return [
-                                '<button type="button" onclick="Customer.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
-                                ,'<button type="button" onclick="Customer.follow(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">跟进</button>'
-                            ].join('');
-                        }
-                    }else if (row["flowcount"]>0) {
-                        if (row["customerstatus"]==1) {
-                            return [
-                                '<button type="button" onclick="Customer.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
-                                ,'<button type="button" onclick="Customer.customerstatus(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">意向</button>'
-                            ].join('');
-                        }else if (row["customerstatus"]>0) {
-                            return [
-                                '<button type="button" onclick="Customer.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
-                            ].join('');
-                        }
-                    }
+                    return [
+                        '<button type="button" onclick="Customer.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
+                        ,'<button type="button" onclick="Customer.follow(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">意向</button>'
+                    ].join('');
                 }
             }
     ];
@@ -102,7 +71,7 @@ Customer.detail = function (id) {
 Customer.follow = function (id) {
     var index = layer.open({
         type: 2,
-        title: '客户跟进',
+        title: '客户意向标记',
         area: ['90%', '90%'], //宽高
         fix: false, //不固定
         maxmin: true,
@@ -178,7 +147,7 @@ Customer.search = function () {
 
 $(function () {
     var defaultColunms = Customer.initColumn();
-    var table = new BSTable(Customer.id, "/customer/list", defaultColunms);
+    var table = new BSTable(Customer.id, "/customer/managerlist", defaultColunms);
     var queryData = {};
     queryData['iscustomermanager'] = 1;
     table.setQueryParams(queryData);

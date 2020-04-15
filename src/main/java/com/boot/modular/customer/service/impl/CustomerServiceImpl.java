@@ -30,4 +30,9 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
     public int deleteCustomer(List<Integer> customerIdList){
         return this.baseMapper.deleteCustomer(customerIdList);
     }
+
+    @Override
+    public List<Map<String, Object>> selectCustomerManager(Page<Customer> page, String customername, String mobile, String idcard, Integer customertype, Integer customerstatus, String beginTime, String endTime, Integer datasources, String importremark, Integer iscustomermanager, Integer userid) {
+        return this.baseMapper.selectCustomerManager(page, customername, mobile, idcard, customertype, customerstatus, beginTime, endTime, datasources, importremark, iscustomermanager,userid);
+    }
 }

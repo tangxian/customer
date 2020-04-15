@@ -24,6 +24,10 @@ import com.boot.core.kernel_model.exception.AbstractBaseExceptionEnum;
  * @date 2016年11月12日 下午5:04:51
  */
 public enum BizExceptionEnum implements AbstractBaseExceptionEnum {
+    /**
+     * 客户管理
+     */
+    ALREADYFOLLOW(400, "该客户已经被其他客户经理跟进，无法再次跟进"),
 
     /**
      * 字典

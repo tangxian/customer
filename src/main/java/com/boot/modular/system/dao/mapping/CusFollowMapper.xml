@@ -18,14 +18,14 @@
 
     <select id="selectCusFollow" resultType="map">
         select
-        c.*,f.followdate,f.remark
+        c.*
         <!-- 销售经理客户资源库 -->
         <if test="iscustomermanager != null and iscustomermanager == 1">
             ,(select count(1) from cus_success where successuserid=#{userid} and customerid=c.id and status in(1,3)) successcount
+            ,(select followdate from cus_follow where userid=#{userid} and customerid=c.id order by followdate desc limit 0,1) followdate
         </if>
-        from cus_customer c, cus_follow f
-        where c.id=f.customerid
-        and c.customerstatus in (1,2)
+        from cus_customer c
+        where  c.customerstatus in (1,2)
         <if test="customername != null and customername !=''">
             and c.customername like CONCAT('%',#{customername},'%')
         </if>
@@ -47,16 +47,17 @@
         <if test="importremark != null and importremark !=''">
             and c.importremark like CONCAT('%',#{importremark},'%')
         </if>
+        <if test="userid != null and userid != ''">
+            and c.followuserid=#{userid}
+        </if>
+        having 1=1
         <if test="beginTime != null and beginTime != ''">
-            and f.followdate &gt;=CONCAT(#{beginTime},' 00:00:00')
+            and followdate &gt;=CONCAT(#{beginTime},' 00:00:00')
         </if>
         <if test="endTime != null and endTime != ''">
-            and f.followdate &lt;=CONCAT(#{endTime},' 23:59:59')
+            and followdate &lt;=CONCAT(#{endTime},' 23:59:59')
         </if>
-        <if test="userid != null and userid != ''">
-            and f.userid = #{userid}
-        </if>
-        order by f.followdate desc
+        order by followdate desc
     </select>
 
     <select id="selectListByCustomerId" resultType="com.boot.modular.system.model.CusFollow">

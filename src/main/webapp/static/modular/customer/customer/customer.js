@@ -51,9 +51,9 @@ Customer.initColumn = function () {
         {
             title: '操作', field: '', visible: true, align: 'center', valign: 'middle',
             formatter: function (value, row, index, field) {
-                if (row["customerstatus"]==1) {
+                if (row["customerstatus"]==2) {
                     return [
-                        '<button type="button" onclick="Customer.customerstatus(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">意向标记</button>'
+                        '<button type="button" onclick="Customer.customerstatus(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">取消意向标记</button>'
                     ].join('');
                 }else if (row["customerstatus"]>0) {
                     //return ;
@@ -148,8 +148,8 @@ Customer.delete = function () {
  * 标记意向客户
  */
 Customer.customerstatus = function (id) {
-    var ajax = new $ax(Feng.ctxPath + "/customer/customerstatushas", function (data) {
-        Feng.success("意向标记成功!");
+    var ajax = new $ax(Feng.ctxPath + "/customer/cancelcustomerstatushas", function (data) {
+        Feng.success("取消意向标记成功!");
         Customer.table.refresh();
     }, function (data) {
         Feng.error("意向标记失败!" + data.responseJSON.message + "!");

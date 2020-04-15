@@ -23,11 +23,12 @@
         <result column="datasources" property="datasources" />
         <result column="importnumber" property="importnumber" />
         <result column="importremark" property="importremark" />
+        <result column="followuserid" property="followuserid" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, customername, mobile, idcard, houseinfo, carinfo, sbgjj, insurance, businesslicense, carid, cartype, otherinfo, customertype, customerstatus, createdate, createuserid, datasources, importnumber, importremark
+        id, customername, mobile, idcard, houseinfo, carinfo, sbgjj, insurance, businesslicense, carid, cartype, otherinfo, customertype, customerstatus, createdate, createuserid, datasources, importnumber, importremark, followuserid
     </sql>
 
     <select id="selectCustomer" resultType="map">
@@ -114,5 +115,42 @@
             </foreach>
         </if>
 	</update>
+
+    <select id="selectCustomerManager" resultType="map">
+        select
+        c.*
+        from cus_customer c
+        where 1=1
+        and c.customerstatus =1
+        <if test="customername != null and customername !=''">
+            and c.customername like CONCAT('%',#{customername},'%')
+        </if>
+        <if test="mobile != null and mobile !=''">
+            and c.mobile like CONCAT('%',#{mobile},'%')
+        </if>
+        <if test="idcard != null and idcard !=''">
+            and c.idcard like CONCAT('%',#{idcard},'%')
+        </if>
+        <if test="customertype != null and customertype != 0">
+            and c.customertype = #{customertype}
+        </if>
+        <if test="customerstatus != null and customerstatus != 0">
+            and c.customerstatus = #{customerstatus}
+        </if>
+        <if test="datasources != null and datasources != 0">
+            and c.datasources = #{datasources}
+        </if>
+        <if test="beginTime != null and beginTime != ''">
+            and c.createdate &gt;=CONCAT(#{beginTime},' 00:00:00')
+        </if>
+        <if test="endTime != null and endTime != ''">
+            and c.createdate &lt;=CONCAT(#{endTime},' 23:59:59')
+        </if>
+        <if test="importremark != null and importremark !=''">
+            and c.importremark like CONCAT('%',#{importremark},'%')
+        </if>
+
+        order by c.createdate desc
+    </select>
 
 </mapper>

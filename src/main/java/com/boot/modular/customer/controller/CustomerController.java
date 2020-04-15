@@ -1,15 +1,18 @@
 package com.boot.modular.customer.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.toolkit.StringUtils;
 import com.boot.core.common.annotion.Permission;
 import com.boot.core.common.constant.BizConstantEnum;
 import com.boot.core.common.constant.Const;
 import com.boot.core.common.constant.factory.PageFactory;
+import com.boot.core.common.exception.BizExceptionEnum;
 import com.boot.core.common.exception.FileFormatErrorException;
 import com.boot.core.common.page.PageInfoBT;
 import com.boot.core.kernel_core.base.controller.BaseController;
+import com.boot.core.kernel_model.exception.ServiceException;
 import com.boot.core.log.LogObjectHolder;
 import com.boot.core.shiro.ShiroKit;
 import com.boot.core.shiro.ShiroUser;
@@ -121,6 +124,20 @@ public class CustomerController extends BaseController {
     }
 
     /**
+     * 获取客户管理列表(客户经理)
+     */
+    @RequestMapping(value = "/managerlist")
+    @ResponseBody
+    public Object managerlist( @RequestParam(required = false) String customername, @RequestParam(required = false) String mobile, @RequestParam(required = false) String idcard, @RequestParam(required = false) String beginTime, @RequestParam(required = false) String endTime, @RequestParam(required = false) Integer customertype, @RequestParam(required = false) Integer customerstatus, @RequestParam(required = false) Integer datasources, @RequestParam(required = false) String importremark, @RequestParam(required = false) Integer iscustomermanager) {
+        Page<Customer> page = new PageFactory<Customer>().defaultPage();
+        ShiroUser shiroUser = ShiroKit.getUser();
+        Integer userid = shiroUser.getId();
+        List<Map<String, Object>> customer = customerService.selectCustomerManager(page, customername, mobile, idcard, customertype, customerstatus, beginTime, endTime, datasources, importremark, iscustomermanager, userid);
+        page.setRecords(new CustomerWarpper(customer).wrap());
+        return new PageInfoBT<>(page);
+    }
+
+    /**
      * 新增客户管理
      */
     @RequestMapping(value = "/add")
@@ -159,6 +176,19 @@ public class CustomerController extends BaseController {
     public Object customerstatushas(@RequestParam Integer customerId) {
         Customer customer = customerService.selectById(customerId);
         customer.setCustomerstatus(BizConstantEnum.customerstatus_has.getCode());
+        customerService.updateById(customer);
+        return SUCCESS_TIP;
+    }
+
+    /**
+     * 取消标记意向客户
+     */
+    @RequestMapping(value = "/cancelcustomerstatushas")
+    @ResponseBody
+    public Object cancelcustomerstatushas(@RequestParam Integer customerId) {
+        Customer customer = customerService.selectById(customerId);
+        customer.setCustomerstatus(BizConstantEnum.customerstatus_not.getCode());
+        customer.setFollowuserid(0);
         customerService.updateById(customer);
         return SUCCESS_TIP;
     }
@@ -252,7 +282,7 @@ public class CustomerController extends BaseController {
                 }
 
                 long t2 = System.currentTimeMillis();
-                System.out.println(String.format("read over! cost:%sms", (t2 - t1)));
+                //System.out.println(String.format("read over! cost:%sms", (t2 - t1)));
                 model.addAttribute("tips", "Excel总计"+(successCount+fileCount)+"条数据,成功导入"+successCount+"条数据,因数据不完善导致"+fileCount+"条数据未导入，耗时"+(t2 - t1)+"毫秒");
             }
             }catch (FileFormatErrorException fileException){
@@ -279,12 +309,23 @@ public class CustomerController extends BaseController {
     @Transactional
     public Object customerFollowSave(Integer customerId, String remark) {
         ShiroUser shiroUser = ShiroKit.getUser();
-        CusFollow cusFollow = new CusFollow();
-        cusFollow.setUserid(shiroUser.getId());
-        cusFollow.setCustomerid(customerId);
-        cusFollow.setFollowdate(new Date());
-        cusFollow.setRemark(remark);
-        cusFollowService.insert(cusFollow);
+        //先查询是否已经存在跟进表，存在则说明已有客户经理标记意向客户不能标记
+        Customer customerone = customerService.selectById(customerId);
+        if (customerone.getCustomerstatus().equals(BizConstantEnum.customerstatus_has.getCode())) {
+            throw new ServiceException(BizExceptionEnum.ALREADYFOLLOW);
+        }else{
+            CusFollow cusFollow = new CusFollow();
+            cusFollow.setUserid(shiroUser.getId());
+            cusFollow.setCustomerid(customerId);
+            cusFollow.setFollowdate(new Date());
+            cusFollow.setRemark(remark);
+            cusFollowService.insert(cusFollow);
+            Customer customer = customerService.selectById(customerId);
+            customer.setCustomerstatus(BizConstantEnum.customerstatus_has.getCode());
+            customer.setFollowuserid(shiroUser.getId());
+            customerService.updateById(customer);
+        }
+
         return SUCCESS_TIP;
     }
 }

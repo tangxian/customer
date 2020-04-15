@@ -97,6 +97,10 @@ public class Customer extends Model<Customer> {
      * 导入数据备注
      */
     private String importremark;
+    /**
+     * 跟进人id
+     */
+    private Integer followuserid;
 
 
     public Integer getId() {
@@ -251,6 +255,14 @@ public class Customer extends Model<Customer> {
         this.importremark = importremark;
     }
 
+    public Integer getFollowuserid() {
+        return followuserid;
+    }
+
+    public void setFollowuserid(Integer followuserid) {
+        this.followuserid = followuserid;
+    }
+
     @Override
     protected Serializable pkVal() {
         return this.id;
@@ -278,6 +290,7 @@ public class Customer extends Model<Customer> {
         ", datasources=" + datasources +
         ", importnumber=" + importnumber +
         ", importremark=" + importremark +
+        ", followuserid=" + followuserid +
         "}";
     }
 }

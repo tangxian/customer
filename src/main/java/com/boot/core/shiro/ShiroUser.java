@@ -38,6 +38,8 @@ public class ShiroUser implements Serializable {
     public String deptName;        // 部门名称
     public List<String> roleNames; // 角色名称集
     public Integer userid;      //录入用户ID
+    public Integer roleid;      //第一角色
+    public String rolename;         // 第一角色名称
 
 
     public Integer getId() {
@@ -118,5 +120,20 @@ public class ShiroUser implements Serializable {
 
     public void setUserid(Integer userid) {
         this.userid = userid;
+    }
+    public Integer getRoleid() {
+        return roleid;
+    }
+
+    public void setRoleid(Integer roleid) {
+        this.roleid = roleid;
+    }
+
+    public String getRolename() {
+        return rolename;
+    }
+
+    public void setRolename(String rolename) {
+        this.rolename = rolename;
     }
 }

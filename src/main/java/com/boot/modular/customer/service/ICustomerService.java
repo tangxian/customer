@@ -25,4 +25,10 @@ public interface ICustomerService extends IService<Customer> {
      * 删除客户
      */
     int deleteCustomer(List<Integer> customerIdList);
+
+    /**
+     *根据条件查询客户(客户经理)
+     */
+    List<Map<String, Object>> selectCustomerManager(Page<Customer> page, String customername ,String mobile, String idcard, Integer customertype, Integer customerstatus, String beginTime, String endTime, Integer datasources, String importremark, Integer iscustomermanager, Integer userid);
+
 }

@@ -2,10 +2,13 @@ package com.boot.modular.customer.controller;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import com.boot.core.common.annotion.Permission;
+import com.boot.core.common.constant.BizConstantEnum;
 import com.boot.core.common.constant.Const;
 import com.boot.core.common.constant.factory.PageFactory;
+import com.boot.core.common.exception.BizExceptionEnum;
 import com.boot.core.common.page.PageInfoBT;
 import com.boot.core.kernel_core.base.controller.BaseController;
+import com.boot.core.kernel_model.exception.ServiceException;
 import com.boot.core.shiro.ShiroKit;
 import com.boot.core.shiro.ShiroUser;
 import com.boot.modular.customer.service.ICustomerService;
@@ -13,6 +16,7 @@ import com.boot.modular.customer.warpper.CustomerWarpper;
 import com.boot.modular.system.model.Customer;
 import com.boot.modular.system.service.IUserService;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.ui.Model;
@@ -22,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.boot.modular.system.model.CusFollow;
 import com.boot.modular.customer.service.ICusFollowService;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -98,12 +103,38 @@ public class CusFollowController extends BaseController {
     /**
      * 客户跟进详情
      */
-    @Permission({Const.DATABASE ,Const.LEADER})
     @RequestMapping(value = "/cusfollow_record/{customerId}")
-    public String customerDetail(@PathVariable("customerId") Integer customerId, Model model) {
+    public String cusfollowRecord(@PathVariable("customerId") Integer customerId, Model model) {
         List<CusFollow> follows = cusFollowService.selectListByCustomerId(customerId);
         model.addAttribute("followsList", follows);
+        model.addAttribute("customerid", customerId);
         return PREFIX + "cusfollow_record.html";
+    }
+
+    /**
+     * 添加客户跟进详情
+     */
+    @RequestMapping(value = "/add_cusfollow_record/{customerId}")
+    public String addCusfollowRecord(@PathVariable("customerId") Integer customerId, Model model) {
+        model.addAttribute("customerId",customerId);
+        return PREFIX + "add_cusfollow_record.html";
+    }
+
+    /**
+     * 客户跟进保存
+     */
+    @RequestMapping(value = "/customer_follow_save")
+    @ResponseBody
+    @Transactional
+    public Object customerFollowSave(Integer customerId, String remark) {
+        ShiroUser shiroUser = ShiroKit.getUser();
+        CusFollow cusFollow = new CusFollow();
+        cusFollow.setUserid(shiroUser.getId());
+        cusFollow.setCustomerid(customerId);
+        cusFollow.setFollowdate(new Date());
+        cusFollow.setRemark(remark);
+        cusFollowService.insert(cusFollow);
+        return SUCCESS_TIP;
     }
 
 }

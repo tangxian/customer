@@ -2,6 +2,10 @@
 <link href="${ctxPath}/static/css/animate.css" rel="stylesheet">
 <div class="ibox float-e-margins">
     <div class="ibox-content">
+        <input type="hidden" id="customerid" name="customerid" value="${customerid}">
+        @if(shiro.getUser().roleid==4){
+        <button type="submit" class="btn btn-primary" icon="fa-check" onclick="followRecord.addfollow()">添加更进</button>
+        @}
         <div class="form-horizontal" id="customerInfoForm">
             <div class="row">
                 <div class="col-sm-12">
@@ -24,4 +28,5 @@
         </div>
     </div>
 </div>
+<script src="${ctxPath}/static/modular/customer/cusfollow/follow_record.js"></script>
 @}

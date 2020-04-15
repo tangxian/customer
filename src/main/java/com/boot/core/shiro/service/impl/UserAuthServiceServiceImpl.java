@@ -89,6 +89,10 @@ public class UserAuthServiceServiceImpl implements UserAuthService {
         }
         shiroUser.setRoleList(roleList);
         shiroUser.setRoleNames(roleNameList);
+        if(roleList.size()>0&&roleNameList.size()>0){
+            shiroUser.setRoleid(roleList.get(0));
+            shiroUser.setRolename(roleNameList.get(0));
+        }
 
         return shiroUser;
     }

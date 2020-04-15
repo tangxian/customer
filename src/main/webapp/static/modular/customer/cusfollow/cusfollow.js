@@ -32,10 +32,10 @@ Cusfollow.initColumn = function () {
             {title: 'id', field: 'id', visible: false, align: 'center', valign: 'middle'},
             {title: '客户姓名', width:100, field: 'customername', visible: true, align: 'center', valign: 'middle'},
             {title: '电话', width:90, field: 'mobile', visible: true, align: 'center', valign: 'middle'},
-            {title: '身份证号码', field: 'idcard', visible: true, align: 'center', valign: 'middle'},
+            {title: '身份证号码', width:130, field: 'idcard', visible: true, align: 'center', valign: 'middle'},
             {title: '客户类型', width:90, field: 'customertypeName', visible: true, align: 'center', valign: 'middle'},
             {title: '客户状态', width:90, field: 'customerstatusName', visible: true, align: 'center', valign: 'middle'},
-            {title: '创建时间', field: 'createdate', visible: true, align: 'center', valign: 'middle'},
+            {title: '创建时间', width:100, field: 'createdate', visible: true, align: 'center', valign: 'middle'},
             {title: '数据来源', width:90, field: 'datasourcesName', visible: true, align: 'center', valign: 'middle'},
             {title: '导入备注', width:100, field: 'importremark', visible: true, align: 'center', valign: 'middle'},
             {title: '跟进状态', width:90, field: 'flowcount', visible: true, align: 'center', valign: 'middle',
@@ -52,10 +52,19 @@ Cusfollow.initColumn = function () {
                 title: '操作', field: '', visible: true, align: 'center', valign: 'middle',
                 formatter: function (value, row, index, field) {
                     if (row["flowcount"]>0) {
-                        return [
-                            '<button type="button" onclick="Cusfollow.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
-                            ,'<button type="button" onclick="Cusfollow.follow(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">跟进记录</button>'
-                        ].join('');
+                        if (row["customerstatus"]==2) {
+                            return [
+                                '<button type="button" onclick="Cusfollow.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
+                                ,'<button type="button" onclick="Cusfollow.follow(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">跟进记录</button>'
+                                ,'<button type="button" onclick="Cusfollow.customerstatus(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">取消意向标记</button>'
+                            ].join('');
+                        }else {
+                            return [
+                                '<button type="button" onclick="Cusfollow.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
+                                ,'<button type="button" onclick="Cusfollow.follow(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">跟进记录</button>'
+                            ].join('');
+                        }
+
                     }else if (row["flowcount"]==0) {
                         return [
                             '<button type="button" onclick="Cusfollow.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
@@ -79,6 +88,20 @@ Cusfollow.detail = function (id) {
         content: Feng.ctxPath + '/customer/customer_detail/' + id
     });
     this.layerIndex = index;
+};
+
+/**
+ * 标记意向客户
+ */
+Cusfollow.customerstatus = function (id) {
+    var ajax = new $ax(Feng.ctxPath + "/customer/cancelcustomerstatushas", function (data) {
+        Feng.success("取消意向标记成功!");
+        Customer.table.refresh();
+    }, function (data) {
+        Feng.error("意向标记失败!" + data.responseJSON.message + "!");
+    });
+    ajax.set("customerId",id);
+    ajax.start();
 };
 
 /**

@@ -1,13 +1,13 @@
 #使用http协议时，http： server: port: 8080即可
 server:
-  port: 8088
+  port: 8888
 
 guns:
   RedisCache: true               #是否开始spring缓存实现为redis true：redis false：EhCache
   swagger-open: true              #是否开启swagger (true/false)
   kaptcha-open: false             #是否开启登录时验证码 (true/false)
   spring-session-open: false      #是否开启spring session,如果是多机环境需要开启(true/false)
-  file-upload-path: /usr/local/customer/file   #文件上传目录(不配置的话为java.io.tmpdir目录)D:\file  &&/usr/local/customer/file
+  file-upload-path: D:\customer\file    #文件上传目录(不配置的话为java.io.tmpdir目录)D:\file  &&/usr/local/customer/file
   session-invalidate-time: 1800     #session失效时间(只在单机环境下生效，多机环境在SpringSessionConfig类中配置) 单位：秒
   session-validation-interval: 900  #多久检测一次失效的session(只在单机环境下生效) 单位：秒
 
