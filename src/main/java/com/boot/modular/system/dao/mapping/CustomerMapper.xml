@@ -153,4 +153,12 @@
         order by c.createdate desc
     </select>
 
+    <select id="selectCustomerById" resultType="com.boot.modular.system.model.Customer">
+        select
+        <include refid="Base_Column_List"></include>
+        from cus_customer
+        where id =#{id}
+        for update
+    </select>
+
 </mapper>

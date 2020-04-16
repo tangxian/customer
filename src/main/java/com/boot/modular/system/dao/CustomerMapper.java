@@ -31,4 +31,6 @@ public interface CustomerMapper extends BaseMapper<Customer> {
      */
     List<Map<String, Object>> selectCustomerManager(@Param("page") Page<Customer> page, @Param("customername") String customername , @Param("mobile") String mobile, @Param("idcard") String idcard, @Param("customertype") Integer customertype, @Param("customerstatus") Integer customerstatus, @Param("beginTime") String beginTime, @Param("endTime") String endTime, @Param("datasources") Integer datasources, @Param("importremark") String importremark, @Param("iscustomermanager") Integer iscustomermanager, @Param("userid") Integer userid);
 
+    //根据开发者id查询开发者余额信息
+    Customer selectCustomerById(@Param("id") Integer id);
 }

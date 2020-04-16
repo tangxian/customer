@@ -153,6 +153,8 @@ customerInfoDlg.saveFollow = function () {
         customerInfoDlg.close();
     }, function (data) {
         Feng.error("操作失败!" + data.responseJSON.errorMsg + "!");
+        window.parent.Customer.table.refresh();
+        customerInfoDlg.close();
     });
     ajax.set("customerId", customerId);
     ajax.set("remark", remark);

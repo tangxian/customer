@@ -35,39 +35,23 @@ Cusfollow.initColumn = function () {
             {title: '身份证号码', width:130, field: 'idcard', visible: true, align: 'center', valign: 'middle'},
             {title: '客户类型', width:90, field: 'customertypeName', visible: true, align: 'center', valign: 'middle'},
             {title: '客户状态', width:90, field: 'customerstatusName', visible: true, align: 'center', valign: 'middle'},
-            {title: '创建时间', width:100, field: 'createdate', visible: true, align: 'center', valign: 'middle'},
+            {title: '创建时间', width:120, field: 'createdate', visible: true, align: 'center', valign: 'middle'},
             {title: '数据来源', width:90, field: 'datasourcesName', visible: true, align: 'center', valign: 'middle'},
             {title: '导入备注', width:100, field: 'importremark', visible: true, align: 'center', valign: 'middle'},
-            {title: '跟进状态', width:90, field: 'flowcount', visible: true, align: 'center', valign: 'middle',
-                formatter: function(value, item, index) {
-                    if (value==0) {
-                        return '未跟进';
-                    }
-                    else if (value>0) {
-                        return '已跟进';
-                    }
-                }
-            },
+            {title: '跟进人', width:100, field: 'true_name', visible: true, align: 'center', valign: 'middle'},
             {
                 title: '操作', field: '', visible: true, align: 'center', valign: 'middle',
                 formatter: function (value, row, index, field) {
-                    if (row["flowcount"]>0) {
-                        if (row["customerstatus"]==2) {
-                            return [
-                                '<button type="button" onclick="Cusfollow.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
-                                ,'<button type="button" onclick="Cusfollow.follow(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">跟进记录</button>'
-                                ,'<button type="button" onclick="Cusfollow.customerstatus(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">取消意向标记</button>'
-                            ].join('');
-                        }else {
-                            return [
-                                '<button type="button" onclick="Cusfollow.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
-                                ,'<button type="button" onclick="Cusfollow.follow(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">跟进记录</button>'
-                            ].join('');
-                        }
-
-                    }else if (row["flowcount"]==0) {
+                    if (row["customerstatus"]==2) {
                         return [
-                            '<button type="button" onclick="Cusfollow.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
+                            '<button type="button" onclick="Cusfollow.detail(' + row["id"] + ')" class="btn btn-primary  btn-xs" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
+                            ,'<button type="button" onclick="Cusfollow.follow(' + row["id"] + ')" class="btn btn-primary  btn-xs" style="margin-right:15px;    margin-bottom: 0px;">跟进记录</button>'
+                            ,'<button type="button" onclick="Cusfollow.customerstatus(' + row["id"] + ')" class="btn btn-primary  btn-xs" style="margin-right:15px;    margin-bottom: 0px;">取消意向标记</button>'
+                        ].join('');
+                    }else {
+                        return [
+                            '<button type="button" onclick="Cusfollow.detail(' + row["id"] + ')" class="btn btn-primary  btn-xs" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
+                            ,'<button type="button" onclick="Cusfollow.follow(' + row["id"] + ')" class="btn btn-primary  btn-xs" style="margin-right:15px;    margin-bottom: 0px;">跟进记录</button>'
                         ].join('');
                     }
                 }
@@ -96,7 +80,7 @@ Cusfollow.detail = function (id) {
 Cusfollow.customerstatus = function (id) {
     var ajax = new $ax(Feng.ctxPath + "/customer/cancelcustomerstatushas", function (data) {
         Feng.success("取消意向标记成功!");
-        Customer.table.refresh();
+        Cusfollow.table.refresh();
     }, function (data) {
         Feng.error("意向标记失败!" + data.responseJSON.message + "!");
     });

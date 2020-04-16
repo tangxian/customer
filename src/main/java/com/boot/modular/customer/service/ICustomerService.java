@@ -3,6 +3,7 @@ package com.boot.modular.customer.service;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.boot.modular.system.model.Customer;
 import com.baomidou.mybatisplus.service.IService;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -31,4 +32,8 @@ public interface ICustomerService extends IService<Customer> {
      */
     List<Map<String, Object>> selectCustomerManager(Page<Customer> page, String customername ,String mobile, String idcard, Integer customertype, Integer customerstatus, String beginTime, String endTime, Integer datasources, String importremark, Integer iscustomermanager, Integer userid);
 
+    /**
+     *根据开发者id查询开发者余额信息
+     */
+    Customer selectCustomerById(Integer id);
 }

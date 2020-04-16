@@ -16,7 +16,7 @@
         id, customerid, followdate, userid, remark
     </sql>
 
-    <select id="selectCusFollow" resultType="map">
+    <select id="selectMyCusFollow" resultType="map">
         select
         c.*
         <!-- 销售经理客户资源库 -->
@@ -65,6 +65,37 @@
         from cus_follow f, sys_user u
         where u.id=f.userid
         and f.customerid = #{customerid}
+    </select>
+
+    <select id="selectCusFollow" resultType="map">
+        select
+        c.*,u.true_name
+        from cus_customer c,sys_user u
+        where  c.followuserid=u.id and c.customerstatus in (1,2) and c.followuserid >0
+        <if test="customername != null and customername !=''">
+            and c.customername like CONCAT('%',#{customername},'%')
+        </if>
+        <if test="mobile != null and mobile !=''">
+            and c.mobile like CONCAT('%',#{mobile},'%')
+        </if>
+        <if test="idcard != null and idcard !=''">
+            and c.idcard like CONCAT('%',#{idcard},'%')
+        </if>
+        <if test="customertype != null and customertype != 0">
+            and c.customertype = #{customertype}
+        </if>
+        <if test="customerstatus != null and customerstatus != 0">
+            and c.customerstatus = #{customerstatus}
+        </if>
+        <if test="datasources != null and datasources != 0">
+            and c.datasources = #{datasources}
+        </if>
+        <if test="importremark != null and importremark !=''">
+            and c.importremark like CONCAT('%',#{importremark},'%')
+        </if>
+        <if test="followuserid != null and followuserid != ''">
+            and c.followuserid=#{followuserid}
+        </if>
     </select>
 
 </mapper>

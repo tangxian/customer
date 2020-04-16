@@ -310,20 +310,20 @@ public class CustomerController extends BaseController {
     public Object customerFollowSave(Integer customerId, String remark) {
         ShiroUser shiroUser = ShiroKit.getUser();
         //先查询是否已经存在跟进表，存在则说明已有客户经理标记意向客户不能标记
-        Customer customerone = customerService.selectById(customerId);
-        if (customerone.getCustomerstatus().equals(BizConstantEnum.customerstatus_has.getCode())) {
+        Customer customer = customerService.selectCustomerById(customerId);
+        if (customer.getCustomerstatus().equals(BizConstantEnum.customerstatus_has.getCode())) {
             throw new ServiceException(BizExceptionEnum.ALREADYFOLLOW);
         }else{
+            customer.setCustomerstatus(BizConstantEnum.customerstatus_has.getCode());
+            customer.setFollowuserid(shiroUser.getId());
+            customerService.updateById(customer);
             CusFollow cusFollow = new CusFollow();
             cusFollow.setUserid(shiroUser.getId());
             cusFollow.setCustomerid(customerId);
             cusFollow.setFollowdate(new Date());
             cusFollow.setRemark(remark);
             cusFollowService.insert(cusFollow);
-            Customer customer = customerService.selectById(customerId);
-            customer.setCustomerstatus(BizConstantEnum.customerstatus_has.getCode());
-            customer.setFollowuserid(shiroUser.getId());
-            customerService.updateById(customer);
+
         }
 
         return SUCCESS_TIP;

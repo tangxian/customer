@@ -43,14 +43,14 @@ Myfollow.initColumn = function () {
                 if (row["successcount"]>0) {
                     //未成交
                     return [
-                        '<button type="button" onclick="Myfollow.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
+                        '<button type="button" onclick="Myfollow.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-xs" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
                     ].join('');
                 }else if (row["successcount"]==0) {
                     //已成交
                     return [
-                        '<button type="button" onclick="Myfollow.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
-                        ,'<button type="button" onclick="Myfollow.follow(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">跟进记录</button>'
-                        ,'<button type="button" onclick="Myfollow.successapply(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">成交申请</button>'
+                        '<button type="button" onclick="Myfollow.detail(' + row["id"] + ')" class="btn btn-primary  btn-xs" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
+                        ,'<button type="button" onclick="Myfollow.follow(' + row["id"] + ')" class="btn btn-primary  btn-xs" style="margin-right:15px;    margin-bottom: 0px;">跟进记录</button>'
+                        ,'<button type="button" onclick="Myfollow.successapply(' + row["id"] + ')" class="btn btn-primary  btn-xs" style="margin-right:15px;    margin-bottom: 0px;">成交申请</button>'
                     ].join('');
                 }
 

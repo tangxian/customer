@@ -42,8 +42,8 @@ Customer.initColumn = function () {
                 title: '操作', field: '', visible: true, align: 'center', valign: 'middle',
                 formatter: function (value, row, index, field) {
                     return [
-                        '<button type="button" onclick="Customer.detail(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
-                        ,'<button type="button" onclick="Customer.follow(' + row["id"] + ')" class="RoleOfedit btn btn-primary  btn-sm" style="margin-right:15px;    margin-bottom: 0px;">意向</button>'
+                        '<button type="button" onclick="Customer.detail(' + row["id"] + ')" class="btn btn-primary btn-xs" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
+                        ,'<button type="button" onclick="Customer.follow(' + row["id"] + ')" class="btn btn-primary btn-xs" style="margin-right:15px;    margin-bottom: 0px;">意向</button>'
                     ].join('');
                 }
             }
