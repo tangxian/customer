@@ -316,6 +316,7 @@ public class CustomerController extends BaseController {
         }else{
             customer.setCustomerstatus(BizConstantEnum.customerstatus_has.getCode());
             customer.setFollowuserid(shiroUser.getId());
+            customer.setFollowdate(new Date());
             customerService.updateById(customer);
             CusFollow cusFollow = new CusFollow();
             cusFollow.setUserid(shiroUser.getId());

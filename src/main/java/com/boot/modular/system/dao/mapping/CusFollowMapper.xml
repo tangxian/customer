@@ -19,11 +19,6 @@
     <select id="selectMyCusFollow" resultType="map">
         select
         c.*
-        <!-- 销售经理客户资源库 -->
-        <if test="iscustomermanager != null and iscustomermanager == 1">
-            ,(select count(1) from cus_success where successuserid=#{userid} and customerid=c.id and status in(1,3)) successcount
-            ,(select followdate from cus_follow where userid=#{userid} and customerid=c.id order by followdate desc limit 0,1) followdate
-        </if>
         from cus_customer c
         where  c.customerstatus in (1,2)
         <if test="customername != null and customername !=''">
@@ -50,14 +45,13 @@
         <if test="userid != null and userid != ''">
             and c.followuserid=#{userid}
         </if>
-        having 1=1
         <if test="beginTime != null and beginTime != ''">
-            and followdate &gt;=CONCAT(#{beginTime},' 00:00:00')
+            and c.followdate &gt;=CONCAT(#{beginTime},' 00:00:00')
         </if>
         <if test="endTime != null and endTime != ''">
-            and followdate &lt;=CONCAT(#{endTime},' 23:59:59')
+            and c.followdate &lt;=CONCAT(#{endTime},' 23:59:59')
         </if>
-        order by followdate desc
+        order by c.followdate desc
     </select>
 
     <select id="selectListByCustomerId" resultType="com.boot.modular.system.model.CusFollow">
@@ -96,6 +90,13 @@
         <if test="followuserid != null and followuserid != ''">
             and c.followuserid=#{followuserid}
         </if>
+        <if test="beginTime != null and beginTime != ''">
+            and c.followdate &gt;=CONCAT(#{beginTime},' 00:00:00')
+        </if>
+        <if test="endTime != null and endTime != ''">
+            and c.followdate &lt;=CONCAT(#{endTime},' 23:59:59')
+        </if>
+        order by c.followdate desc
     </select>
 
 </mapper>

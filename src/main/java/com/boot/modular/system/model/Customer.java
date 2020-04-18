@@ -101,6 +101,18 @@ public class Customer extends Model<Customer> {
      * 跟进人id
      */
     private Integer followuserid;
+    /**
+     * 跟进时间
+     */
+    private Date followdate;
+    /**
+     * 成交人id
+     */
+    private Integer successuserid;
+    /**
+     * 成交时间
+     */
+    private Date successdate;
 
 
     public Integer getId() {
@@ -263,6 +275,30 @@ public class Customer extends Model<Customer> {
         this.followuserid = followuserid;
     }
 
+    public Date getFollowdate() {
+        return followdate;
+    }
+
+    public void setFollowdate(Date followdate) {
+        this.followdate = followdate;
+    }
+
+    public Integer getSuccessuserid() {
+        return successuserid;
+    }
+
+    public void setSuccessuserid(Integer successuserid) {
+        this.successuserid = successuserid;
+    }
+
+    public Date getSuccessdate() {
+        return successdate;
+    }
+
+    public void setSuccessdate(Date successdate) {
+        this.successdate = successdate;
+    }
+
     @Override
     protected Serializable pkVal() {
         return this.id;
@@ -291,6 +327,9 @@ public class Customer extends Model<Customer> {
         ", importnumber=" + importnumber +
         ", importremark=" + importremark +
         ", followuserid=" + followuserid +
+        ", followdate=" + followdate +
+        ", successuserid=" + successuserid +
+        ", successdate=" + successdate +
         "}";
     }
 }

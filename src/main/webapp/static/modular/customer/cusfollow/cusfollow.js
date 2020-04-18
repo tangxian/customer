@@ -35,7 +35,7 @@ Cusfollow.initColumn = function () {
             {title: '身份证号码', width:130, field: 'idcard', visible: true, align: 'center', valign: 'middle'},
             {title: '客户类型', width:90, field: 'customertypeName', visible: true, align: 'center', valign: 'middle'},
             {title: '客户状态', width:90, field: 'customerstatusName', visible: true, align: 'center', valign: 'middle'},
-            {title: '创建时间', width:120, field: 'createdate', visible: true, align: 'center', valign: 'middle'},
+            {title: '跟进时间', width:130, field: 'followdate', visible: true, align: 'center', valign: 'middle'},
             {title: '数据来源', width:90, field: 'datasourcesName', visible: true, align: 'center', valign: 'middle'},
             {title: '导入备注', width:100, field: 'importremark', visible: true, align: 'center', valign: 'middle'},
             {title: '跟进人', width:100, field: 'true_name', visible: true, align: 'center', valign: 'middle'},

@@ -130,6 +130,8 @@ public class CusSuccessController extends BaseController {
             //修改客户信息为成交
             Customer customer = customerService.selectById(success.getCustomerid());
             customer.setCustomerstatus(BizConstantEnum.customerstatus_success.getCode());
+            customer.setSuccessuserid(success.getSuccessuserid());
+            customer.setSuccessdate(success.getSuccessdate());
             customerService.updateById(customer);
         }
         return SUCCESS_TIP;

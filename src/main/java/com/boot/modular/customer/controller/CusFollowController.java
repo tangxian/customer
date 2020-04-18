@@ -134,6 +134,10 @@ public class CusFollowController extends BaseController {
         cusFollow.setFollowdate(new Date());
         cusFollow.setRemark(remark);
         cusFollowService.insert(cusFollow);
+        //更新跟进时间
+        Customer customer = customerService.selectCustomerById(customerId);
+        customer.setFollowdate(new Date());
+        customerService.updateById(customer);
         return SUCCESS_TIP;
     }
 

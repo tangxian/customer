@@ -24,11 +24,15 @@
         <result column="importnumber" property="importnumber" />
         <result column="importremark" property="importremark" />
         <result column="followuserid" property="followuserid" />
+        <result column="followdate" property="followdate" />
+        <result column="successuserid" property="successuserid" />
+        <result column="successdate" property="successdate" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, customername, mobile, idcard, houseinfo, carinfo, sbgjj, insurance, businesslicense, carid, cartype, otherinfo, customertype, customerstatus, createdate, createuserid, datasources, importnumber, importremark, followuserid
+        id, customername, mobile, idcard, houseinfo, carinfo, sbgjj, insurance, businesslicense, carid, cartype, otherinfo, customertype, customerstatus, createdate,
+        createuserid, datasources, importnumber, importremark, followuserid, followdate, successuserid, successdate
     </sql>
 
     <select id="selectCustomer" resultType="map">

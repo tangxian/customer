@@ -23,7 +23,7 @@
 
     <select id="selectCusSuccess" resultType="map">
         select
-        c.*,s.customerid, s.successdate, s.successuserid, s.bank, s.amount, s.remark, s.status, s.checkuserid, s.checkdate,
+        c.*,s.customerid, s.bank, s.amount, s.remark, s.status, s.checkuserid, s.checkdate,
         s.id successid
         from cus_customer c, cus_success s
         where c.id=s.customerid
