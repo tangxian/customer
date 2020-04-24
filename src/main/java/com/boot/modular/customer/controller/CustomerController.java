@@ -336,6 +336,7 @@ public class CustomerController extends BaseController {
     public Object selectImportRemarkList() {
         EntityWrapper<Customer> customerEntityWrapper = new EntityWrapper<Customer>();
         customerEntityWrapper.setSqlSelect("distinct importremark,importnumber");
+        customerEntityWrapper.isNotNull("importremark");
         customerEntityWrapper.orderBy("importnumber",false);
         List<Customer> Customer = customerService.selectList(customerEntityWrapper);
         return Customer;
