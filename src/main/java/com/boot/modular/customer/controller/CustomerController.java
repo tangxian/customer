@@ -329,4 +329,15 @@ public class CustomerController extends BaseController {
 
         return SUCCESS_TIP;
     }
+
+    //查询导入备注
+    @RequestMapping("/selectImportRemarkList")
+    @ResponseBody
+    public Object selectImportRemarkList() {
+        EntityWrapper<Customer> customerEntityWrapper = new EntityWrapper<Customer>();
+        customerEntityWrapper.setSqlSelect("distinct importremark,importnumber");
+        customerEntityWrapper.orderBy("importnumber",false);
+        List<Customer> Customer = customerService.selectList(customerEntityWrapper);
+        return Customer;
+    }
 }

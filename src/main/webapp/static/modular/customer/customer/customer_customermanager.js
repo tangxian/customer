@@ -141,6 +141,7 @@ Customer.search = function () {
     queryData['customertype'] = $("#customertype").val();
     queryData['customerstatus'] = $("#customerstatus").val();
     queryData['datasources'] = $("#datasources").val();
+    queryData['importremark'] = $("#importremark").val();
     queryData['iscustomermanager'] = 1;
     Customer.table.refresh({query: queryData});
 };
@@ -154,4 +155,16 @@ $(function () {
     table.setPaginationType("server");
     table.setHeight(624);
     Customer.table = table.init();
+
+    //查询导入备注下拉框
+    var ajax = new $ax(Feng.ctxPath + "/customer/selectImportRemarkList", function (data) {
+        var strHtml = '<option value="">' + '请选择导入备注' + '</option>';
+        $.each(data, function (key, val) {
+            strHtml += '<option value="' + val.importremark + '">' + val.importremark + '</option>';
+        });
+        $("#importremark").html(strHtml);
+    }, function (data) {
+        Feng.error("页面初始化失败!");
+    });
+    ajax.start();
 });

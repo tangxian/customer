@@ -89,7 +89,7 @@
             and c.createdate &lt;=CONCAT(#{endTime},' 23:59:59')
         </if>
         <if test="importremark != null and importremark !=''">
-            and c.importremark like CONCAT('%',#{importremark},'%')
+            and c.importremark = #{importremark}
         </if>
         <!-- 公司管理层客户资源 -->
         <if test="iscustomermanager != null and iscustomermanager == 0">
@@ -151,7 +151,7 @@
             and c.createdate &lt;=CONCAT(#{endTime},' 23:59:59')
         </if>
         <if test="importremark != null and importremark !=''">
-            and c.importremark like CONCAT('%',#{importremark},'%')
+            and c.importremark = #{importremark}
         </if>
 
         order by c.createdate desc

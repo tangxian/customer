@@ -69,7 +69,7 @@ public class CusFollowController extends BaseController {
     //查询客户经理下拉框
     @RequestMapping("/selectCustomerManagerList")
     @ResponseBody
-    public Object selectPublishList() {
+    public Object selectCustomerManagerList() {
         return userService.selectCustomerManager();
     }
 

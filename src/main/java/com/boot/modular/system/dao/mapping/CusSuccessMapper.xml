@@ -47,7 +47,7 @@
             and c.datasources = #{datasources}
         </if>
         <if test="importremark != null and importremark !=''">
-            and c.importremark like CONCAT('%',#{importremark},'%')
+            and c.importremark = #{importremark}
         </if>
         <if test="beginTime != null and beginTime != ''">
             and s.successdate &gt;=CONCAT(#{beginTime},' 00:00:00')
