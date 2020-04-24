@@ -141,4 +141,14 @@ public class CusFollowController extends BaseController {
         return SUCCESS_TIP;
     }
 
+    /**
+     * 删除跟进记录
+     */
+    @RequestMapping(value = "/del_cusfollow_record")
+    @ResponseBody
+    public Object del_cusfollow_record(@RequestParam Integer followId) {
+        cusFollowService.deleteById(followId);
+        return SUCCESS_TIP;
+    }
+
 }

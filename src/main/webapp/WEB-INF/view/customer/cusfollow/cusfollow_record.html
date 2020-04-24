@@ -17,7 +17,8 @@
                                         <small>${follow.followdate,dateFormat="yyyy-MM-dd HH:mm:ss"}</small>
                                         <h4>跟进内容</h4>
                                         <p>${follow.remark!}</p>
-                                        <a href="">跟进人：${follow.username!}</i></a>
+                                        <a style="margin-right: 20px;">跟进人：${follow.username!}</i></a>
+                                        <a onclick="followRecord.delete(${follow.id!})" title="删除"><i class="fa fa-trash-o "></i></a>
                                     </div>
                                 </li>
                             @}

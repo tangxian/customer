@@ -51,6 +51,7 @@
         <if test="endTime != null and endTime != ''">
             and c.followdate &lt;=CONCAT(#{endTime},' 23:59:59')
         </if>
+        and c.id not in (select customerid from cus_success where successuserid=#{userid} and status=1)
         order by c.followdate desc
     </select>
 

@@ -24,6 +24,20 @@ followRecord.addfollow = function () {
     this.layerIndex = index;
 };
 
+/**
+ * 标记意向客户
+ */
+followRecord.delete = function (id) {
+    var ajax = new $ax(Feng.ctxPath + "/cusFollow/del_cusfollow_record", function (data) {
+        Feng.success("删除成功!");
+        window.location.reload();
+    }, function (data) {
+        Feng.error("删除失败!" + data.responseJSON.message + "!");
+    });
+    ajax.set("followId",id);
+    ajax.start();
+};
+
 
 $(function () {
 
