@@ -168,6 +168,7 @@ public class CustomerController extends BaseController {
         }
         if(customerIdsList.size()>0){
             customerService.deleteCustomer(customerIdsList);
+            cusFollowService.deleteFollowByCustomer(customerIdsList);
         }
         return SUCCESS_TIP;
     }

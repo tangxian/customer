@@ -33,4 +33,8 @@ public interface CusFollowMapper extends BaseMapper<CusFollow> {
      */
     List<Map<String, Object>> selectCusFollow(@Param("page") Page<Customer> page, @Param("customername") String customername , @Param("mobile") String mobile, @Param("idcard") String idcard, @Param("customertype") Integer customertype, @Param("customerstatus") Integer customerstatus, @Param("beginTime") String beginTime, @Param("endTime") String endTime, @Param("datasources") Integer datasources, @Param("importremark") String importremark, @Param("iscustomermanager") Integer iscustomermanager, @Param("followuserid") Integer followuserid);
 
+    /**
+     * 删除客户跟进信息
+     */
+    int deleteFollowByCustomer(@Param("customerIdList") List<Integer> customerIdList);
 }

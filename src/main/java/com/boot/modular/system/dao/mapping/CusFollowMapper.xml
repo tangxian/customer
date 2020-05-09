@@ -100,4 +100,14 @@
         order by c.followdate desc
     </select>
 
+    <delete id="deleteFollowByCustomer">
+        delete from cus_follow where 1=1
+        <if test="customerIdList != null and customerIdList.size() > 0 ">
+            and customerid in
+            <foreach collection="customerIdList" item="id" index="index" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </if>
+    </delete>
+
 </mapper>

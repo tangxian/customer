@@ -32,4 +32,8 @@ public interface ICusFollowService extends IService<CusFollow> {
      */
     List<Map<String, Object>> selectCusFollow(Page<Customer> page, String customername , String mobile, String idcard, Integer customertype, Integer customerstatus, String beginTime, String endTime, Integer datasources, String importremark, Integer iscustomermanager, Integer followuserid);
 
+    /**
+     * 删除客户跟进信息
+     */
+    int deleteFollowByCustomer(List<Integer> customerIdList);
 }

@@ -146,7 +146,7 @@ public class CusFollowController extends BaseController {
      */
     @RequestMapping(value = "/del_cusfollow_record")
     @ResponseBody
-    public Object del_cusfollow_record(@RequestParam Integer followId) {
+    public Object del_cusfollow_record(@RequestParam Long followId) {
         cusFollowService.deleteById(followId);
         return SUCCESS_TIP;
     }
