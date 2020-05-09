@@ -190,7 +190,7 @@ $(function () {
     var ajax = new $ax(Feng.ctxPath + "/customer/selectImportRemarkList", function (data) {
         var strHtml = '<option value="">' + '请选择导入备注' + '</option>';
         $.each(data, function (key, val) {
-            strHtml += '<option value="' + val.importremark + '">' + val.importremark + '</option>';
+            strHtml += '<option value="' + val.importnumber + '">' + val.importremark + '</option>';
         });
         $("#importremark").html(strHtml);
     }, function (data) {

@@ -40,7 +40,7 @@
             and c.datasources = #{datasources}
         </if>
         <if test="importremark != null and importremark !=''">
-            and c.importremark = #{importremark}
+            and c.importnumber = #{importremark}
         </if>
         <if test="userid != null and userid != ''">
             and c.followuserid=#{userid}
@@ -86,7 +86,7 @@
             and c.datasources = #{datasources}
         </if>
         <if test="importremark != null and importremark !=''">
-            and c.importremark = #{importremark}
+            and c.importnumber = #{importremark}
         </if>
         <if test="followuserid != null and followuserid != ''">
             and c.followuserid=#{followuserid}
