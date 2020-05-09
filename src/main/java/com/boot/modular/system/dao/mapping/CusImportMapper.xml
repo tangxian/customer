@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boot.modular.system.dao.CusImportMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.boot.modular.system.model.CusImport">
+        <id column="id" property="id" />
+        <result column="importnumber" property="importnumber" />
+        <result column="importremark" property="importremark" />
+        <result column="importdate" property="importdate" />
+        <result column="importuserid" property="importuserid" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, importnumber, importremark, importdate, importuserid
+    </sql>
+
+    <select id="selectCusImport" resultType="map">
+        select
+        *
+        from cus_import
+        where 1=1
+        <if test="importremark != null and importremark !=''">
+            and importnumber = #{importremark}
+        </if>
+        <if test="beginTime != null and beginTime != ''">
+            and importdate &gt;=CONCAT(#{beginTime},' 00:00:00')
+        </if>
+        <if test="endTime != null and endTime != ''">
+            and importdate &lt;=CONCAT(#{endTime},' 23:59:59')
+        </if>
+        order by importdate desc
+    </select>
+
+    <delete id="deleteCustomerByImport">
+        delete from cus_customer where importnumber in(select importnumber from cus_import where id= #{id})
+    </delete>
+
+</mapper>

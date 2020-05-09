@@ -1,0 +1,63 @@
+@layout("/common/_container.html"){
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>客户导入管理</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <#TimeCon id="beginTime" name="开始时间" isTime="false" pattern="YYYY-MM-DD" />
+                            </div>
+                            <div class="col-sm-2">
+                                <#TimeCon id="endTime" name="结束时间" isTime="false" pattern="YYYY-MM-DD" />
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">
+                                            导入备注
+                                        </button>
+                                    </div>
+                                    <select class="chosen-select" id="importremark" name="importremark" style="width: 150px;border-color: #F5F5F5">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <#button name="搜索" icon="fa-search" clickFun="Cusimport.search()"/>
+                            </div>
+                        </div>
+                        <#table id="cusImportTable"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/customer/cusimport/cusimport.js"></script>
+<script>
+    var beginTime = laydate.render({
+        elem: '#beginTime'
+        ,done: function(value, date, endDate) { //给结束时间设置最小值
+            endTime.config.min = {
+                year: date.year,
+                month: date.month - 1,//重点！！！
+                date: date.date
+            }
+            var stime = new Date(Date.parse(value));
+            var etime = new Date(Date.parse($("#endTime").val()));
+            if (etime !=null && stime > etime) { //开始时间若大于结束时间，则把结束时间数据清空
+                $("#endTime").val("");
+            }
+        }
+    });
+    var endTime = laydate.render({
+        elem: '#endTime'
+        ,done: function(value, date, endDate) { //给结束时间设置最小值
+        }
+    });
+</script>
+@}

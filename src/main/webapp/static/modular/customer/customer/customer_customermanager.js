@@ -41,10 +41,19 @@ Customer.initColumn = function () {
             {
                 title: '操作', field: '', visible: true, align: 'center', valign: 'middle',
                 formatter: function (value, row, index, field) {
-                    return [
-                        '<button type="button" onclick="Customer.detail(' + row["id"] + ')" class="btn btn-primary btn-xs" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
-                        ,'<button type="button" onclick="Customer.follow(' + row["id"] + ')" class="btn btn-primary btn-xs" style="margin-right:15px;    margin-bottom: 0px;">意向</button>'
-                    ].join('');
+                    if (row["mobile"]!=null&&row["mobile"].length>0) {
+                        return [
+                            '<button type="button" onclick="Customer.detail(' + row["id"] + ')" class="btn btn-primary btn-xs" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
+                            ,'<button type="button" onclick="Customer.follow(' + row["id"] + ')" class="btn btn-primary btn-xs" style="margin-right:15px;    margin-bottom: 0px;">意向</button>'
+                        ].join('');
+                    }else {
+                        return [
+                            '<button type="button" onclick="Customer.detail(' + row["id"] + ')" class="btn btn-primary btn-xs" style="margin-right:15px;    margin-bottom: 0px;">详情</button>'
+                            ,'<button type="button" onclick="Customer.follow(' + row["id"] + ')" class="btn btn-primary btn-xs" style="margin-right:15px;    margin-bottom: 0px;">意向</button>'
+                            ,'<button type="button" onclick="Customer.delete(' + row["id"] + ')" class="btn btn-primary btn-xs" style="margin-right:15px;    margin-bottom: 0px;">删除</button>'
+                        ].join('');
+                    }
+
                 }
             }
     ];
@@ -92,6 +101,22 @@ Customer.customerstatus = function (id) {
     });
     ajax.set("customerId",id);
     ajax.start();
+};
+
+/**
+ * 删除客户管理
+ */
+Customer.delete = function (id) {
+    Feng.confirm("删除将无法恢复,是否确认删除?",function() {
+        var ajax = new $ax(Feng.ctxPath + "/customer/delete", function (data) {
+            Feng.success("删除成功!");
+            Customer.table.refresh();
+        }, function (data) {
+            Feng.error("删除失败!" + data.responseJSON.message + "!");
+        });
+        ajax.set("customerIds", id);
+        ajax.start();
+    })
 };
 
 /**

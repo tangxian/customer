@@ -133,14 +133,16 @@ Customer.delete = function () {
         Feng.info("请先选中表格中的某一记录！");
         return;
     }else{
-        var ajax = new $ax(Feng.ctxPath + "/customer/delete", function (data) {
-            Feng.success("删除成功!");
-            Customer.table.refresh();
-        }, function (data) {
-            Feng.error("删除失败!" + data.responseJSON.message + "!");
+        Feng.confirm("删除将无法恢复,是否确认删除?",function(){
+            var ajax = new $ax(Feng.ctxPath + "/customer/delete", function (data) {
+                Feng.success("删除成功!");
+                Customer.table.refresh();
+            }, function (data) {
+                Feng.error("删除失败!" + data.responseJSON.message + "!");
+            });
+            ajax.set("customerIds",ids.join(","));
+            ajax.start();
         });
-        ajax.set("customerIds",ids.join(","));
-        ajax.start();
     }
 };
 

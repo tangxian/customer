@@ -110,15 +110,15 @@
         order by c.createdate desc
     </select>
 
-    <update id="deleteCustomer">
-		update cus_customer set customerstatus = 4 where 1=1
+    <delete id="deleteCustomer">
+		delete from cus_customer where 1=1
         <if test="customerIdList != null and customerIdList.size() > 0 ">
             and id in
             <foreach collection="customerIdList" item="id" index="index" open="(" close=")" separator=",">
                 #{id}
             </foreach>
         </if>
-	</update>
+	</delete>
 
     <select id="selectCustomerManager" resultType="map">
         select

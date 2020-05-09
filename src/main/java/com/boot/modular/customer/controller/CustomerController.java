@@ -20,9 +20,11 @@ import com.boot.core.util.DateHelper;
 import com.boot.core.util.ExcelUtils;
 import com.boot.modular.customer.model.CustomerInfo;
 import com.boot.modular.customer.service.ICusFollowService;
+import com.boot.modular.customer.service.ICusImportService;
 import com.boot.modular.customer.service.ICustomerService;
 import com.boot.modular.customer.warpper.CustomerWarpper;
 import com.boot.modular.system.model.CusFollow;
+import com.boot.modular.system.model.CusImport;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -49,6 +51,8 @@ public class CustomerController extends BaseController {
     private ICustomerService customerService;
     @Autowired
     private ICusFollowService cusFollowService;
+    @Autowired
+    private ICusImportService cusImportService;
 
     /**
      * 跳转到客户管理首页
@@ -229,64 +233,80 @@ public class CustomerController extends BaseController {
             long t1 = System.currentTimeMillis();
             int successCount = 0;
             int fileCount = 0;
-            //客户信息
-            List<CustomerInfo> list = ExcelUtils.readExcel("", CustomerInfo.class, file);
-            if(list.size()==0){
-                model.addAttribute("tips", "文件模板不正确");
+            //查询的导入备注是否重复
+            EntityWrapper<CusImport> cusImportEntityWrapper = new EntityWrapper<CusImport>();
+            cusImportEntityWrapper.eq("importremark",importremark);
+            List<CusImport> CusImportList = cusImportService.selectList(cusImportEntityWrapper);
+            if(CusImportList.size()>0){
+                model.addAttribute("tips", "导入数据备注与之前重复，请重新填写导入数据备注");
             }else{
-                for (CustomerInfo customerInfo : list){
-                    //System.out.println("解析客户信息"+ JSON.toJSONString(customerInfo));
-                    //写入数据库
-                    String customername = customerInfo.getCustomername();
-                    String mobile = customerInfo.getMobile();
-                    String idcard = customerInfo.getIdcard();
-                    //电话不为空的前提下保存客户信息
-                    if(StringUtils.isNotEmpty(mobile)){
-                        //车辆
-                        String carid = customerInfo.getCarid();
-                        String cartype = customerInfo.getCartype();
-                        //房产
-                        String houseinfo = customerInfo.getHouseinfo();
-                        String carinfo = customerInfo.getCarinfo();
-                        String insurance = customerInfo.getInsurance();
-                        String sbgjj = customerInfo.getSbgjj();
-                        String businesslicense = customerInfo.getBusinesslicense();
-                        String otherinfo = customerInfo.getOtherinfo();
-                        Customer customer = new Customer();
-                        customer.setCustomername(customername);
-                        customer.setMobile(mobile);
-                        customer.setIdcard(idcard);
-                        //车辆抵押客户
-                        customer.setCarid(carid);
-                        customer.setCartype(cartype);
-                        //房产抵押客户
-                        customer.setHouseinfo(houseinfo);
-                        customer.setCarinfo(carinfo);
-                        customer.setInsurance(insurance);
-                        customer.setSbgjj(sbgjj);
-                        customer.setBusinesslicense(businesslicense);
-                        customer.setOtherinfo(otherinfo);
+                //客户信息
+                List<CustomerInfo> list = ExcelUtils.readExcel("", CustomerInfo.class, file);
+                if(list.size()==0){
+                    model.addAttribute("tips", "文件模板不正确");
+                }else{
+                    for (CustomerInfo customerInfo : list){
+                        //System.out.println("解析客户信息"+ JSON.toJSONString(customerInfo));
+                        //写入数据库
+                        String customername = customerInfo.getCustomername();
+                        String mobile = customerInfo.getMobile();
+                        String idcard = customerInfo.getIdcard();
+                        //电话不为空的前提下保存客户信息
+                        if(StringUtils.isNotEmpty(mobile)){
+                            //车辆
+                            String carid = customerInfo.getCarid();
+                            String cartype = customerInfo.getCartype();
+                            //房产
+                            String houseinfo = customerInfo.getHouseinfo();
+                            String carinfo = customerInfo.getCarinfo();
+                            String insurance = customerInfo.getInsurance();
+                            String sbgjj = customerInfo.getSbgjj();
+                            String businesslicense = customerInfo.getBusinesslicense();
+                            String otherinfo = customerInfo.getOtherinfo();
+                            Customer customer = new Customer();
+                            customer.setCustomername(customername);
+                            customer.setMobile(mobile);
+                            customer.setIdcard(idcard);
+                            //车辆抵押客户
+                            customer.setCarid(carid);
+                            customer.setCartype(cartype);
+                            //房产抵押客户
+                            customer.setHouseinfo(houseinfo);
+                            customer.setCarinfo(carinfo);
+                            customer.setInsurance(insurance);
+                            customer.setSbgjj(sbgjj);
+                            customer.setBusinesslicense(businesslicense);
+                            customer.setOtherinfo(otherinfo);
 
-                        customer.setCustomerstatus(BizConstantEnum.customerstatus_not.getCode());
-                        customer.setCreatedate(new Date());
-                        customer.setCreateuserid(shiroUser.getId());
-                        customer.setDatasources(BizConstantEnum.datasources_excel.getCode());
-                        customer.setCustomertype(customertype);
-                        customer.setImportnumber(importnumber);
-                        customer.setImportremark(importremark);
-                        customerService.insert(customer);
-                        successCount++;
-                    }else{
-                        fileCount++;
+                            customer.setCustomerstatus(BizConstantEnum.customerstatus_not.getCode());
+                            customer.setCreatedate(new Date());
+                            customer.setCreateuserid(shiroUser.getId());
+                            customer.setDatasources(BizConstantEnum.datasources_excel.getCode());
+                            customer.setCustomertype(customertype);
+                            customer.setImportnumber(importnumber);
+                            customer.setImportremark(importremark);
+                            customerService.insert(customer);
+                            successCount++;
+                        }else{
+                            fileCount++;
+                        }
                     }
-                }
 
-                long t2 = System.currentTimeMillis();
-                //System.out.println(String.format("read over! cost:%sms", (t2 - t1)));
-                model.addAttribute("tips", "Excel总计"+(successCount+fileCount)+"条数据,成功导入"+successCount+"条数据,因数据不完善导致"+fileCount+"条数据未导入，耗时"+(t2 - t1)+"毫秒");
+                    long t2 = System.currentTimeMillis();
+                    //将数据写入import表
+                    CusImport cusImport = new CusImport();
+                    cusImport.setImportnumber(importnumber);
+                    cusImport.setImportremark(importremark);
+                    cusImport.setImportuserid(shiroUser.getId());
+                    cusImport.setImportdate(new Date());
+                    cusImportService.insert(cusImport);
+                    //System.out.println(String.format("read over! cost:%sms", (t2 - t1)));
+                    model.addAttribute("tips", "Excel总计"+(successCount+fileCount)+"条数据,成功导入"+successCount+"条数据,因数据不完善导致"+fileCount+"条数据未导入，耗时"+(t2 - t1)+"毫秒");
+                }
             }
-            }catch (FileFormatErrorException fileException){
-            model.addAttribute("tips", "文件格式不正确");
+
+        }catch (FileFormatErrorException fileException){
+        model.addAttribute("tips", "文件格式不正确");
         }
         return PREFIX + "customer_import.html";
     }
@@ -334,11 +354,9 @@ public class CustomerController extends BaseController {
     @RequestMapping("/selectImportRemarkList")
     @ResponseBody
     public Object selectImportRemarkList() {
-        EntityWrapper<Customer> customerEntityWrapper = new EntityWrapper<Customer>();
-        customerEntityWrapper.setSqlSelect("distinct importremark,importnumber");
-        customerEntityWrapper.isNotNull("importremark");
-        customerEntityWrapper.orderBy("importnumber",false);
-        List<Customer> Customer = customerService.selectList(customerEntityWrapper);
-        return Customer;
+        EntityWrapper<CusImport> cusImportEntityWrapper = new EntityWrapper<CusImport>();
+        cusImportEntityWrapper.orderBy("importdate",false);
+        List<CusImport> CusImport = cusImportService.selectList(cusImportEntityWrapper);
+        return CusImport;
     }
 }
